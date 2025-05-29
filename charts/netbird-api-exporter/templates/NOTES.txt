@@ -79,4 +79,4 @@
    
    For a complete list of metrics, visit the metrics endpoint.
 
-📖 Documentation: https://github.com/your-username/netbird-api-exporter 
+📖 Documentation: https://github.com/matanbaruch/netbird-api-exporter 

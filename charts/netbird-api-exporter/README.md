@@ -26,7 +26,7 @@ This Helm chart deploys the NetBird API Exporter, a Prometheus exporter that pro
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/netbird-api-exporter.git
+git clone https://github.com/matanbaruch/netbird-api-exporter.git
 cd netbird-api-exporter
 
 # Install the chart

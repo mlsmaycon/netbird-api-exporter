@@ -23,17 +23,14 @@ version: 0.1.0
 # It is recommended to use it with quotes.
 appVersion: "latest"
 
-home: https://github.com/your-username/netbird-api-exporter
+home: https://github.com/matanbaruch/netbird-api-exporter
 sources:
-  - https://github.com/your-username/netbird-api-exporter
+  - https://github.com/matanbaruch/netbird-api-exporter
 keywords:
   - netbird
   - prometheus
   - exporter
   - monitoring
   - metrics
-maintainers:
-  - name: NetBird API Exporter Team
-    email: maintainer@example.com
 annotations:
   category: Monitoring
