@@ -1,0 +1,31 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "netbird-api-exporter.fullname" . }}
+  labels:
+    {{- include "netbird-api-exporter.labels" . | nindent 4 }}
+    {{- with .Values.serviceMonitor.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "netbird-api-exporter.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - port: http
+    path: {{ .Values.config.metricsPath }}
+    interval: {{ .Values.serviceMonitor.interval }}
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+    {{- if .Values.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+      {{- toYaml .Values.serviceMonitor.metricRelabelings | nindent 6 }}
+    {{- end }}
+    {{- if .Values.serviceMonitor.sampleLimit }}
+    sampleLimit: {{ .Values.serviceMonitor.sampleLimit }}
+    {{- end }}
+  {{- if .Values.serviceMonitor.targetLabels }}
+  targetLabels:
+    {{- toYaml .Values.serviceMonitor.targetLabels | nindent 4 }}
+  {{- end }}
+{{- end }} 

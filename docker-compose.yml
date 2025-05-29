@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  netbird-exporter:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - NETBIRD_API_URL=https://api.netbird.io
+      - NETBIRD_API_TOKEN=${NETBIRD_API_TOKEN}
+      - LISTEN_ADDRESS=:8080
+      - METRICS_PATH=/metrics
+      - LOG_LEVEL=info
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 

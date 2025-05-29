@@ -1,0 +1,41 @@
+[Unit]
+Description=NetBird API Exporter
+Documentation=https://github.com/matanbaruch/netbird-api-exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=netbird-exporter
+Group=netbird-exporter
+ExecStart=/usr/local/bin/netbird-exporter
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=netbird-exporter
+
+# Security settings
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+
+# Environment
+Environment=NETBIRD_API_URL=https://api.netbird.io
+Environment=LISTEN_ADDRESS=:8080
+Environment=METRICS_PATH=/metrics
+Environment=LOG_LEVEL=info
+
+# Set your NetBird API token here or use a separate environment file
+# Environment=NETBIRD_API_TOKEN=your_token_here
+
+# Alternative: Load environment from file
+# EnvironmentFile=/etc/netbird-exporter/config
+
+[Install]
+WantedBy=multi-user.target 
