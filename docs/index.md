@@ -1,14 +1,19 @@
 ---
 layout: default
 title: NetBird API Exporter
+nav_order: 1
 description: "A Prometheus exporter for NetBird API that provides comprehensive metrics about your NetBird network"
+permalink: /
 ---
 
 # NetBird API Exporter
+{: .fs-9 }
 
 A Prometheus exporter for NetBird API that provides comprehensive metrics about your NetBird network peers, groups, users, networks, and DNS configuration.
+{: .fs-6 .fw-300 }
 
-[Get started now](#quick-start) | [View it on GitHub](https://github.com/matanbaruch/netbird-api-exporter)
+[Get started now](#quick-start){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[View it on GitHub](https://github.com/matanbaruch/netbird-api-exporter){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -24,13 +29,13 @@ The NetBird API Exporter is a lightweight Prometheus exporter that fetches metri
 
 ## Features
 
-- **Comprehensive Metrics**: 40+ different metrics covering all aspects of your NetBird deployment
-- **Multiple Deployment Options**: Docker, Docker Compose, Helm, systemd, or native binary
-- **Prometheus Integration**: Native Prometheus metrics format with proper labels
-- **High Performance**: Efficient API calls with error handling and recovery
-- **Security Focused**: Minimal privileges and secure defaults
-- **Easy Configuration**: Simple environment variable configuration
-- **Health Monitoring**: Built-in health checks and self-monitoring metrics
+✅ **Comprehensive Metrics**: 40+ different metrics covering all aspects of your NetBird deployment  
+✅ **Multiple Deployment Options**: Docker, Docker Compose, Helm, systemd, or native binary  
+✅ **Prometheus Integration**: Native Prometheus metrics format with proper labels  
+✅ **High Performance**: Efficient API calls with error handling and recovery  
+✅ **Security Focused**: Minimal privileges and secure defaults  
+✅ **Easy Configuration**: Simple environment variable configuration  
+✅ **Health Monitoring**: Built-in health checks and self-monitoring metrics  
 
 ## Quick Start
 
@@ -52,11 +57,11 @@ Pick the deployment method that works best for your environment:
 
 | Method | Best For | Complexity |
 |--------|----------|------------|
-| [Docker Compose](installation/docker-compose) | Development & Testing | Easy |
-| [Docker](installation/docker) | Container Environments | Medium |
-| [Helm](installation/helm) | Kubernetes Clusters | Medium |
-| [systemd](installation/systemd) | Linux Servers | Advanced |
-| [Binary](installation/binary) | Custom Setups | Advanced |
+| [Docker Compose](installation/docker-compose) | Development & Testing | ⭐ Easy |
+| [Docker](installation/docker) | Container Environments | ⭐⭐ Medium |
+| [Helm](installation/helm) | Kubernetes Clusters | ⭐⭐ Medium |
+| [systemd](installation/systemd) | Linux Servers | ⭐⭐⭐ Advanced |
+| [Binary](installation/binary) | Custom Setups | ⭐⭐⭐ Advanced |
 
 ### 3. Configure Prometheus
 
@@ -102,10 +107,10 @@ Learn more about the [architecture](technical/architecture) and [available metri
 
 ## Need Help?
 
-- **Documentation**: Browse the complete documentation in the sidebar
-- **Issues**: Report bugs on [GitHub Issues](https://github.com/matanbaruch/netbird-api-exporter/issues)
-- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/matanbaruch/netbird-api-exporter/discussions)
-- **Contact**: Reach out to the maintainers
+- 📖 **Documentation**: Browse the complete documentation in the sidebar
+- 🐛 **Issues**: Report bugs on [GitHub Issues](https://github.com/matanbaruch/netbird-api-exporter/issues)
+- 💡 **Discussions**: Ask questions in [GitHub Discussions](https://github.com/matanbaruch/netbird-api-exporter/discussions)
+- 📧 **Contact**: Reach out to the maintainers
 
 ---
 

@@ -3,8 +3,16 @@ name: Lint
 on:
   push:
     branches: [ main, develop ]
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/docs.yml'
   pull_request:
     branches: [ main, develop ]
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/docs.yml'
 
 jobs:
   lint:

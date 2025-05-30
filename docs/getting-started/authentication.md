@@ -1,21 +1,21 @@
 ---
 layout: default
 title: Authentication
+parent: Getting Started
+nav_order: 1
 ---
 
 # Authentication
+{: .no_toc }
 
 Learn how to obtain and configure your NetBird API token for the exporter.
+{: .fs-6 .fw-300 }
 
 ## Table of contents
+{: .no_toc .text-delta }
 
-1. [Getting Your NetBird API Token](#getting-your-netbird-api-token)
-2. [Configuring the Token](#configuring-the-token)
-3. [Testing Your Token](#testing-your-token)
-4. [Token Management](#token-management)
-5. [Troubleshooting Authentication](#troubleshooting-authentication)
-6. [Security Considerations](#security-considerations)
-7. [Next Steps](#next-steps)
+1. TOC
+{:toc}
 
 ---
 
@@ -66,8 +66,7 @@ Routes: No Access (not needed)
 Settings: No Access (not needed)
 ```
 
-> **Warning**
-> 
+{: .warning }
 > **Security Best Practice**: Only grant the minimum permissions required. The exporter only needs read access and should never be given write permissions.
 
 ### Step 5: Generate and Copy Token
@@ -76,8 +75,7 @@ Settings: No Access (not needed)
 2. **Important**: Copy the generated token immediately and store it securely
 3. The token will look similar to: `nb_api_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
-> **Important**
-> 
+{: .important }
 > **Token Security**: This is the only time you'll see the full token. Store it securely and never share it publicly.
 
 ## Configuring the Token

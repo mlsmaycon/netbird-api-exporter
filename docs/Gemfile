@@ -9,14 +9,11 @@ source "https://rubygems.org"
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
 
-gem "jekyll", "~> 4.3.2"
+# Use GitHub Pages gem for better compatibility with GitHub Pages deployment
+gem "github-pages", group: :jekyll_plugins
 
-# The ReadTheDocs theme for the documentation site
-gem "jekyll-rtd-theme"
-
-# If you want to use GitHub Pages, remove the "gem "jekyll"" above and
-# uncomment the line below. To upgrade, run `bundle update github-pages`.
-# gem "github-pages", group: :jekyll_plugins
+# Use Just the Docs theme which is more reliable and we'll style it like ReadTheDocs
+gem "just-the-docs"
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do

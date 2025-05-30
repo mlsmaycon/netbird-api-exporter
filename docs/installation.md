@@ -1,22 +1,21 @@
 ---
 layout: default
 title: Installation
+nav_order: 3
+has_children: true
 ---
 
 # Installation
+{: .no_toc }
 
 Choose the installation method that best fits your environment and requirements.
+{: .fs-6 .fw-300 }
 
 ## Table of contents
+{: .no_toc .text-delta }
 
-1. [Installation Methods](#installation-methods)
-2. [Quick Decision Guide](#quick-decision-guide)
-3. [Prerequisites](#prerequisites)
-4. [Configuration Overview](#configuration-overview)
-5. [Post-Installation Steps](#post-installation-steps)
-6. [Migration Between Methods](#migration-between-methods)
-7. [Getting Help](#getting-help)
-8. [Next Steps](#next-steps)
+1. TOC
+{:toc}
 
 ---
 
@@ -26,11 +25,11 @@ The NetBird API Exporter supports multiple deployment methods to fit different e
 
 | Method | Best For | Complexity | Setup Time |
 |--------|----------|------------|------------|
-| [Docker Compose](installation/docker-compose) | Development & Testing | Easy | 5 minutes |
-| [Docker](installation/docker) | Container Environments | Medium | 10 minutes |
-| [Helm](installation/helm) | Kubernetes Clusters | Medium | 15 minutes |
-| [systemd](installation/systemd) | Linux Servers | Advanced | 20 minutes |
-| [Binary](installation/binary) | Custom Setups | Advanced | 25 minutes |
+| [Docker Compose](installation/docker-compose) | Development & Testing | ⭐ Easy | 5 minutes |
+| [Docker](installation/docker) | Container Environments | ⭐⭐ Medium | 10 minutes |
+| [Helm](installation/helm) | Kubernetes Clusters | ⭐⭐ Medium | 15 minutes |
+| [systemd](installation/systemd) | Linux Servers | ⭐⭐⭐ Advanced | 20 minutes |
+| [Binary](installation/binary) | Custom Setups | ⭐⭐⭐ Advanced | 25 minutes |
 
 ## Quick Decision Guide
 
@@ -105,8 +104,7 @@ All installation methods use the same environment variables for configuration:
 | `METRICS_PATH` | `/metrics` | No | Path where metrics are exposed |
 | `LOG_LEVEL` | `info` | No | Log level (debug, info, warn, error) |
 
-> **Important**
-> 
+{: .important }
 > **Security Note**: Always store your `NETBIRD_API_TOKEN` securely using your platform's secret management system.
 
 ## Post-Installation Steps
