@@ -46,3 +46,8 @@ Thumbs.db
 
 # Docker
 .dockerignore
+
+# Jekyll build artifacts
+docs/_site/
+docs/.bundle/
+docs/vendor/
