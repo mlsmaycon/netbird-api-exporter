@@ -563,10 +563,3 @@ The project includes GitHub Actions workflows that automatically:
 ```bash
 go test ./...
 ```
-
-### Contributing
-
-1. Fork the repository
-1. Create a feature branch
-1. Make your changes
-1. Run `
