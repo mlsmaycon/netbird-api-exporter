@@ -124,13 +124,15 @@ helm test netbird-api-exporter
 ## Troubleshooting
 
 ### Check pod logs
+
 ```bash
 kubectl logs -l app.kubernetes.io/name=netbird-api-exporter
 ```
 
 ### Test connectivity
+
 ```bash
 kubectl port-forward svc/netbird-api-exporter 8080:8080
 curl http://localhost:8080/health
 curl http://localhost:8080/metrics
-``` 
+```

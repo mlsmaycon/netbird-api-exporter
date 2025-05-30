@@ -2,59 +2,12 @@
 
 A Prometheus exporter for NetBird API that provides comprehensive metrics about your NetBird network peers, groups, users, networks, and DNS configuration. This exporter fetches data from the [NetBird REST API](https://docs.netbird.io/ipa/resources/peers), [Groups API](https://docs.netbird.io/ipa/resources/groups), [Users API](https://docs.netbird.io/ipa/resources/users), [Networks API](https://docs.netbird.io/ipa/resources/networks), and [DNS API](https://docs.netbird.io/ipa/resources/dns) and exposes it in Prometheus format.
 
-## Features
+## Metrics Overview
 
 The exporter provides the following metrics:
 
 ### Peer Metrics
-- **Total Peers**: Total number of peers in your NetBird network
-- **Connection Status**: Number of connected vs disconnected peers  
-- **Peer Distribution**: Breakdown by operating system, country, and groups
-- **Last Seen Timestamps**: When each peer was last seen
-- **SSH Status**: Number of peers with SSH enabled/disabled
-- **Login Status**: Number of peers with expired vs valid logins
-- **Approval Status**: Number of peers requiring approval
-- **Accessible Peers**: Count of accessible peers for each peer
 
-### Group Metrics
-- **Total Groups**: Total number of groups in your NetBird network
-- **Group Peer Counts**: Number of peers in each group
-- **Group Resource Counts**: Number of resources in each group
-- **Group Information**: Metadata about each group (name, ID, issued status)
-- **Resource Types**: Breakdown of resources by type within each group
-- **Group Performance**: Scrape duration and error metrics for groups API
-
-### User Metrics
-- **Total Users**: Total number of users in your NetBird network
-- **User Distribution**: Breakdown by role, status, and type (service vs regular users)
-- **User Status**: Number of blocked vs active users
-- **User Permissions**: Detailed permissions by module and action
-- **Auto Groups**: Number of auto-assigned groups per user
-- **Last Login Timestamps**: When each user last logged in
-- **User Performance**: Scrape duration and error metrics for users API
-
-### DNS Metrics
-- **Nameserver Groups**: Total number of nameserver groups and their status
-- **Nameserver Configuration**: Breakdown by nameserver type (UDP/TCP) and port
-- **DNS Domains**: Number of domains configured per nameserver group
-- **DNS Management**: Groups with DNS management disabled
-- **Primary Nameservers**: Number of primary vs secondary nameserver groups
-
-### Network Metrics
-- **Total Networks**: Total number of networks in your NetBird deployment
-- **Network Routers**: Number of routers configured in each network
-- **Network Resources**: Number of resources associated with each network
-- **Network Policies**: Number of policies applied to each network
-- **Routing Peers**: Number of routing peers in each network
-- **Network Information**: Metadata about each network (name, description)
-
-### Exporter Metrics
-- **Scrape Duration**: Time taken to collect metrics from APIs
-- **Error Counts**: Number of scrape errors encountered
-
-## Metrics Exported
-
-### Peer Metrics
 | Metric Name | Type | Description | Labels |
 |-------------|------|-------------|--------|
 | `netbird_peers_total` | Gauge | Total number of NetBird peers | - |
@@ -68,7 +21,8 @@ The exporter provides the following metrics:
 | `netbird_peers_approval_required` | Gauge | Number of peers requiring/not requiring approval | `approval_required` |
 | `netbird_peer_accessible_peers_count` | Gauge | Number of accessible peers for each peer | `peer_id`, `peer_name` |
 
-### Group Metrics
+### Group Metrics Table
+
 | Metric Name | Type | Description | Labels |
 |-------------|------|-------------|--------|
 | `netbird_groups_total` | Gauge | Total number of NetBird groups | - |
@@ -79,7 +33,8 @@ The exporter provides the following metrics:
 | `netbird_groups_scrape_errors_total` | Counter | Total number of errors encountered while scraping groups | `error_type` |
 | `netbird_groups_scrape_duration_seconds` | Histogram | Time spent scraping groups from the NetBird API | - |
 
-### User Metrics
+### User Metrics Table
+
 | Metric Name | Type | Description | Labels |
 |-------------|------|-------------|--------|
 | `netbird_users_total` | Gauge | Total number of NetBird users | - |
@@ -95,7 +50,8 @@ The exporter provides the following metrics:
 | `netbird_users_scrape_errors_total` | Counter | Total number of errors encountered while scraping users | `error_type` |
 | `netbird_users_scrape_duration_seconds` | Histogram | Time spent scraping users from the NetBird API | - |
 
-### DNS Metrics
+### DNS Metrics Table
+
 | Metric Name | Type | Description | Labels |
 |-------------|------|-------------|--------|
 | `netbird_dns_nameserver_groups_total` | Gauge | Total number of NetBird nameserver groups | - |
@@ -107,7 +63,8 @@ The exporter provides the following metrics:
 | `netbird_dns_nameservers_by_port` | Gauge | Number of nameservers by port | `port` |
 | `netbird_dns_management_disabled_groups_count` | Gauge | Number of groups with DNS management disabled | - |
 
-### Network Metrics
+### Network Metrics Table
+
 | Metric Name | Type | Description | Labels |
 |-------------|------|-------------|--------|
 | `netbird_networks_total` | Gauge | Total number of networks in your NetBird deployment | - |
@@ -119,7 +76,8 @@ The exporter provides the following metrics:
 | `netbird_networks_scrape_errors_total` | Counter | Total number of errors encountered while scraping networks | `error_type` |
 | `netbird_networks_scrape_duration_seconds` | Histogram | Time spent scraping networks from the NetBird API | - |
 
-### Exporter Metrics
+### Exporter Metrics Table
+
 | Metric Name | Type | Description | Labels |
 |-------------|------|-------------|--------|
 | `netbird_exporter_scrape_duration_seconds` | Histogram | Time spent scraping NetBird API | - |
@@ -149,18 +107,21 @@ The exporter is configured via environment variables:
 ### Option 1: Docker Compose (Recommended)
 
 1. Clone this repository:
+
 ```bash
 git clone https://github.com/matanbaruch/netbird-api-exporter
 cd netbird-api-exporter
 ```
 
-2. Create environment file:
+1. Create environment file:
+
 ```bash
 cp env.example .env
 # Edit .env with your NetBird API token
 ```
 
-3. Start the exporter:
+1. Start the exporter:
+
 ```bash
 docker-compose up -d
 ```
@@ -179,11 +140,13 @@ docker run -d \
 ### Option 3: Go Binary
 
 1. Install dependencies:
+
 ```bash
 go mod download
 ```
 
-2. Build and run:
+1. Build and run:
+
 ```bash
 export NETBIRD_API_TOKEN=your_token_here
 go build -o netbird-api-exporter
@@ -214,6 +177,7 @@ scrape_configs:
 Here are some useful Prometheus queries:
 
 ### Peer Queries
+
 ```promql
 # Total number of peers
 netbird_peers_total
@@ -235,6 +199,7 @@ avg(netbird_peer_accessible_peers_count)
 ```
 
 ### Group Queries
+
 ```promql
 # Total number of groups
 netbird_groups_total
@@ -265,6 +230,7 @@ rate(netbird_groups_scrape_errors_total[5m])
 ```
 
 ### User Queries
+
 ```promql
 # Total number of users
 netbird_users_total
@@ -298,6 +264,7 @@ sum by (module, permission) (netbird_user_permissions)
 ```
 
 ### DNS Queries
+
 ```promql
 # Total number of nameserver groups
 netbird_dns_nameserver_groups_total
@@ -334,6 +301,7 @@ sum(netbird_dns_nameservers_total)
 ```
 
 ### Network Queries
+
 ```promql
 # Total number of networks
 netbird_networks_total
@@ -379,23 +347,26 @@ rate(netbird_networks_scrape_errors_total[5m])
 
 You can create a Grafana dashboard using these metrics. Example panels:
 
-### Peer Panels
+### Dashboard Peer Panels
+
 1. **Total Peers** - Single stat panel with `netbird_peers_total`
 2. **Connection Status** - Pie chart with `netbird_peers_connected`
 3. **OS Distribution** - Bar chart with `sum by (os) (netbird_peers_by_os)`
 4. **Geographic Distribution** - World map with `sum by (country_code) (netbird_peers_by_country)`
 5. **Last Seen Timeline** - Time series of peer activity
 
-### Group Panels
+### Dashboard Group Panels
+
 1. **Total Groups** - Single stat panel with `netbird_groups_total`
-2. **Group Sizes** - Bar chart with `netbird_group_peers_count` 
+2. **Group Sizes** - Bar chart with `netbird_group_peers_count`
 3. **Resource Distribution** - Pie chart with `sum by (resource_type) (netbird_group_resources_by_type)`
 4. **Group Resource Counts** - Table with `netbird_group_resources_count`
 5. **Groups by Creation Method** - Pie chart with `count by (issued) (netbird_group_info)`
 6. **Empty Groups** - Table showing groups with `netbird_group_peers_count == 0`
 7. **Group Performance** - Time series with `rate(netbird_groups_scrape_duration_seconds_sum[5m])`
 
-### User Panels
+### Dashboard User Panels
+
 1. **Total Users** - Single stat panel with `netbird_users_total`
 2. **User Distribution** - Pie chart with `sum by (role) (netbird_users_by_role)`
 3. **User Status** - Pie chart with `sum by (status) (netbird_users_by_status)`
@@ -407,7 +378,8 @@ You can create a Grafana dashboard using these metrics. Example panels:
 9. **Auto Groups** - Pie chart with `netbird_user_auto_groups_count`
 10. **User Permissions** - Table with `netbird_user_permissions`
 
-### DNS Panels
+### Dashboard DNS Panels
+
 1. **Total Nameserver Groups** - Single stat panel with `netbird_dns_nameserver_groups_total`
 2. **Nameserver Group Status** - Pie chart with `netbird_dns_nameserver_groups_enabled`
 3. **Primary vs Secondary Groups** - Pie chart with `netbird_dns_nameserver_groups_primary`
@@ -418,7 +390,8 @@ You can create a Grafana dashboard using these metrics. Example panels:
 8. **DNS Management Disabled** - Single stat panel with `netbird_dns_management_disabled_groups_count`
 9. **Groups without Domains** - Table showing groups with `netbird_dns_nameserver_group_domains_count == 0`
 
-### Network Panels
+### Dashboard Network Panels
+
 1. **Total Networks** - Single stat panel with `netbird_networks_total`
 2. **Network Routers** - Bar chart with `netbird_network_routers_count`
 3. **Network Resources** - Bar chart with `netbird_network_resources_count`
@@ -429,7 +402,8 @@ You can create a Grafana dashboard using these metrics. Example panels:
 8. **Networks without Resources** - Table showing networks with `netbird_network_resources_count == 0`
 9. **Network Performance** - Time series with `rate(netbird_networks_scrape_duration_seconds_sum[5m])`
 
-### Performance Panels
+### Dashboard Performance Panels
+
 1. **API Scrape Duration** - Time series with both peer and group scrape durations
 2. **Error Rates** - Time series with error counters for both APIs
 
@@ -444,6 +418,7 @@ You can create a Grafana dashboard using these metrics. Example panels:
 ### Logs
 
 Check logs for debugging:
+
 ```bash
 # Docker Compose
 docker-compose logs netbird-api-exporter
@@ -487,11 +462,13 @@ This project uses several tools to maintain code quality:
 #### Linting
 
 Run linting checks:
+
 ```bash
 make lint
 ```
 
 This runs:
+
 - `golangci-lint` - Comprehensive Go linting
 - `go vet` - Go's built-in static analysis
 - `gofmt` - Code formatting check
@@ -499,6 +476,7 @@ This runs:
 #### Formatting
 
 Format code:
+
 ```bash
 make fmt
 ```
@@ -506,6 +484,7 @@ make fmt
 #### Running All Checks
 
 Run tests and linting together:
+
 ```bash
 make check
 ```
@@ -517,6 +496,7 @@ make help
 ```
 
 Shows all available targets including:
+
 - `build` - Build the binary
 - `test` - Run tests
 - `lint` - Run linting checks
@@ -526,6 +506,7 @@ Shows all available targets including:
 ### Continuous Integration
 
 The project includes GitHub Actions workflows that automatically:
+
 - Run linting checks on all pull requests
 - Verify code formatting
 - Run tests
@@ -540,11 +521,11 @@ go test ./...
 ### Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run `make check` to ensure all tests and linting pass
-5. Add tests if applicable
-6. Submit a pull request
+1. Create a feature branch
+1. Make your changes
+1. Run `make check` to ensure all tests and linting pass
+1. Add tests if applicable
+1. Submit a pull request
 
 All pull requests must pass the CI checks including linting and tests.
 
