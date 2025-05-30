@@ -51,19 +51,19 @@ docker-stop:
 
 # Start with Docker Compose
 docker-compose-up:
-	docker-compose up -d
+	docker compose up -d
 
 # Stop Docker Compose
 docker-compose-down:
-	docker-compose down
+	docker compose down
 
 # View logs
-logs:
-	docker-compose logs -f netbird-api-exporter
+docker-compose-logs:
+	docker compose logs -f netbird-api-exporter
 
-# Development mode with live reload (requires air: go install github.com/cosmtrek/air@latest)
+# Development mode with live reload (requires air: go install github.com/air-verse/air@latest)
 dev:
-	air
+	GO111MODULE=on $(shell go env GOPATH)/bin/air
 
 # Format code
 fmt:

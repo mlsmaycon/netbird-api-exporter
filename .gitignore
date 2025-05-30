@@ -29,6 +29,10 @@ go.work.sum
 bin/
 *.log
 
+# Air live reload
+tmp/
+build-errors.log
+
 # IDE files
 .vscode/
 .idea/
