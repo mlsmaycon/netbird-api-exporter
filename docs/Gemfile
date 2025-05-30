@@ -12,8 +12,8 @@ source "https://rubygems.org"
 # Use GitHub Pages gem for better compatibility with GitHub Pages deployment
 gem "github-pages", group: :jekyll_plugins
 
-# Use Just the Docs theme which is more reliable and we'll style it like ReadTheDocs
-gem "just-the-docs"
+# Note: We use remote_theme in _config.yml instead of gem "just-the-docs"
+# to avoid conflicts with github-pages gem
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do

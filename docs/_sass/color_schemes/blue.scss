@@ -1,0 +1,33 @@
+// Blue color scheme for Just the Docs theme
+// ReadTheDocs-style blue theme
+
+// Primary blue colors
+$blue-000: #0066cc;
+$blue-100: #004499;
+$blue-200: #003377;
+$blue-300: #002255;
+
+// Override theme variables with blue colors
+$link-color: $blue-000;
+$btn-primary-color: $blue-000;
+$base-button-color: #f7f7f7;
+
+// Navigation colors
+$nav-child-link-color: $blue-000;
+$sidebar-color: #f8f9fa;
+
+// Header colors
+$search-background-color: #ffffff;
+$search-background-color-focus: #ffffff;
+
+// Code and syntax highlighting
+$code-background-color: #f5f5f5;
+
+// Border colors
+$border-color: #e1e4e8;
+
+// Override any purple references with blue
+$purple-000: $blue-000;
+$purple-100: $blue-100;
+$purple-200: $blue-200;
+$purple-300: $blue-300; 

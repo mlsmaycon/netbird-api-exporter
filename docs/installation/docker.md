@@ -423,10 +423,10 @@ Check container health:
 
 ```bash
 # View health status
-docker inspect --format='{{.State.Health.Status}}' netbird-api-exporter
+docker inspect --format='{% raw %}{{.State.Health.Status}}{% endraw %}' netbird-api-exporter
 
 # View health check logs
-docker inspect --format='{{range .State.Health.Log}}{{.Output}}{{end}}' netbird-api-exporter
+docker inspect --format='{% raw %}{{range .State.Health.Log}}{{.Output}}{{end}}{% endraw %}' netbird-api-exporter
 
 # Manual health check
 docker exec netbird-api-exporter curl -f http://localhost:8080/health
