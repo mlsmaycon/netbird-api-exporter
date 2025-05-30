@@ -1,5 +1,8 @@
 # NetBird API Exporter
 
+![assets_task_01jwh7hmm6f93ab38cy6rb9szb_1748630092_img_0](https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892)
+
+
 A Prometheus exporter for NetBird API that provides comprehensive metrics about your NetBird network peers, groups, users, networks, and DNS configuration. This exporter fetches data from the [NetBird REST API](https://docs.netbird.io/ipa/resources/peers), [Groups API](https://docs.netbird.io/ipa/resources/groups), [Users API](https://docs.netbird.io/ipa/resources/users), [Networks API](https://docs.netbird.io/ipa/resources/networks), and [DNS API](https://docs.netbird.io/ipa/resources/dns) and exposes it in Prometheus format.
 
 ## Metrics Overview
