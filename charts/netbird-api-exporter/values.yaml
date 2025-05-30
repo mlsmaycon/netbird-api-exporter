@@ -18,6 +18,30 @@ netbird:
   # You should set this via --set or create the secret manually
   apiToken: ""
 
+# External Secret configuration
+externalSecret:
+  # Enable External Secret Operator integration
+  enabled: false
+  # Secret Store reference
+  secretStoreRef:
+    name: ""
+    kind: SecretStore  # or ClusterSecretStore
+  # Target secret name (optional, defaults to the same as regular secret)
+  secretName: ""
+  # Remote references for the external secret
+  data: []
+    # Example:
+    # - secretKey: netbird-api-token
+    #   remoteRef:
+    #     key: netbird/api-token
+    #     property: token  # optional, if the secret contains multiple properties
+  # Refresh interval for the external secret
+  refreshInterval: "1h"
+  # Additional annotations for the ExternalSecret resource
+  annotations: {}
+  # Additional labels for the ExternalSecret resource
+  labels: {}
+
 # Application configuration
 config:
   # Address and port to listen on

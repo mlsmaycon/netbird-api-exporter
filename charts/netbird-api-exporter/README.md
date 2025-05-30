@@ -6,6 +6,7 @@ This Helm chart deploys the NetBird API Exporter, a Prometheus exporter that pro
 
 - Comprehensive NetBird metrics collection
 - Secure API token handling via Kubernetes secrets
+- External Secret Operator integration for enterprise secret management
 - Optional Prometheus Operator integration with ServiceMonitor
 - Configurable resource limits and requests
 - Health checks and readiness probes
@@ -19,6 +20,7 @@ This Helm chart deploys the NetBird API Exporter, a Prometheus exporter that pro
 - Kubernetes 1.19+
 - Helm 3.2.0+
 - A valid NetBird API token
+- **(Optional)** External Secret Operator for external secret management
 
 ## Installing the Chart
 
@@ -61,6 +63,19 @@ The following table lists the configurable parameters and their default values.
 | `netbird.apiUrl` | NetBird API URL | `"https://api.netbird.io"` |
 | `netbird.apiToken` | NetBird API token (stored in secret) | `""` |
 
+### External Secret Configuration
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `externalSecret.enabled` | Enable External Secret Operator integration | `false` |
+| `externalSecret.secretStoreRef.name` | Secret Store reference name | `""` |
+| `externalSecret.secretStoreRef.kind` | Secret Store kind (SecretStore or ClusterSecretStore) | `SecretStore` |
+| `externalSecret.secretName` | Target secret name (optional) | Auto-generated |
+| `externalSecret.data` | Remote references for the external secret | `[]` |
+| `externalSecret.refreshInterval` | Refresh interval for the external secret | `"1h"` |
+| `externalSecret.annotations` | Additional annotations for ExternalSecret resource | `{}` |
+| `externalSecret.labels` | Additional labels for ExternalSecret resource | `{}` |
+
 ### Application Configuration
 
 | Parameter | Description | Default |
@@ -93,6 +108,33 @@ helm install netbird-api-exporter ./charts/netbird-api-exporter \
 helm install netbird-api-exporter ./charts/netbird-api-exporter \
   --set netbird.apiToken="nb_token_xxx" \
   --values ./charts/netbird-api-exporter/values-production.yaml
+```
+
+### With External Secret Operator
+
+```bash
+# First, create a SecretStore (example with AWS Secrets Manager)
+kubectl apply -f - <<EOF
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: aws-secrets-manager
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: us-west-2
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: external-secrets-sa
+EOF
+
+# Install with ExternalSecret
+helm install netbird-api-exporter ./charts/netbird-api-exporter \
+  --set externalSecret.enabled=true \
+  --set externalSecret.secretStoreRef.name=aws-secrets-manager \
+  --set-json 'externalSecret.data=[{"secretKey":"netbird-api-token","remoteRef":{"key":"netbird/api-token"}}]'
 ```
 
 ## Getting Your NetBird API Token

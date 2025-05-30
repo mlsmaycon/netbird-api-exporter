@@ -16,7 +16,11 @@ spec:
   template:
     metadata:
       annotations:
+        {{- if not .Values.externalSecret.enabled }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- else }}
+        checksum/externalsecret: {{ include (print $.Template.BasePath "/externalsecret.yaml") . | sha256sum }}
+        {{- end }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -42,11 +46,11 @@ spec:
           env:
             - name: NETBIRD_API_URL
               value: {{ .Values.netbird.apiUrl | quote }}
-            {{- if .Values.netbird.apiToken }}
+            {{- if or .Values.netbird.apiToken .Values.externalSecret.enabled }}
             - name: NETBIRD_API_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "netbird-api-exporter.secretName" . }}
+                  name: {{ .Values.externalSecret.secretName | default (include "netbird-api-exporter.secretName" .) }}
                   key: netbird-api-token
             {{- end }}
             - name: LISTEN_ADDRESS
