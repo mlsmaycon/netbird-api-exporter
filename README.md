@@ -126,7 +126,53 @@ cp env.example .env
 docker-compose up -d
 ```
 
-### Option 2: Docker
+### Option 2: Helm Chart
+
+Install using Helm with the chart from GitHub packages:
+
+```bash
+# Add the chart repository
+helm upgrade --install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --set netbird.apiToken=your_token_here
+```
+
+Or with a values file:
+
+```bash
+# Create values.yaml
+cat <<EOF > values.yaml
+netbird:
+  apiToken: "your_token_here"
+  apiUrl: "https://api.netbird.io"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+serviceMonitor:
+  enabled: true  # if using Prometheus operator
+EOF
+
+# Install the chart
+helm upgrade --install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  -f values.yaml
+```
+
+### Option 3: Docker
+
+Use the pre-built image from GitHub packages:
+
+```bash
+docker run -d \
+  -p 8080:8080 \
+  -e NETBIRD_API_TOKEN=your_token_here \
+  --name netbird-api-exporter \
+  ghcr.io/matanbaruch/netbird-api-exporter:latest
+```
+
+Or build from source:
 
 ```bash
 docker build -t netbird-api-exporter .
@@ -137,7 +183,7 @@ docker run -d \
   netbird-api-exporter
 ```
 
-### Option 3: Go Binary
+### Option 4: Go Binary
 
 1. Install dependencies:
 
@@ -523,22 +569,4 @@ go test ./...
 1. Fork the repository
 1. Create a feature branch
 1. Make your changes
-1. Run `make check` to ensure all tests and linting pass
-1. Add tests if applicable
-1. Submit a pull request
-
-All pull requests must pass the CI checks including linting and tests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## References
-
-- [NetBird Peers API Documentation](https://docs.netbird.io/ipa/resources/peers)
-- [NetBird Groups API Documentation](https://docs.netbird.io/ipa/resources/groups)
-- [NetBird Users API Documentation](https://docs.netbird.io/ipa/resources/users)
-- [NetBird Networks API Documentation](https://docs.netbird.io/ipa/resources/networks)
-- [NetBird DNS API Documentation](https://docs.netbird.io/ipa/resources/dns)
-- [Prometheus Go Client](https://github.com/prometheus/client_golang)
-- [NetBird Official Documentation](https://docs.netbird.io/)
+1. Run `

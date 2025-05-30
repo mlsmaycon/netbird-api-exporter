@@ -108,7 +108,7 @@ help:
 	@echo "  docker-stop     - Stop Docker container"
 	@echo "  docker-compose-up   - Start with Docker Compose"
 	@echo "  docker-compose-down - Stop Docker Compose"
-	@echo "  logs            - View container logs"
+	@echo "  docker-compose-logs - View container logs"
 	@echo "  dev             - Development mode with live reload"
 	@echo "  fmt             - Format code"
 	@echo "  lint            - Lint code (golangci-lint, go vet, format check)"

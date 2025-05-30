@@ -2,9 +2,9 @@
 replicaCount: 1
 
 image:
-  repository: netbird-api-exporter
+  repository: ghcr.io/matanbaruch/netbird-api-exporter
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: ""  # Will be set to appVersion if empty
 
 imagePullSecrets: []
 nameOverride: ""
