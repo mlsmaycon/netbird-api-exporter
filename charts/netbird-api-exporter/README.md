@@ -30,14 +30,14 @@ git clone https://github.com/matanbaruch/netbird-api-exporter.git
 cd netbird-api-exporter
 
 # Install the chart
-helm install my-netbird-exporter ./charts/netbird-api-exporter \
+helm install my-netbird-api-exporter ./charts/netbird-api-exporter \
   --set netbird.apiToken="your-netbird-api-token"
 ```
 
 ### Install with custom values
 
 ```bash
-helm install my-netbird-exporter ./charts/netbird-api-exporter \
+helm install my-netbird-api-exporter ./charts/netbird-api-exporter \
   --values my-values.yaml
 ```
 
@@ -74,14 +74,14 @@ The following table lists the configurable parameters and their default values.
 ### Basic Installation
 
 ```bash
-helm install netbird-exporter ./charts/netbird-api-exporter \
+helm install netbird-api-exporter ./charts/netbird-api-exporter \
   --set netbird.apiToken="nb_token_xxx"
 ```
 
 ### With Prometheus Operator
 
 ```bash
-helm install netbird-exporter ./charts/netbird-api-exporter \
+helm install netbird-api-exporter ./charts/netbird-api-exporter \
   --set netbird.apiToken="nb_token_xxx" \
   --set serviceMonitor.enabled=true \
   --set serviceMonitor.additionalLabels.release=prometheus
@@ -90,7 +90,7 @@ helm install netbird-exporter ./charts/netbird-api-exporter \
 ### Production Configuration
 
 ```bash
-helm install netbird-exporter ./charts/netbird-api-exporter \
+helm install netbird-api-exporter ./charts/netbird-api-exporter \
   --set netbird.apiToken="nb_token_xxx" \
   --values ./charts/netbird-api-exporter/values-production.yaml
 ```
@@ -118,7 +118,7 @@ Once deployed, the exporter provides metrics at the `/metrics` endpoint. Key met
 Run the included test:
 
 ```bash
-helm test netbird-exporter
+helm test netbird-api-exporter
 ```
 
 ## Troubleshooting
@@ -130,7 +130,7 @@ kubectl logs -l app.kubernetes.io/name=netbird-api-exporter
 
 ### Test connectivity
 ```bash
-kubectl port-forward svc/netbird-exporter 8080:8080
+kubectl port-forward svc/netbird-api-exporter 8080:8080
 curl http://localhost:8080/health
 curl http://localhost:8080/metrics
 ``` 

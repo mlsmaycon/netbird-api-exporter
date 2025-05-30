@@ -59,7 +59,7 @@ docker-compose-down:
 
 # View logs
 logs:
-	docker-compose logs -f netbird-exporter
+	docker-compose logs -f netbird-api-exporter
 
 # Development mode with live reload (requires air: go install github.com/cosmtrek/air@latest)
 dev:

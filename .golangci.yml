@@ -6,10 +6,9 @@ run:
 linters:
   enable:
     - errcheck
-    - gosimple
+    - staticcheck
     - govet
     - ineffassign
-    - staticcheck
     - unused
     - bodyclose
     - gosec

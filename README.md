@@ -150,7 +150,7 @@ The exporter is configured via environment variables:
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/matanbaruch/netbird-api-exporter
 cd netbird-api-exporter
 ```
 
@@ -168,12 +168,12 @@ docker-compose up -d
 ### Option 2: Docker
 
 ```bash
-docker build -t netbird-exporter .
+docker build -t netbird-api-exporter .
 docker run -d \
   -p 8080:8080 \
   -e NETBIRD_API_TOKEN=your_token_here \
-  --name netbird-exporter \
-  netbird-exporter
+  --name netbird-api-exporter \
+  netbird-api-exporter
 ```
 
 ### Option 3: Go Binary
@@ -186,8 +186,8 @@ go mod download
 2. Build and run:
 ```bash
 export NETBIRD_API_TOKEN=your_token_here
-go build -o netbird-exporter
-./netbird-exporter
+go build -o netbird-api-exporter
+./netbird-api-exporter
 ```
 
 ## Endpoints
@@ -202,7 +202,7 @@ Add the following to your `prometheus.yml`:
 
 ```yaml
 scrape_configs:
-  - job_name: 'netbird-exporter'
+  - job_name: 'netbird-api-exporter'
     static_configs:
       - targets: ['localhost:8080']
     scrape_interval: 30s
@@ -446,10 +446,10 @@ You can create a Grafana dashboard using these metrics. Example panels:
 Check logs for debugging:
 ```bash
 # Docker Compose
-docker-compose logs netbird-exporter
+docker-compose logs netbird-api-exporter
 
 # Docker
-docker logs netbird-exporter
+docker logs netbird-api-exporter
 
 # Binary
 # Logs are output to stdout
@@ -477,7 +477,7 @@ Set `LOG_LEVEL=debug` for more verbose output.
 
 ```bash
 go mod download
-go build -o netbird-exporter
+go build -o netbird-api-exporter
 ```
 
 ### Code Quality
