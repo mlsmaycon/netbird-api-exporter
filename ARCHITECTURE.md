@@ -6,7 +6,7 @@ The NetBird API Exporter has been refactored into a modular architecture that ma
 
 ## Directory Structure
 
-```
+```bash
 netbird-api-exporter/
 ├── main.go                     # Clean application entry point
 ├── pkg/
@@ -40,6 +40,7 @@ netbird-api-exporter/
 ### 3. Main Application (`main.go`)
 
 Clean and focused on:
+
 - Configuration management
 - HTTP server setup
 - Graceful shutdown
@@ -168,7 +169,7 @@ The peers API implementation demonstrates the pattern:
 
 The application uses environment variables for configuration:
 
-- `NETBIRD_API_URL`: NetBird API base URL (default: https://api.netbird.io)
+- `NETBIRD_API_URL`: NetBird API base URL (default: <https://api.netbird.io>)
 - `NETBIRD_API_TOKEN`: NetBird API authentication token (required)
 - `LISTEN_ADDRESS`: HTTP server listen address (default: :8080)
 - `METRICS_PATH`: Prometheus metrics endpoint path (default: /metrics)
@@ -180,4 +181,4 @@ The application uses environment variables for configuration:
 - Implement API response caching for better performance
 - Add custom scrape intervals per API
 - Include API health status metrics
-- Add rate limiting and retry logic 
+- Add rate limiting and retry logic
