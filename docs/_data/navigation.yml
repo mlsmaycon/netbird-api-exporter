@@ -1,0 +1,23 @@
+main:
+  - title: "Home"
+    url: "/"
+  
+  - title: "Getting Started"
+    url: "/getting-started/"
+    children:
+      - title: "Authentication"
+        url: "/getting-started/authentication/"
+  
+  - title: "Installation"
+    url: "/installation/"
+    children:
+      - title: "Docker Compose"
+        url: "/installation/docker-compose/"
+      - title: "Docker"
+        url: "/installation/docker/"
+      - title: "Helm"
+        url: "/installation/helm/"
+      - title: "systemd"
+        url: "/installation/systemd/"
+      - title: "Binary"
+        url: "/installation/binary/" 

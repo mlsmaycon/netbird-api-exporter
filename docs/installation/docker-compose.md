@@ -1,21 +1,24 @@
 ---
 layout: default
-title: Docker Compose
-parent: Installation
-nav_order: 1
+title: Docker Compose Installation
 ---
 
 # Docker Compose Installation
-{: .no_toc }
 
 The easiest way to get started with NetBird API Exporter for development and testing.
-{: .fs-6 .fw-300 }
 
 ## Table of contents
-{: .no_toc .text-delta }
 
-1. TOC
-{:toc}
+1. [Overview](#overview)
+2. [Prerequisites](#prerequisites)
+3. [Quick Start](#quick-start)
+4. [Configuration Options](#configuration-options)
+5. [Docker Compose Files](#docker-compose-files)
+6. [Complete Setup with Prometheus](#complete-setup-with-prometheus)
+7. [Management Commands](#management-commands)
+8. [Troubleshooting](#troubleshooting)
+9. [Security Considerations](#security-considerations)
+10. [Next Steps](#next-steps)
 
 ---
 
@@ -66,7 +69,8 @@ METRICS_PATH=/metrics
 LOG_LEVEL=info
 ```
 
-{: .important }
+> **Important**
+> 
 > **Required**: You must set your `NETBIRD_API_TOKEN`. Get your token from the [authentication guide](../getting-started/authentication).
 
 ### Step 3: Start the Exporter

@@ -1,21 +1,21 @@
 ---
 layout: default
 title: Getting Started
-nav_order: 2
-has_children: true
 ---
 
 # Getting Started
-{: .no_toc }
 
 This guide will help you get the NetBird API Exporter up and running in your environment.
-{: .fs-6 .fw-300 }
 
 ## Table of contents
-{: .no_toc .text-delta }
 
-1. TOC
-{:toc}
+1. [Prerequisites](#prerequisites)
+2. [System Requirements](#system-requirements)
+3. [Supported Platforms](#supported-platforms)
+4. [Next Steps](#next-steps)
+5. [Quick Verification](#quick-verification)
+6. [Troubleshooting](#troubleshooting)
+7. [Getting Help](#getting-help)
 
 ---
 
@@ -118,6 +118,6 @@ If you encounter issues during setup:
 
 ## Getting Help
 
-- 📖 **Documentation**: Browse the complete guide in the sidebar
-- 🐛 **Issues**: Report problems on [GitHub Issues](https://github.com/matanbaruch/netbird-api-exporter/issues)
-- 💡 **Discussions**: Ask questions in [GitHub Discussions](https://github.com/matanbaruch/netbird-api-exporter/discussions) 
+- **Documentation**: Browse the complete guide in the sidebar
+- **Issues**: Report problems on [GitHub Issues](https://github.com/matanbaruch/netbird-api-exporter/issues)
+- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/matanbaruch/netbird-api-exporter/discussions) 
