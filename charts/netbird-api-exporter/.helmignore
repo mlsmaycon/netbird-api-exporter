@@ -21,10 +21,3 @@
 .idea/
 *.tmproj
 .vscode/
-# Helm files
-.helmignore
-# Example and test files
-examples/
-tests/
-*.md
-!README.md 

@@ -38,4 +38,17 @@ jobs:
         fi
     
     - name: Run tests
-      run: go test -v ./... 
+      run: go test -v ./...
+
+  helm-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Helm
+      uses: azure/setup-helm@v4
+      with:
+        version: '3.12.0'
+    
+    - name: Helm lint
+      run: helm lint charts/netbird-api-exporter 
