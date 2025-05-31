@@ -39,32 +39,24 @@ Before starting, ensure you have:
 
 ## Quick Start
 
-### Step 1: Add Helm Repository
+### Step 1: Install Chart from OCI Registry
+
+Since the chart is hosted in an OCI registry, there's no need to add a Helm repository. You can install directly from the OCI registry:
 
 ```bash
-# Add the chart repository
-helm repo add netbird-api-exporter oci://ghcr.io/matanbaruch/netbird-api-exporter/charts
-helm repo update
+# Install with specific version (recommended)
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  --set netbird.apiToken="nb_api_your_token_here"
+
+# Or install latest version
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --set netbird.apiToken="nb_api_your_token_here"
 ```
 
-### Step 2: Create Secrets
-
-Create a Kubernetes secret with your NetBird API token:
-
-```bash
-kubectl create secret generic netbird-api-token \
-  --from-literal=token="nb_api_your_token_here"
-```
-
-### Step 3: Install the Chart
-
-```bash
-helm upgrade --install netbird-api-exporter \
-  netbird-api-exporter/netbird-api-exporter \
-  --set netbird.existingSecret="netbird-api-token"
-```
-
-### Step 4: Verify Installation
+### Step 2: Verify Installation
 
 ```bash
 # Check pod status
@@ -127,8 +119,10 @@ serviceMonitor:
 Install with values file:
 
 ```bash
-helm upgrade --install netbird-api-exporter \
-  netbird-api-exporter/netbird-api-exporter \
+# From OCI registry (recommended)
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
   -f values.yaml
 ```
 
@@ -142,8 +136,9 @@ kubectl create secret generic netbird-api-secret \
   --from-literal=token="nb_api_your_token_here"
 
 # Install chart referencing secret
-helm upgrade --install netbird-api-exporter \
-  netbird-api-exporter/netbird-api-exporter \
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
   --set netbird.existingSecret="netbird-api-secret"
 ```
 
@@ -152,8 +147,9 @@ helm upgrade --install netbird-api-exporter \
 For quick testing:
 
 ```bash
-helm upgrade --install netbird-api-exporter \
-  netbird-api-exporter/netbird-api-exporter \
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
   --set netbird.apiToken="nb_api_your_token_here" \
   --set netbird.apiUrl="https://api.netbird.io" \
   --set service.type="LoadBalancer"
@@ -504,13 +500,22 @@ ingress:
 
 ```bash
 # Install
-helm install netbird-api-exporter netbird-api-exporter/netbird-api-exporter -f values.yaml
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  -f values.yaml
 
 # Upgrade
-helm upgrade netbird-api-exporter netbird-api-exporter/netbird-api-exporter -f values.yaml
+helm upgrade netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  -f values.yaml
 
 # Install or upgrade
-helm upgrade --install netbird-api-exporter netbird-api-exporter/netbird-api-exporter -f values.yaml
+helm upgrade --install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  -f values.yaml
 ```
 
 ### Status and Information
@@ -696,19 +701,22 @@ Deploy to each environment:
 ```bash
 # Development
 helm upgrade --install netbird-api-exporter-dev \
-  netbird-api-exporter/netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
   -f values-dev.yaml \
   --namespace development
 
 # Staging
 helm upgrade --install netbird-api-exporter-staging \
-  netbird-api-exporter/netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
   -f values-staging.yaml \
   --namespace staging
 
 # Production
 helm upgrade --install netbird-api-exporter-prod \
-  netbird-api-exporter/netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
   -f values-prod.yaml \
   --namespace production
 ```

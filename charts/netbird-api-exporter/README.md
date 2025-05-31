@@ -24,6 +24,25 @@ This Helm chart deploys the NetBird API Exporter, a Prometheus exporter that pro
 
 ## Installing the Chart
 
+### Install from OCI Registry
+
+The chart is available as an OCI artifact. Since it's hosted in an OCI registry, there's no need to add a Helm repository.
+
+```bash
+# Install with specific version (recommended)
+helm install my-netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  --set netbird.apiToken="your-netbird-api-token"
+
+# Install latest version
+helm install my-netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --set netbird.apiToken="your-netbird-api-token"
+```
+
+> **Note on OCI Registry**: This chart is distributed via OCI (Open Container Initiative) registry instead of traditional Helm repositories. This provides better security, versioning, and integration with container registries. No `helm repo add` command is needed - you can install directly using the `oci://` URL with specific versions.
+
 ### Install from local directory
 
 ```bash
@@ -39,8 +58,50 @@ helm install my-netbird-api-exporter ./charts/netbird-api-exporter \
 ### Install with custom values
 
 ```bash
+# From OCI registry
+helm install my-netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  --values my-values.yaml
+
+# From local directory
 helm install my-netbird-api-exporter ./charts/netbird-api-exporter \
   --values my-values.yaml
+```
+
+### Install with ExternalSecret
+
+```bash
+# First, create a SecretStore (example with AWS Secrets Manager)
+kubectl apply -f - <<EOF
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: aws-secrets-manager
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: us-west-2
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: external-secrets-sa
+EOF
+
+# Install with ExternalSecret
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  --set externalSecret.enabled=true \
+  --set externalSecret.secretStoreRef.name=aws-secrets-manager \
+  --set-json 'externalSecret.data=[{"secretKey":"netbird-api-token","remoteRef":{"key":"netbird/api-token"}}]'
+
+# Alternative: Install from local directory
+# helm install netbird-api-exporter ./charts/netbird-api-exporter \
+#   --set externalSecret.enabled=true \
+#   --set externalSecret.secretStoreRef.name=aws-secrets-manager \
+#   --set-json 'externalSecret.data=[{"secretKey":"netbird-api-token","remoteRef":{"key":"netbird/api-token"}}]'
 ```
 
 ## Configuration
@@ -89,6 +150,13 @@ The following table lists the configurable parameters and their default values.
 ### Basic Installation
 
 ```bash
+# From OCI registry (recommended)
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  --set netbird.apiToken="nb_token_xxx"
+
+# From local directory
 helm install netbird-api-exporter ./charts/netbird-api-exporter \
   --set netbird.apiToken="nb_token_xxx"
 ```
@@ -96,6 +164,15 @@ helm install netbird-api-exporter ./charts/netbird-api-exporter \
 ### With Prometheus Operator
 
 ```bash
+# From OCI registry (recommended)
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  --set netbird.apiToken="nb_token_xxx" \
+  --set serviceMonitor.enabled=true \
+  --set serviceMonitor.additionalLabels.release=prometheus
+
+# From local directory
 helm install netbird-api-exporter ./charts/netbird-api-exporter \
   --set netbird.apiToken="nb_token_xxx" \
   --set serviceMonitor.enabled=true \
@@ -105,36 +182,15 @@ helm install netbird-api-exporter ./charts/netbird-api-exporter \
 ### Production Configuration
 
 ```bash
+# From OCI registry (recommended) 
+helm install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --version 0.1.6 \
+  --values ./values-production.yaml
+
+# From local directory
 helm install netbird-api-exporter ./charts/netbird-api-exporter \
-  --set netbird.apiToken="nb_token_xxx" \
   --values ./charts/netbird-api-exporter/values-production.yaml
-```
-
-### With External Secret Operator
-
-```bash
-# First, create a SecretStore (example with AWS Secrets Manager)
-kubectl apply -f - <<EOF
-apiVersion: external-secrets.io/v1beta1
-kind: SecretStore
-metadata:
-  name: aws-secrets-manager
-spec:
-  provider:
-    aws:
-      service: SecretsManager
-      region: us-west-2
-      auth:
-        jwt:
-          serviceAccountRef:
-            name: external-secrets-sa
-EOF
-
-# Install with ExternalSecret
-helm install netbird-api-exporter ./charts/netbird-api-exporter \
-  --set externalSecret.enabled=true \
-  --set externalSecret.secretStoreRef.name=aws-secrets-manager \
-  --set-json 'externalSecret.data=[{"secretKey":"netbird-api-token","remoteRef":{"key":"netbird/api-token"}}]'
 ```
 
 ## Getting Your NetBird API Token
