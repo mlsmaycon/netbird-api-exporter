@@ -1,0 +1,79 @@
+# NetBird API Exporter - Cursor Rules
+
+## Changelog Management
+
+When making changes to the codebase, always update the CHANGELOG.md using the provided script:
+
+### Usage
+
+Use the changelog update script located at `scripts/update-changelog.sh`:
+
+```bash
+./scripts/update-changelog.sh [type] [description]
+```
+
+### Change Types
+
+- **breaking**: Breaking changes that require user action (include migration instructions)
+- **feature**: New functionality and enhancements (use present tense, e.g., "Add support for...")
+- **bugfix**: Bug fixes and corrections (reference issue numbers if applicable, e.g., "#123")
+- **security**: Security-related changes and vulnerability fixes
+- **deprecated**: Features that will be removed in future versions
+- **removed**: Features that have been removed
+
+### Examples
+
+```bash
+# For new features
+./scripts/update-changelog.sh feature "Add support for custom metrics endpoint"
+
+# For bug fixes
+./scripts/update-changelog.sh bugfix "Fix memory leak in DNS exporter (#123)"
+
+# For breaking changes
+./scripts/update-changelog.sh breaking "Remove deprecated --old-flag parameter"
+
+# For security fixes
+./scripts/update-changelog.sh security "Fix potential path traversal vulnerability"
+```
+
+### Rules
+
+1. **Always update changelog**: Every meaningful change should have a changelog entry
+2. **Use appropriate type**: Choose the correct change type based on the impact
+3. **Be descriptive**: Write clear, concise descriptions that help users understand the change
+4. **Reference issues**: Include issue numbers when fixing bugs or implementing features
+5. **Breaking changes**: Always include migration instructions for breaking changes
+6. **Review changes**: Use `git diff CHANGELOG.md` to review the changelog before committing
+
+### Workflow
+
+1. Make your code changes
+2. Run the changelog script with appropriate type and description
+3. Review the changelog entry with `git diff CHANGELOG.md`
+4. Commit both your code changes and the changelog update together
+
+## Code Style
+
+- Follow Go conventions and best practices
+- Use meaningful variable and function names
+- Add comments for complex logic
+- Ensure proper error handling
+- Write tests for new functionality
+
+## Git Commit Messages
+
+- Use conventional commit format when possible
+- Reference the changelog entry type in commit messages
+- Include issue numbers when applicable
+
+Example commit message:
+
+```
+feat: add support for custom metrics endpoint
+
+- Add new configuration option for metrics endpoint
+- Update documentation with usage examples
+
+Fixes #42
+```

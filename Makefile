@@ -61,9 +61,34 @@ docker-compose-down:
 docker-compose-logs:
 	docker compose logs -f netbird-api-exporter
 
+# Setup development environment (install air and create .env if needed)
+dev-setup:
+	@echo "Setting up development environment..."
+	@if ! command -v $(shell go env GOPATH)/bin/air >/dev/null 2>&1; then \
+		echo "Installing air for hot reload..."; \
+		go install github.com/air-verse/air@latest; \
+	else \
+		echo "✅ air is already installed"; \
+	fi
+	@if [ ! -f .env ]; then \
+		echo "Creating .env file from env.example..."; \
+		cp env.example .env; \
+		echo "⚠️  Please edit .env file with your NetBird API token"; \
+		echo "📝 You can find the .env file in the project root"; \
+	else \
+		echo "✅ .env file exists"; \
+	fi
+	@echo "🚀 Development environment is ready! Run 'make dev' to start."
+
 # Development mode with live reload (requires air: go install github.com/air-verse/air@latest)
-dev:
-	GO111MODULE=on $(shell go env GOPATH)/bin/air
+dev: dev-setup
+	@if [ -f .env ]; then \
+		echo "Loading environment variables from .env file..."; \
+		bash -c 'set -a && source .env && set +a && GO111MODULE=on $(shell go env GOPATH)/bin/air'; \
+	else \
+		echo "❌ .env file not found. Run 'make dev-setup' first."; \
+		exit 1; \
+	fi
 
 # Format code
 fmt:
@@ -126,6 +151,7 @@ help:
 	@echo "  docker-compose-up   - Start with Docker Compose"
 	@echo "  docker-compose-down - Stop Docker Compose"
 	@echo "  docker-compose-logs - View container logs"
+	@echo "  dev-setup       - Setup development environment (install air, create .env)"
 	@echo "  dev             - Development mode with live reload"
 	@echo "  fmt             - Format code"
 	@echo "  lint            - Lint code (golangci-lint, go vet, format check)"

@@ -1,12 +1,23 @@
 {
   "name": "NetBird API Exporter Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/go:1.23-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   
   "features": {
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.23"
+    },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
+
+  "onCreateCommand": "sudo apt-get update && sudo apt-get install -y make build-essential",
+
+  "postCreateCommand": [
+    "bash", 
+    "-c", 
+    "if [ -f .devcontainer/postCreateCommand.sh ]; then bash .devcontainer/postCreateCommand.sh; fi"
+  ],
 
   "customizations": {
     "vscode": {
@@ -53,8 +64,6 @@
     }
   },
 
-  "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
-
   "remoteUser": "vscode",
 
   "mounts": [
@@ -65,7 +74,6 @@
     "NETBIRD_API_URL": "https://api.netbird.io",
     "LISTEN_ADDRESS": ":8080",
     "METRICS_PATH": "/metrics",
-    "LOG_LEVEL": "debug",
-    "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+    "LOG_LEVEL": "debug"
   }
 } 
