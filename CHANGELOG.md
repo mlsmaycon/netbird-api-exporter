@@ -7,21 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Bugfix
+
+- Fix changelog update script breaking the changelog structure and creating duplicate sections
+
 ## [0.1.12] - 2025-05-31
 
-<<<<<<< HEAD
-## [0.1.11] - 2025-05-31
-=======
 ### Features
+
 - Improve development workflow with automatic environment setup
->>>>>>> 2914003 (feat: enhance development environment setup)
+
+## [0.1.11] - 2025-05-31
+
+### Features
+
+- Enhanced release process with automated changelog generation
+- Add changelog file for better release tracking
 
 ## [0.1.10] - 2025-05-31
 
 ### Features
 
 - Enhanced release process with automated changelog generation
-
 - Add changelog file for better release tracking
 
 <!--

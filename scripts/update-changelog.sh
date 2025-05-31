@@ -96,76 +96,85 @@ esac
 # Create a temporary file for processing
 TEMP_FILE=$(mktemp)
 
-# Process the changelog
+# Process the changelog with a simpler, more robust approach
 {
-    # Read until we find the [Unreleased] section
+    # Read and copy everything until we find the [Unreleased] section
     while IFS= read -r line; do
         echo "$line"
         if [[ "$line" == "## [Unreleased]" ]]; then
             break
         fi
     done
-
-    # Skip any existing content until we find the next section or end of unreleased
-    FOUND_SECTION=false
-    ADDED_ENTRY=false
     
-    while IFS= read -r line; do
-        # If we hit the next version section, we need to add our entry
-        if [[ "$line" == "## ["*"]"* ]] && [[ "$line" != "## [Unreleased]" ]]; then
-            if [ "$ADDED_ENTRY" = false ]; then
-                # Add our section and entry before the next version
-                echo ""
-                echo "### $SECTION"
-                echo "- $DESCRIPTION"
+    # Now we're after the [Unreleased] line
+    # Look for existing content under Unreleased section
+    found_section=false
+    added_entry=false
+    in_unreleased=true
+    buffer=""
+    
+    while IFS= read -r line && [ "$in_unreleased" = true ]; do
+        # Check if we've reached the next version section
+        if [[ "$line" =~ ^##\ \[.*\]\ -\ [0-9] ]]; then
+            # We've reached the first versioned release
+            # If we haven't added our entry yet, add it now
+            if [ "$added_entry" = false ]; then
+                if [ "$found_section" = false ]; then
+                    echo ""
+                    echo "### $SECTION"
+                    echo "- $DESCRIPTION"
+                else
+                    # We found the section but haven't added our entry yet
+                    # Add it to the buffer and then flush
+                    echo "- $DESCRIPTION"
+                fi
                 echo ""
             fi
             echo "$line"
+            in_unreleased=false
             break
         fi
         
-        # Check if this line is our target section
+        # Check if this is our target section
         if [[ "$line" == "### $SECTION" ]]; then
             echo "$line"
-            FOUND_SECTION=true
-            # Read and copy existing entries in this section
-            while IFS= read -r subline; do
-                if [[ "$subline" == "### "* ]] || [[ "$subline" == "## ["*"]"* ]]; then
-                    # Add our new entry before moving to the next section
-                    echo "- $DESCRIPTION"
-                    echo "$subline"
-                    ADDED_ENTRY=true
-                    break
-                elif [[ "$subline" =~ ^[[:space:]]*$ ]] && [ "$FOUND_SECTION" = true ]; then
-                    # Empty line after our section - add entry here
-                    echo "- $DESCRIPTION"
-                    echo "$subline"
-                    ADDED_ENTRY=true
-                    break
-                else
-                    echo "$subline"
-                fi
-            done
-            break
-        elif [[ "$line" == "### "* ]]; then
-            # Different section found, we need to add our section before it
-            if [ "$ADDED_ENTRY" = false ]; then
+            found_section=true
+            # Read the next line to see if we should add our entry immediately
+            continue
+        fi
+        
+        # Check if this is a different section
+        if [[ "$line" =~ ^###\  ]] && [[ "$line" != "### $SECTION" ]]; then
+            # Different section found
+            if [ "$found_section" = false ]; then
+                # Add our section before this one
                 echo ""
                 echo "### $SECTION"
                 echo "- $DESCRIPTION"
                 echo ""
+                added_entry=true
             fi
             echo "$line"
-            ADDED_ENTRY=true
-            break
-        elif [[ "$line" =~ ^[[:space:]]*$ ]]; then
-            # Empty line - could be end of unreleased section
             continue
-        else
-            echo "$line"
         fi
+        
+        # If we're in our target section, add our entry before any existing entries
+        if [ "$found_section" = true ] && [ "$added_entry" = false ]; then
+            echo "- $DESCRIPTION"
+            added_entry=true
+        fi
+        
+        echo "$line"
     done
-
+    
+    # If we never found any sections in unreleased, add our section now
+    if [ "$in_unreleased" = true ] && [ "$added_entry" = false ]; then
+        echo ""
+        echo "### $SECTION"
+        echo "- $DESCRIPTION"
+        echo ""
+    fi
+    
     # Copy the rest of the file
     while IFS= read -r line; do
         echo "$line"
