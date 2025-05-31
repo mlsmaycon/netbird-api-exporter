@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+### Bugfix
+- Fix bundler version compatibility for Dependabot (update from v1.17.2 to v2.5.0)
+
 ## [0.1.15] - 2025-05-31
 
 ## [0.1.14] - 2025-05-31
