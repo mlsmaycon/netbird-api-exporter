@@ -213,10 +213,10 @@ func (e *NetworksExporter) updateMetrics(networks []netbird.Network) {
 	e.networksTotal.WithLabelValues().Set(float64(totalNetworks))
 
 	logrus.WithFields(logrus.Fields{
-		"total_networks":       totalNetworks,
-		"total_routers":        totalRouters,
-		"total_resources":      totalResources,
-		"total_policies":       totalPolicies,
-		"total_routing_peers":  totalRoutingPeers,
+		"total_networks":      totalNetworks,
+		"total_routers":       totalRouters,
+		"total_resources":     totalResources,
+		"total_policies":      totalPolicies,
+		"total_routing_peers": totalRoutingPeers,
 	}).Debug("Updated network metrics")
 }

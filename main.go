@@ -21,19 +21,19 @@ import (
 func debugLoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		
+
 		logrus.WithFields(logrus.Fields{
-			"method":     r.Method,
-			"path":       r.URL.Path,
+			"method":      r.Method,
+			"path":        r.URL.Path,
 			"remote_addr": r.RemoteAddr,
-			"user_agent": r.UserAgent(),
+			"user_agent":  r.UserAgent(),
 		}).Debug("HTTP request received")
-		
+
 		// Create a custom ResponseWriter to capture status code
 		ww := &wrappedWriter{ResponseWriter: w, statusCode: http.StatusOK}
-		
+
 		next.ServeHTTP(ww, r)
-		
+
 		duration := time.Since(start)
 		logrus.WithFields(logrus.Fields{
 			"method":      r.Method,
