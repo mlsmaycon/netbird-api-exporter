@@ -393,67 +393,33 @@ rate(netbird_networks_scrape_errors_total[5m])
 
 ## Grafana Dashboard
 
-You can create a Grafana dashboard using these metrics. Example panels:
+A comprehensive pre-built Grafana dashboard is available that provides visualizations for all NetBird API Exporter metrics.
 
-### Dashboard Peer Panels
+### Quick Start
 
-1. **Total Peers** - Single stat panel with `netbird_peers_total`
-2. **Connection Status** - Pie chart with `netbird_peers_connected`
-3. **OS Distribution** - Bar chart with `sum by (os) (netbird_peers_by_os)`
-4. **Geographic Distribution** - World map with `sum by (country_code) (netbird_peers_by_country)`
-5. **Last Seen Timeline** - Time series of peer activity
+1. **Download the dashboard**: Get [`grafana-dashboard.json`](grafana-dashboard.json) from this repository
+2. **Import in Grafana**: Go to Dashboards → Import and upload the JSON file
+3. **Configure data source**: Ensure your Prometheus data source is selected
 
-### Dashboard Group Panels
+### Dashboard Features
 
-1. **Total Groups** - Single stat panel with `netbird_groups_total`
-2. **Group Sizes** - Bar chart with `netbird_group_peers_count`
-3. **Resource Distribution** - Pie chart with `sum by (resource_type) (netbird_group_resources_by_type)`
-4. **Group Resource Counts** - Table with `netbird_group_resources_count`
-5. **Groups by Creation Method** - Pie chart with `count by (issued) (netbird_group_info)`
-6. **Empty Groups** - Table showing groups with `netbird_group_peers_count == 0`
-7. **Group Performance** - Time series with `rate(netbird_groups_scrape_duration_seconds_sum[5m])`
+The dashboard includes organized sections for:
 
-### Dashboard User Panels
+- **Overview**: Key metrics summary (total peers, users, groups, networks)
+- **Peers**: Connection status, OS distribution, geographic breakdown
+- **Users**: Role distribution, status overview, service vs regular users
+- **Groups**: Peer and resource counts per group
+- **DNS**: Nameserver configurations and status
+- **Networks**: Network information and resource distribution
+- **Performance**: API response times and error rates
 
-1. **Total Users** - Single stat panel with `netbird_users_total`
-2. **User Distribution** - Pie chart with `sum by (role) (netbird_users_by_role)`
-3. **User Status** - Pie chart with `sum by (status) (netbird_users_by_status)`
-4. **Service Users** - Pie chart with `netbird_users_service_users`
-5. **Blocked Users** - Pie chart with `netbird_users_blocked`
-6. **Users by Issuance Type** - Pie chart with `sum by (issued) (netbird_users_by_issued)`
-7. **Users with Restricted Permissions** - Pie chart with `netbird_users_restricted`
-8. **Last Login Timeline** - Time series of user activity
-9. **Auto Groups** - Pie chart with `netbird_user_auto_groups_count`
-10. **User Permissions** - Table with `netbird_user_permissions`
+### Documentation
 
-### Dashboard DNS Panels
+For detailed installation instructions, customization options, and troubleshooting, see the [Grafana Dashboard Documentation](docs/grafana-dashboard.md).
 
-1. **Total Nameserver Groups** - Single stat panel with `netbird_dns_nameserver_groups_total`
-2. **Nameserver Group Status** - Pie chart with `netbird_dns_nameserver_groups_enabled`
-3. **Primary vs Secondary Groups** - Pie chart with `netbird_dns_nameserver_groups_primary`
-4. **Domains per Group** - Bar chart with `netbird_dns_nameserver_group_domains_count`
-5. **Nameservers per Group** - Bar chart with `netbird_dns_nameservers_total`
-6. **Nameserver Types** - Pie chart with `sum by (ns_type) (netbird_dns_nameservers_by_type)`
-7. **Nameserver Ports** - Pie chart with `sum by (port) (netbird_dns_nameservers_by_port)`
-8. **DNS Management Disabled** - Single stat panel with `netbird_dns_management_disabled_groups_count`
-9. **Groups without Domains** - Table showing groups with `netbird_dns_nameserver_group_domains_count == 0`
+### Manual Dashboard Creation
 
-### Dashboard Network Panels
-
-1. **Total Networks** - Single stat panel with `netbird_networks_total`
-2. **Network Routers** - Bar chart with `netbird_network_routers_count`
-3. **Network Resources** - Bar chart with `netbird_network_resources_count`
-4. **Network Policies** - Bar chart with `netbird_network_policies_count`
-5. **Routing Peers** - Bar chart with `netbird_network_routing_peers_count`
-6. **Network Information** - Table with `netbird_network_info`
-7. **Networks without Routers** - Table showing networks with `netbird_network_routers_count == 0`
-8. **Networks without Resources** - Table showing networks with `netbird_network_resources_count == 0`
-9. **Network Performance** - Time series with `rate(netbird_networks_scrape_duration_seconds_sum[5m])`
-
-### Dashboard Performance Panels
-
-1. **API Scrape Duration** - Time series with both peer and group scrape durations
-2. **Error Rates** - Time series with error counters for both APIs
+If you prefer to create custom panels, here are some example configurations:
 
 ## Troubleshooting
 

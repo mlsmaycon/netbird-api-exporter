@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Features
+- Add comprehensive Grafana dashboard with documentation
 - Add comprehensive SECURITY.md with vulnerability reporting procedures and security guidelines
 
 ## [0.1.16] - 2025-05-31
