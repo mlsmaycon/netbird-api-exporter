@@ -21,12 +21,20 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o netbird-api-expor
 # Final stage
 FROM alpine:latest
 
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add ca-certificates wget
 
-WORKDIR /root/
+# Create app directory with proper permissions for nobody user
+RUN mkdir -p /app && \
+    chown -R 65534:65534 /app
 
-# Copy the binary from builder
-COPY --from=builder /app/netbird-api-exporter .
+WORKDIR /app
+
+# Copy the binary from builder and set permissions
+COPY --from=builder --chown=65534:65534 /app/netbird-api-exporter .
+RUN chmod +x netbird-api-exporter
+
+# Switch to non-root user (nobody)
+USER 65534
 
 # Expose port
 EXPOSE 8080
