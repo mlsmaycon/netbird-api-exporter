@@ -73,4 +73,4 @@ Create the image name
 */}}
 {{- define "netbird-api-exporter.image" -}}
 {{- printf "%s:%s" .Values.image.repository (.Values.image.tag | default .Chart.AppVersion) }}
-{{- end }} 
+{{- end }}

@@ -38,4 +38,4 @@ Environment=LOG_LEVEL=info
 # EnvironmentFile=/etc/netbird-api-exporter/config
 
 [Install]
-WantedBy=multi-user.target 
+WantedBy=multi-user.target

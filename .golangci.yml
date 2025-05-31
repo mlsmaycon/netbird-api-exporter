@@ -14,4 +14,4 @@ linters:
     - gosec
 
 issues:
-  max-same-issues: 3 
+  max-same-issues: 3

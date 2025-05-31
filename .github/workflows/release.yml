@@ -50,14 +50,35 @@ jobs:
         NEW_PATCH=$((PATCH + 1))
         NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
         NEW_TAG="v$NEW_VERSION"
-        
+
         echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
         echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
-        
+
         # Update Chart.yaml
         sed -i "s/^version: .*/version: $NEW_VERSION/" charts/netbird-api-exporter/Chart.yaml
         sed -i "s/^appVersion: .*/appVersion: \"$NEW_VERSION\"/" charts/netbird-api-exporter/Chart.yaml
-        
+
+        # Update CHANGELOG.md
+        if [ -f "CHANGELOG.md" ]; then
+          # Get current date
+          CURRENT_DATE=$(date +%Y-%m-%d)
+
+          # Replace [Unreleased] with the new version
+          sed -i "s/## \[Unreleased\]/## [$NEW_VERSION] - $CURRENT_DATE/" CHANGELOG.md
+
+          # Add a new [Unreleased] section at the top
+          sed -i "/^## \[$NEW_VERSION\]/i\\## [Unreleased]\\n" CHANGELOG.md
+
+          # Update the links at the bottom
+          # First, add the new version link
+          sed -i "/^\[Unreleased\]:/i\\[$NEW_VERSION]: https://github.com/${{ github.repository }}/compare/v$CURRENT_VERSION...$NEW_TAG" CHANGELOG.md
+
+          # Update the Unreleased link to point from new version to HEAD
+          sed -i "s|\[Unreleased\]: https://github.com/${{ github.repository }}/compare/.*\.\.\.HEAD|[Unreleased]: https://github.com/${{ github.repository }}/compare/$NEW_TAG...HEAD|" CHANGELOG.md
+
+          git add CHANGELOG.md
+        fi
+
         # Commit version bump
         git add charts/netbird-api-exporter/Chart.yaml
         git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
@@ -148,6 +169,28 @@ jobs:
         ref: main
         fetch-depth: 0
 
+    - name: Extract changelog for version
+      id: changelog
+      run: |
+        # Extract the changelog section for the current version
+        VERSION="${{ needs.version-bump.outputs.new_version }}"
+
+        # Get the changelog content between the current version and the next version marker
+        CHANGELOG_CONTENT=$(awk "/^## \[$VERSION\]/ {flag=1; next} /^## \[/ && flag {exit} flag" CHANGELOG.md)
+
+        # If no specific version found, use the content from [Unreleased] section
+        if [ -z "$CHANGELOG_CONTENT" ]; then
+          CHANGELOG_CONTENT=$(awk "/^## \[Unreleased\]/ {flag=1; next} /^## \[/ && flag {exit} flag" CHANGELOG.md)
+        fi
+
+        # Save to output file to handle multiline content
+        echo "$CHANGELOG_CONTENT" > changelog_section.md
+
+        # Also set a simplified version for the output
+        echo "changelog_content<<EOF" >> $GITHUB_OUTPUT
+        echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
     - name: Create GitHub Release
       uses: actions/create-release@v1
       env:
@@ -157,21 +200,25 @@ jobs:
         release_name: Release ${{ needs.version-bump.outputs.new_tag }}
         body: |
           ## Release ${{ needs.version-bump.outputs.new_tag }}
-          
-          ### Changes
-          - Docker image: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version-bump.outputs.new_version }}`
-          - Helm chart: `oci://${{ env.REGISTRY }}/${{ github.repository }}/charts/netbird-api-exporter:${{ needs.version-bump.outputs.new_version }}`
-          
+
+          ${{ steps.changelog.outputs.changelog_content }}
+
+          ---
+
           ### Installation
-          
+
           #### Docker
           ```bash
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version-bump.outputs.new_version }}
           ```
-          
+
           #### Helm
           ```bash
           helm install netbird-api-exporter oci://${{ env.REGISTRY }}/${{ github.repository }}/charts/netbird-api-exporter --version ${{ needs.version-bump.outputs.new_version }}
           ```
+
+          ### Artifacts
+          - Docker image: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.version-bump.outputs.new_version }}`
+          - Helm chart: `oci://${{ env.REGISTRY }}/${{ github.repository }}/charts/netbird-api-exporter:${{ needs.version-bump.outputs.new_version }}`
         draft: false
-        prerelease: false 
+        prerelease: false

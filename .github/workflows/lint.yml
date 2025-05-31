@@ -19,24 +19,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
         go-version: stable
-    
+
     - name: Download dependencies
       run: go mod download
-    
+
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v8
       with:
         version: v2.1.6
         args: --timeout=5m
-    
+
     - name: Run go vet
       run: go vet ./...
-    
+
     - name: Check formatting
       run: |
         if [ "$(gofmt -l . | wc -l)" -gt 0 ]; then
@@ -44,7 +44,7 @@ jobs:
           gofmt -l .
           exit 1
         fi
-    
+
     - name: Run tests
       run: go test -v ./...
 
@@ -52,11 +52,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Helm
       uses: azure/setup-helm@v4
       with:
         version: '3.12.0'
-    
+
     - name: Helm lint
-      run: helm lint charts/netbird-api-exporter 
+      run: helm lint charts/netbird-api-exporter

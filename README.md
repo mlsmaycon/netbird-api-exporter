@@ -2,7 +2,6 @@
 
 ![assets_task_01jwh7hmm6f93ab38cy6rb9szb_1748630092_img_0](https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892)
 
-
 A Prometheus exporter for NetBird API that provides comprehensive metrics about your NetBird network peers, groups, users, networks, and DNS configuration. This exporter fetches data from the [NetBird REST API](https://docs.netbird.io/ipa/resources/peers), [Groups API](https://docs.netbird.io/ipa/resources/groups), [Users API](https://docs.netbird.io/ipa/resources/users), [Networks API](https://docs.netbird.io/ipa/resources/networks), and [DNS API](https://docs.netbird.io/ipa/resources/dns) and exposes it in Prometheus format.
 
 ## Metrics Overview
@@ -11,97 +10,97 @@ The exporter provides the following metrics:
 
 ### Peer Metrics
 
-| Metric Name | Type | Description | Labels |
-|-------------|------|-------------|--------|
-| `netbird_peers_total` | Gauge | Total number of NetBird peers | - |
-| `netbird_peers_connected` | Gauge | Number of connected/disconnected peers | `connected` |
-| `netbird_peer_last_seen_timestamp` | Gauge | Last seen timestamp for each peer | `peer_id`, `peer_name`, `hostname` |
-| `netbird_peers_by_os` | Gauge | Number of peers by operating system | `os` |
-| `netbird_peers_by_country` | Gauge | Number of peers by country/city | `country_code`, `city_name` |
-| `netbird_peers_by_group` | Gauge | Number of peers by group | `group_id`, `group_name` |
-| `netbird_peers_ssh_enabled` | Gauge | Number of peers with SSH enabled/disabled | `ssh_enabled` |
-| `netbird_peers_login_expired` | Gauge | Number of peers with expired/valid login | `login_expired` |
-| `netbird_peers_approval_required` | Gauge | Number of peers requiring/not requiring approval | `approval_required` |
-| `netbird_peer_accessible_peers_count` | Gauge | Number of accessible peers for each peer | `peer_id`, `peer_name` |
+| Metric Name                           | Type  | Description                                      | Labels                             |
+| ------------------------------------- | ----- | ------------------------------------------------ | ---------------------------------- |
+| `netbird_peers_total`                 | Gauge | Total number of NetBird peers                    | -                                  |
+| `netbird_peers_connected`             | Gauge | Number of connected/disconnected peers           | `connected`                        |
+| `netbird_peer_last_seen_timestamp`    | Gauge | Last seen timestamp for each peer                | `peer_id`, `peer_name`, `hostname` |
+| `netbird_peers_by_os`                 | Gauge | Number of peers by operating system              | `os`                               |
+| `netbird_peers_by_country`            | Gauge | Number of peers by country/city                  | `country_code`, `city_name`        |
+| `netbird_peers_by_group`              | Gauge | Number of peers by group                         | `group_id`, `group_name`           |
+| `netbird_peers_ssh_enabled`           | Gauge | Number of peers with SSH enabled/disabled        | `ssh_enabled`                      |
+| `netbird_peers_login_expired`         | Gauge | Number of peers with expired/valid login         | `login_expired`                    |
+| `netbird_peers_approval_required`     | Gauge | Number of peers requiring/not requiring approval | `approval_required`                |
+| `netbird_peer_accessible_peers_count` | Gauge | Number of accessible peers for each peer         | `peer_id`, `peer_name`             |
 
 ### Group Metrics Table
 
-| Metric Name | Type | Description | Labels |
-|-------------|------|-------------|--------|
-| `netbird_groups_total` | Gauge | Total number of NetBird groups | - |
-| `netbird_group_peers_count` | Gauge | Number of peers in each NetBird group | `group_id`, `group_name`, `issued` |
-| `netbird_group_resources_count` | Gauge | Number of resources in each NetBird group | `group_id`, `group_name`, `issued` |
-| `netbird_group_info` | Gauge | Information about NetBird groups (always 1) | `group_id`, `group_name`, `issued` |
-| `netbird_group_resources_by_type` | Gauge | Number of resources in each group by resource type | `group_id`, `group_name`, `resource_type` |
-| `netbird_groups_scrape_errors_total` | Counter | Total number of errors encountered while scraping groups | `error_type` |
-| `netbird_groups_scrape_duration_seconds` | Histogram | Time spent scraping groups from the NetBird API | - |
+| Metric Name                              | Type      | Description                                              | Labels                                    |
+| ---------------------------------------- | --------- | -------------------------------------------------------- | ----------------------------------------- |
+| `netbird_groups_total`                   | Gauge     | Total number of NetBird groups                           | -                                         |
+| `netbird_group_peers_count`              | Gauge     | Number of peers in each NetBird group                    | `group_id`, `group_name`, `issued`        |
+| `netbird_group_resources_count`          | Gauge     | Number of resources in each NetBird group                | `group_id`, `group_name`, `issued`        |
+| `netbird_group_info`                     | Gauge     | Information about NetBird groups (always 1)              | `group_id`, `group_name`, `issued`        |
+| `netbird_group_resources_by_type`        | Gauge     | Number of resources in each group by resource type       | `group_id`, `group_name`, `resource_type` |
+| `netbird_groups_scrape_errors_total`     | Counter   | Total number of errors encountered while scraping groups | `error_type`                              |
+| `netbird_groups_scrape_duration_seconds` | Histogram | Time spent scraping groups from the NetBird API          | -                                         |
 
 ### User Metrics Table
 
-| Metric Name | Type | Description | Labels |
-|-------------|------|-------------|--------|
-| `netbird_users_total` | Gauge | Total number of NetBird users | - |
-| `netbird_users_by_role` | Gauge | Number of users by role | `role` |
-| `netbird_users_by_status` | Gauge | Number of users by status | `status` |
-| `netbird_users_service_users` | Gauge | Number of service users vs regular users | `is_service_user` |
-| `netbird_users_blocked` | Gauge | Number of blocked vs unblocked users | `is_blocked` |
-| `netbird_users_by_issued` | Gauge | Number of users by issuance type | `issued` |
-| `netbird_users_restricted` | Gauge | Number of users with restricted permissions | `is_restricted` |
-| `netbird_user_last_login_timestamp` | Gauge | Last login timestamp for each user | `user_id`, `user_email`, `user_name` |
-| `netbird_user_auto_groups_count` | Gauge | Number of auto groups assigned to each user | `user_id`, `user_email`, `user_name` |
-| `netbird_user_permissions` | Gauge | User permissions by module and action | `user_id`, `user_email`, `module`, `permission`, `value` |
-| `netbird_users_scrape_errors_total` | Counter | Total number of errors encountered while scraping users | `error_type` |
-| `netbird_users_scrape_duration_seconds` | Histogram | Time spent scraping users from the NetBird API | - |
+| Metric Name                             | Type      | Description                                             | Labels                                                   |
+| --------------------------------------- | --------- | ------------------------------------------------------- | -------------------------------------------------------- |
+| `netbird_users_total`                   | Gauge     | Total number of NetBird users                           | -                                                        |
+| `netbird_users_by_role`                 | Gauge     | Number of users by role                                 | `role`                                                   |
+| `netbird_users_by_status`               | Gauge     | Number of users by status                               | `status`                                                 |
+| `netbird_users_service_users`           | Gauge     | Number of service users vs regular users                | `is_service_user`                                        |
+| `netbird_users_blocked`                 | Gauge     | Number of blocked vs unblocked users                    | `is_blocked`                                             |
+| `netbird_users_by_issued`               | Gauge     | Number of users by issuance type                        | `issued`                                                 |
+| `netbird_users_restricted`              | Gauge     | Number of users with restricted permissions             | `is_restricted`                                          |
+| `netbird_user_last_login_timestamp`     | Gauge     | Last login timestamp for each user                      | `user_id`, `user_email`, `user_name`                     |
+| `netbird_user_auto_groups_count`        | Gauge     | Number of auto groups assigned to each user             | `user_id`, `user_email`, `user_name`                     |
+| `netbird_user_permissions`              | Gauge     | User permissions by module and action                   | `user_id`, `user_email`, `module`, `permission`, `value` |
+| `netbird_users_scrape_errors_total`     | Counter   | Total number of errors encountered while scraping users | `error_type`                                             |
+| `netbird_users_scrape_duration_seconds` | Histogram | Time spent scraping users from the NetBird API          | -                                                        |
 
 ### DNS Metrics Table
 
-| Metric Name | Type | Description | Labels |
-|-------------|------|-------------|--------|
-| `netbird_dns_nameserver_groups_total` | Gauge | Total number of NetBird nameserver groups | - |
-| `netbird_dns_nameserver_groups_enabled` | Gauge | Number of enabled/disabled nameserver groups | `enabled` |
-| `netbird_dns_nameserver_groups_primary` | Gauge | Number of primary/secondary nameserver groups | `primary` |
-| `netbird_dns_nameserver_group_domains_count` | Gauge | Number of domains configured in each nameserver group | `group_id`, `group_name` |
-| `netbird_dns_nameservers_total` | Gauge | Total number of nameservers in each group | `group_id`, `group_name` |
-| `netbird_dns_nameservers_by_type` | Gauge | Number of nameservers by type (UDP/TCP) | `ns_type` |
-| `netbird_dns_nameservers_by_port` | Gauge | Number of nameservers by port | `port` |
-| `netbird_dns_management_disabled_groups_count` | Gauge | Number of groups with DNS management disabled | - |
+| Metric Name                                    | Type  | Description                                           | Labels                   |
+| ---------------------------------------------- | ----- | ----------------------------------------------------- | ------------------------ |
+| `netbird_dns_nameserver_groups_total`          | Gauge | Total number of NetBird nameserver groups             | -                        |
+| `netbird_dns_nameserver_groups_enabled`        | Gauge | Number of enabled/disabled nameserver groups          | `enabled`                |
+| `netbird_dns_nameserver_groups_primary`        | Gauge | Number of primary/secondary nameserver groups         | `primary`                |
+| `netbird_dns_nameserver_group_domains_count`   | Gauge | Number of domains configured in each nameserver group | `group_id`, `group_name` |
+| `netbird_dns_nameservers_total`                | Gauge | Total number of nameservers in each group             | `group_id`, `group_name` |
+| `netbird_dns_nameservers_by_type`              | Gauge | Number of nameservers by type (UDP/TCP)               | `ns_type`                |
+| `netbird_dns_nameservers_by_port`              | Gauge | Number of nameservers by port                         | `port`                   |
+| `netbird_dns_management_disabled_groups_count` | Gauge | Number of groups with DNS management disabled         | -                        |
 
 ### Network Metrics Table
 
-| Metric Name | Type | Description | Labels |
-|-------------|------|-------------|--------|
-| `netbird_networks_total` | Gauge | Total number of networks in your NetBird deployment | - |
-| `netbird_network_routers_count` | Gauge | Number of routers configured in each network | `network_id`, `network_name` |
-| `netbird_network_resources_count` | Gauge | Number of resources associated with each network | `network_id`, `network_name` |
-| `netbird_network_policies_count` | Gauge | Number of policies applied to each network | `network_id`, `network_name` |
-| `netbird_network_routing_peers_count` | Gauge | Number of routing peers in each network | `network_id`, `network_name` |
-| `netbird_network_info` | Gauge | Information about networks (always 1) | `network_id`, `network_name`, `description` |
-| `netbird_networks_scrape_errors_total` | Counter | Total number of errors encountered while scraping networks | `error_type` |
-| `netbird_networks_scrape_duration_seconds` | Histogram | Time spent scraping networks from the NetBird API | - |
+| Metric Name                                | Type      | Description                                                | Labels                                      |
+| ------------------------------------------ | --------- | ---------------------------------------------------------- | ------------------------------------------- |
+| `netbird_networks_total`                   | Gauge     | Total number of networks in your NetBird deployment        | -                                           |
+| `netbird_network_routers_count`            | Gauge     | Number of routers configured in each network               | `network_id`, `network_name`                |
+| `netbird_network_resources_count`          | Gauge     | Number of resources associated with each network           | `network_id`, `network_name`                |
+| `netbird_network_policies_count`           | Gauge     | Number of policies applied to each network                 | `network_id`, `network_name`                |
+| `netbird_network_routing_peers_count`      | Gauge     | Number of routing peers in each network                    | `network_id`, `network_name`                |
+| `netbird_network_info`                     | Gauge     | Information about networks (always 1)                      | `network_id`, `network_name`, `description` |
+| `netbird_networks_scrape_errors_total`     | Counter   | Total number of errors encountered while scraping networks | `error_type`                                |
+| `netbird_networks_scrape_duration_seconds` | Histogram | Time spent scraping networks from the NetBird API          | -                                           |
 
 ### Exporter Metrics Table
 
-| Metric Name | Type | Description | Labels |
-|-------------|------|-------------|--------|
-| `netbird_exporter_scrape_duration_seconds` | Histogram | Time spent scraping NetBird API | - |
-| `netbird_exporter_scrape_errors_total` | Counter | Total number of scrape errors | - |
+| Metric Name                                | Type      | Description                     | Labels |
+| ------------------------------------------ | --------- | ------------------------------- | ------ |
+| `netbird_exporter_scrape_duration_seconds` | Histogram | Time spent scraping NetBird API | -      |
+| `netbird_exporter_scrape_errors_total`     | Counter   | Total number of scrape errors   | -      |
 
 ## Configuration
 
 The exporter is configured via environment variables:
 
-| Variable | Default | Required | Description |
-|----------|---------|----------|-------------|
-| `NETBIRD_API_URL` | `https://api.netbird.io` | No | NetBird API base URL |
-| `NETBIRD_API_TOKEN` | - | **Yes** | NetBird API authentication token |
-| `LISTEN_ADDRESS` | `:8080` | No | Address and port to listen on |
-| `METRICS_PATH` | `/metrics` | No | Path where metrics are exposed |
-| `LOG_LEVEL` | `info` | No | Log level (debug, info, warn, error) |
+| Variable            | Default                  | Required | Description                          |
+| ------------------- | ------------------------ | -------- | ------------------------------------ |
+| `NETBIRD_API_URL`   | `https://api.netbird.io` | No       | NetBird API base URL                 |
+| `NETBIRD_API_TOKEN` | -                        | **Yes**  | NetBird API authentication token     |
+| `LISTEN_ADDRESS`    | `:8080`                  | No       | Address and port to listen on        |
+| `METRICS_PATH`      | `/metrics`               | No       | Path where metrics are exposed       |
+| `LOG_LEVEL`         | `info`                   | No       | Log level (debug, info, warn, error) |
 
 ## Getting Your NetBird API Token
 
 1. Log into your NetBird dashboard
-2. Go to **Settings** → **API Keys**  
+2. Go to **Settings** → **API Keys**
 3. Create a new API key with appropriate permissions
 4. Copy the token and use it as `NETBIRD_API_TOKEN`
 
@@ -214,9 +213,9 @@ Add the following to your `prometheus.yml`:
 
 ```yaml
 scrape_configs:
-  - job_name: 'netbird-api-exporter'
+  - job_name: "netbird-api-exporter"
     static_configs:
-      - targets: ['localhost:8080']
+      - targets: ["localhost:8080"]
     scrape_interval: 30s
     metrics_path: /metrics
 ```
@@ -490,11 +489,15 @@ Set `LOG_LEVEL=debug` for more verbose output.
 - Implement proper firewall rules to restrict access to the metrics endpoint
 - Regularly rotate your API tokens
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes, new features, and bug fixes in each release.
+
 ## Development
 
 ### Prerequisites
 
-- Go 1.21 or later
+- Go 1.23 or later
 - golangci-lint (for linting)
 
 ### Building from Source
@@ -507,6 +510,27 @@ go build -o netbird-api-exporter
 ### Code Quality
 
 This project uses several tools to maintain code quality:
+
+#### Pre-commit Hooks (Recommended)
+
+Set up pre-commit hooks to automatically run formatting, linting, and tests before each commit:
+
+```bash
+make setup-precommit
+```
+
+This provides two options:
+
+- **Simple Git Hook**: Basic bash script (no external dependencies)
+- **Pre-commit Framework**: Advanced hook management with additional checks
+
+For quick setup with the simple git hook:
+
+```bash
+make install-hooks
+```
+
+See the [Pre-commit Hooks Guide](docs/getting-started/pre-commit-hooks.md) for detailed setup instructions and configuration options.
 
 #### Linting
 

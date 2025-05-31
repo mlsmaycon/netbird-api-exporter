@@ -28,4 +28,4 @@ spec:
   targetLabels:
     {{- toYaml .Values.serviceMonitor.targetLabels | nindent 4 }}
   {{- end }}
-{{- end }} 
+{{- end }}

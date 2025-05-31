@@ -46,14 +46,14 @@
 
 ⚠️  WARNING: NetBird API token not set!
    Please set the API token using one of these methods:
-   
+
    1. Upgrade with --set:
       helm upgrade {{ .Release.Name }} ./charts/netbird-api-exporter --set netbird.apiToken="your-token"
-   
+
    2. Create secret manually:
       kubectl create secret generic {{ include "netbird-api-exporter.secretName" . }} \
         --from-literal=netbird-api-token="your-token"
-      
+
       Then restart the deployment:
       kubectl rollout restart deployment/{{ include "netbird-api-exporter.fullname" . }}
 
@@ -72,11 +72,11 @@
 📊 Available Metrics:
    - netbird_peers_total - Total number of peers
    - netbird_peers_connected - Connected/disconnected peers
-   - netbird_groups_total - Total number of groups  
+   - netbird_groups_total - Total number of groups
    - netbird_users_total - Total number of users
    - netbird_networks_total - Total number of networks
    - netbird_dns_nameserver_groups_total - DNS nameserver groups
-   
+
    For a complete list of metrics, visit the metrics endpoint.
 
-📖 Documentation: https://github.com/matanbaruch/netbird-api-exporter 
+📖 Documentation: https://github.com/matanbaruch/netbird-api-exporter

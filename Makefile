@@ -1,4 +1,4 @@
-.PHONY: build run clean test docker-build docker-run docker-compose-up docker-compose-down
+.PHONY: build run clean test docker-build docker-run docker-compose-up docker-compose-down setup-precommit install-hooks verify
 
 # Go parameters
 GOCMD=go
@@ -95,6 +95,23 @@ build-all:
 check: test lint
 	@echo "All checks passed!"
 
+# Set up pre-commit hooks
+setup-precommit:
+	@echo "Setting up pre-commit hooks..."
+	@./scripts/setup-precommit.sh
+
+# Install pre-commit hooks (simple version)
+install-hooks:
+	@echo "Installing simple git pre-commit hook..."
+	@cp scripts/pre-commit .git/hooks/pre-commit
+	@chmod +x .git/hooks/pre-commit
+	@echo "✅ Pre-commit hook installed!"
+
+# Verify development environment setup
+verify:
+	@echo "Verifying development environment..."
+	@./scripts/verify-setup.sh
+
 # Help
 help:
 	@echo "Available targets:"
@@ -113,6 +130,9 @@ help:
 	@echo "  fmt             - Format code"
 	@echo "  lint            - Lint code (golangci-lint, go vet, format check)"
 	@echo "  check           - Run all checks (tests + linting)"
+	@echo "  setup-precommit - Interactive setup for pre-commit hooks"
+	@echo "  install-hooks   - Install simple git pre-commit hook"
+	@echo "  verify          - Verify development environment setup"
 	@echo "  security        - Run security scan"
 	@echo "  build-all       - Build for multiple platforms"
-	@echo "  help            - Show this help" 
+	@echo "  help            - Show this help"
