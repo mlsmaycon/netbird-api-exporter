@@ -146,6 +146,8 @@ func (e *NetworksExporter) Collect(ch chan<- prometheus.Metric) {
 func (e *NetworksExporter) fetchNetworks() ([]netbird.Network, error) {
 	url := fmt.Sprintf("%s/api/networks", e.client.GetBaseURL())
 
+	logrus.WithField("url", url).Debug("Fetching networks from NetBird API")
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
@@ -173,24 +175,48 @@ func (e *NetworksExporter) fetchNetworks() ([]netbird.Network, error) {
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
 
+	logrus.WithField("count", len(networks)).Debug("Successfully fetched networks from API")
+
 	return networks, nil
 }
 
 // updateMetrics updates Prometheus metrics based on networks data
 func (e *NetworksExporter) updateMetrics(networks []netbird.Network) {
 	totalNetworks := len(networks)
+	totalRouters := 0
+	totalResources := 0
+	totalPolicies := 0
+	totalRoutingPeers := 0
 
 	for _, network := range networks {
 		networkLabels := []string{network.ID, network.Name}
 		infoLabels := []string{network.ID, network.Name, network.Description}
 
+		routersCount := len(network.Routers)
+		resourcesCount := len(network.Resources)
+		policiesCount := len(network.Policies)
+
 		// Set basic network metrics
-		e.networkRoutersCount.WithLabelValues(networkLabels...).Set(float64(len(network.Routers)))
-		e.networkResourcesCount.WithLabelValues(networkLabels...).Set(float64(len(network.Resources)))
-		e.networkPoliciesCount.WithLabelValues(networkLabels...).Set(float64(len(network.Policies)))
+		e.networkRoutersCount.WithLabelValues(networkLabels...).Set(float64(routersCount))
+		e.networkResourcesCount.WithLabelValues(networkLabels...).Set(float64(resourcesCount))
+		e.networkPoliciesCount.WithLabelValues(networkLabels...).Set(float64(policiesCount))
 		e.networkRoutingPeersCount.WithLabelValues(networkLabels...).Set(float64(network.RoutingPeersCount))
 		e.networkInfo.WithLabelValues(infoLabels...).Set(1)
+
+		// Add to totals
+		totalRouters += routersCount
+		totalResources += resourcesCount
+		totalPolicies += policiesCount
+		totalRoutingPeers += network.RoutingPeersCount
 	}
 
 	e.networksTotal.WithLabelValues().Set(float64(totalNetworks))
+
+	logrus.WithFields(logrus.Fields{
+		"total_networks":       totalNetworks,
+		"total_routers":        totalRouters,
+		"total_resources":      totalResources,
+		"total_policies":       totalPolicies,
+		"total_routing_peers":  totalRoutingPeers,
+	}).Debug("Updated network metrics")
 }

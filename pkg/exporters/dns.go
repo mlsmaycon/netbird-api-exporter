@@ -153,6 +153,8 @@ func (e *DNSExporter) Collect(ch chan<- prometheus.Metric) {
 func (e *DNSExporter) fetchNameserverGroups() ([]netbird.NameserverGroup, error) {
 	url := fmt.Sprintf("%s/api/dns/nameservers", e.client.GetBaseURL())
 
+	logrus.WithField("url", url).Debug("Fetching nameserver groups from NetBird API")
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
@@ -180,12 +182,16 @@ func (e *DNSExporter) fetchNameserverGroups() ([]netbird.NameserverGroup, error)
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
 
+	logrus.WithField("count", len(nameserverGroups)).Debug("Successfully fetched nameserver groups from API")
+
 	return nameserverGroups, nil
 }
 
 // fetchDNSSettings retrieves DNS settings from NetBird API
 func (e *DNSExporter) fetchDNSSettings() (*netbird.DNSSettings, error) {
 	url := fmt.Sprintf("%s/api/dns/settings", e.client.GetBaseURL())
+
+	logrus.WithField("url", url).Debug("Fetching DNS settings from NetBird API")
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -213,6 +219,8 @@ func (e *DNSExporter) fetchDNSSettings() (*netbird.DNSSettings, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&dnsSettings); err != nil {
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
+
+	logrus.Debug("Successfully fetched DNS settings from API")
 
 	return &dnsSettings, nil
 }

@@ -66,10 +66,14 @@ func (e *NetBirdExporter) Describe(ch chan<- *prometheus.Desc) {
 func (e *NetBirdExporter) Collect(ch chan<- prometheus.Metric) {
 	start := time.Now()
 	defer func() {
-		e.scrapeDuration.Observe(time.Since(start).Seconds())
+		duration := time.Since(start)
+		e.scrapeDuration.Observe(duration.Seconds())
 		e.scrapeDuration.Collect(ch)
 		e.scrapeErrors.Collect(ch)
+		logrus.WithField("total_duration", duration).Debug("Completed NetBird metrics collection")
 	}()
+
+	logrus.Debug("Starting NetBird metrics collection")
 
 	// Collect from all sub-exporters
 	func() {
@@ -79,7 +83,9 @@ func (e *NetBirdExporter) Collect(ch chan<- prometheus.Metric) {
 				e.scrapeErrors.Inc()
 			}
 		}()
+		logrus.Debug("Starting peers collection")
 		e.peersExporter.Collect(ch)
+		logrus.Debug("Completed peers collection")
 	}()
 
 	func() {
@@ -89,7 +95,9 @@ func (e *NetBirdExporter) Collect(ch chan<- prometheus.Metric) {
 				e.scrapeErrors.Inc()
 			}
 		}()
+		logrus.Debug("Starting groups collection")
 		e.groupsExporter.Collect(ch)
+		logrus.Debug("Completed groups collection")
 	}()
 
 	func() {
@@ -99,7 +107,9 @@ func (e *NetBirdExporter) Collect(ch chan<- prometheus.Metric) {
 				e.scrapeErrors.Inc()
 			}
 		}()
+		logrus.Debug("Starting users collection")
 		e.usersExporter.Collect(ch)
+		logrus.Debug("Completed users collection")
 	}()
 
 	func() {
@@ -109,7 +119,9 @@ func (e *NetBirdExporter) Collect(ch chan<- prometheus.Metric) {
 				e.scrapeErrors.Inc()
 			}
 		}()
+		logrus.Debug("Starting DNS collection")
 		e.dnsExporter.Collect(ch)
+		logrus.Debug("Completed DNS collection")
 	}()
 
 	func() {
@@ -119,7 +131,9 @@ func (e *NetBirdExporter) Collect(ch chan<- prometheus.Metric) {
 				e.scrapeErrors.Inc()
 			}
 		}()
+		logrus.Debug("Starting networks collection")
 		e.networksExporter.Collect(ch)
+		logrus.Debug("Completed networks collection")
 	}()
 
 	// Future exporters can be added here like:

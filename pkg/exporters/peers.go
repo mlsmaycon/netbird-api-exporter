@@ -169,6 +169,8 @@ func (e *PeersExporter) Collect(ch chan<- prometheus.Metric) {
 func (e *PeersExporter) fetchPeers() ([]netbird.Peer, error) {
 	url := fmt.Sprintf("%s/api/peers", e.client.GetBaseURL())
 
+	logrus.WithField("url", url).Debug("Fetching peers from NetBird API")
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
@@ -195,6 +197,8 @@ func (e *PeersExporter) fetchPeers() ([]netbird.Peer, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&peers); err != nil {
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
+
+	logrus.WithField("count", len(peers)).Debug("Successfully fetched peers from API")
 
 	return peers, nil
 }
@@ -316,4 +320,18 @@ func (e *PeersExporter) updateMetrics(peers []netbird.Peer) {
 	// Approval status
 	e.peersApprovalRequired.WithLabelValues("true").Set(float64(approvalRequiredCount))
 	e.peersApprovalRequired.WithLabelValues("false").Set(float64(approvalNotRequiredCount))
+
+	logrus.WithFields(logrus.Fields{
+		"total_peers":             totalPeers,
+		"connected_peers":         connectedCount,
+		"disconnected_peers":      disconnectedCount,
+		"ssh_enabled_peers":       sshEnabledCount,
+		"ssh_disabled_peers":      sshDisabledCount,
+		"login_expired_peers":     loginExpiredCount,
+		"login_valid_peers":       loginValidCount,
+		"approval_required_peers": approvalRequiredCount,
+		"os_distributions":        len(osCounts),
+		"country_distributions":   len(countryCounts),
+		"group_memberships":       len(groupCounts),
+	}).Debug("Updated peer metrics")
 }

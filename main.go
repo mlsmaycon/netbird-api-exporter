@@ -17,6 +17,44 @@ import (
 	"netbird-api-exporter/pkg/utils"
 )
 
+// debugLoggingMiddleware logs HTTP requests when debug level is enabled
+func debugLoggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		
+		logrus.WithFields(logrus.Fields{
+			"method":     r.Method,
+			"path":       r.URL.Path,
+			"remote_addr": r.RemoteAddr,
+			"user_agent": r.UserAgent(),
+		}).Debug("HTTP request received")
+		
+		// Create a custom ResponseWriter to capture status code
+		ww := &wrappedWriter{ResponseWriter: w, statusCode: http.StatusOK}
+		
+		next.ServeHTTP(ww, r)
+		
+		duration := time.Since(start)
+		logrus.WithFields(logrus.Fields{
+			"method":      r.Method,
+			"path":        r.URL.Path,
+			"status_code": ww.statusCode,
+			"duration":    duration,
+		}).Debug("HTTP request completed")
+	})
+}
+
+// wrappedWriter wraps http.ResponseWriter to capture status code
+type wrappedWriter struct {
+	http.ResponseWriter
+	statusCode int
+}
+
+func (w *wrappedWriter) WriteHeader(statusCode int) {
+	w.statusCode = statusCode
+	w.ResponseWriter.WriteHeader(statusCode)
+}
+
 func main() {
 	// Configuration from environment variables
 	netbirdURL := utils.GetEnvWithDefault("NETBIRD_API_URL", "https://api.netbird.io")
@@ -54,11 +92,18 @@ func main() {
 	// Create HTTP server
 	mux := http.NewServeMux()
 
+	// Debug logging middleware
+	var handler http.Handler = mux
+	if logrus.GetLevel() == logrus.DebugLevel {
+		handler = debugLoggingMiddleware(mux)
+	}
+
 	// Metrics endpoint
 	mux.Handle(metricsPath, promhttp.Handler())
 
 	// Health check endpoint
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		logrus.Debug("Health check endpoint accessed")
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		if _, err := fmt.Fprintf(w, `{"status":"healthy","timestamp":"%s"}`, time.Now().Format(time.RFC3339)); err != nil {
@@ -68,6 +113,7 @@ func main() {
 
 	// Root endpoint with information
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		logrus.Debug("Root endpoint accessed")
 		w.Header().Set("Content-Type", "text/html")
 		if _, err := fmt.Fprintf(w, `
 		<html>
@@ -96,7 +142,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:              listenAddr,
-		Handler:           mux,
+		Handler:           handler,
 		ReadTimeout:       15 * time.Second,
 		WriteTimeout:      15 * time.Second,
 		ReadHeaderTimeout: 10 * time.Second,

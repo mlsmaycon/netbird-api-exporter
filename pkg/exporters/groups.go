@@ -134,6 +134,8 @@ func (e *GroupsExporter) Collect(ch chan<- prometheus.Metric) {
 func (e *GroupsExporter) fetchGroups() ([]netbird.Group, error) {
 	url := fmt.Sprintf("%s/api/groups", e.client.GetBaseURL())
 
+	logrus.WithField("url", url).Debug("Fetching groups from NetBird API")
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
@@ -161,6 +163,8 @@ func (e *GroupsExporter) fetchGroups() ([]netbird.Group, error) {
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
 
+	logrus.WithField("count", len(groups)).Debug("Successfully fetched groups from API")
+
 	return groups, nil
 }
 
@@ -170,6 +174,9 @@ func (e *GroupsExporter) updateMetrics(groups []netbird.Group) {
 
 	// Count resources by type across all groups
 	resourceTypeCount := make(map[string]map[string]int) // group_id -> resource_type -> count
+	totalPeers := 0
+	totalResources := 0
+	resourceTypeTotals := make(map[string]int)
 
 	for _, group := range groups {
 		groupLabels := []string{group.ID, group.Name, group.Issued}
@@ -179,6 +186,10 @@ func (e *GroupsExporter) updateMetrics(groups []netbird.Group) {
 		e.groupResourcesCount.WithLabelValues(groupLabels...).Set(float64(group.ResourcesCount))
 		e.groupInfo.WithLabelValues(groupLabels...).Set(1)
 
+		// Add to totals
+		totalPeers += group.PeersCount
+		totalResources += group.ResourcesCount
+
 		// Count resources by type for this group
 		if resourceTypeCount[group.ID] == nil {
 			resourceTypeCount[group.ID] = make(map[string]int)
@@ -186,6 +197,7 @@ func (e *GroupsExporter) updateMetrics(groups []netbird.Group) {
 
 		for _, resource := range group.Resources {
 			resourceTypeCount[group.ID][resource.Type]++
+			resourceTypeTotals[resource.Type]++
 		}
 
 		// Set resource type metrics
@@ -195,4 +207,12 @@ func (e *GroupsExporter) updateMetrics(groups []netbird.Group) {
 	}
 
 	e.groupsTotal.WithLabelValues().Set(float64(totalGroups))
+
+	logrus.WithFields(logrus.Fields{
+		"total_groups":          totalGroups,
+		"total_peers_in_groups": totalPeers,
+		"total_resources":       totalResources,
+		"resource_types":        len(resourceTypeTotals),
+		"resource_type_counts":  resourceTypeTotals,
+	}).Debug("Updated group metrics")
 }

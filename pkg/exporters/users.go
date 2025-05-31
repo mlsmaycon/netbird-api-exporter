@@ -194,6 +194,8 @@ func (e *UsersExporter) Collect(ch chan<- prometheus.Metric) {
 func (e *UsersExporter) fetchUsers() ([]netbird.User, error) {
 	url := fmt.Sprintf("%s/api/users", e.client.GetBaseURL())
 
+	logrus.WithField("url", url).Debug("Fetching users from NetBird API")
+
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
@@ -221,6 +223,8 @@ func (e *UsersExporter) fetchUsers() ([]netbird.User, error) {
 		return nil, fmt.Errorf("decoding response: %w", err)
 	}
 
+	logrus.WithField("count", len(users)).Debug("Successfully fetched users from API")
+
 	return users, nil
 }
 
@@ -238,6 +242,7 @@ func (e *UsersExporter) updateMetrics(users []netbird.User) {
 	issuedCounts := make(map[string]int)
 	restrictedCount := 0
 	unrestrictedCount := 0
+	totalPermissionsCount := 0
 
 	for _, user := range users {
 		// Role distribution
@@ -301,6 +306,7 @@ func (e *UsersExporter) updateMetrics(users []netbird.User) {
 					valueStr = "true"
 				}
 				e.usersPermissions.WithLabelValues(user.ID, user.Email, module, permission, valueStr).Set(1)
+				totalPermissionsCount++
 			}
 		}
 	}
@@ -318,11 +324,11 @@ func (e *UsersExporter) updateMetrics(users []netbird.User) {
 		e.usersByStatus.WithLabelValues(status).Set(float64(count))
 	}
 
-	// Service user classification
+	// Service user counts
 	e.usersServiceUsers.WithLabelValues("true").Set(float64(serviceUserCount))
 	e.usersServiceUsers.WithLabelValues("false").Set(float64(regularUserCount))
 
-	// Blocked status
+	// Blocked counts
 	e.usersBlocked.WithLabelValues("true").Set(float64(blockedCount))
 	e.usersBlocked.WithLabelValues("false").Set(float64(unblockedCount))
 
@@ -331,7 +337,21 @@ func (e *UsersExporter) updateMetrics(users []netbird.User) {
 		e.usersByIssued.WithLabelValues(issued).Set(float64(count))
 	}
 
-	// Restricted permissions
+	// Restricted permission counts
 	e.usersRestricted.WithLabelValues("true").Set(float64(restrictedCount))
 	e.usersRestricted.WithLabelValues("false").Set(float64(unrestrictedCount))
+
+	logrus.WithFields(logrus.Fields{
+		"total_users":             totalUsers,
+		"service_users":           serviceUserCount,
+		"regular_users":           regularUserCount,
+		"blocked_users":           blockedCount,
+		"unblocked_users":         unblockedCount,
+		"restricted_users":        restrictedCount,
+		"unrestricted_users":      unrestrictedCount,
+		"role_distributions":      roleCounts,
+		"status_distributions":    statusCounts,
+		"issued_distributions":    issuedCounts,
+		"total_permissions_count": totalPermissionsCount,
+	}).Debug("Updated user metrics")
 }
