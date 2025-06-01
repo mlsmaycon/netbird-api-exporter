@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ## [0.1.26] - 2025-06-01
+=======
+
+### Features
+- Add comprehensive GitHub badges including build status, Go version, Prometheus, Docker, Kubernetes, license, and distribution metrics
+Files modified in this change:
+- Modified: README.md
+>>>>>>> 9a5e5b7 (feat: add comprehensive GitHub badges to README and update changelog)
 
 ## [0.1.25] - 2025-06-01
 

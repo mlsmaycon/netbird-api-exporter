@@ -2,6 +2,33 @@
 
 ![assets_task_01jwh7hmm6f93ab38cy6rb9szb_1748630092_img_0](https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892)
 
+<!-- Build and Quality Badges -->
+
+[![Lint](https://github.com/matanbaruch/netbird-api-exporter/actions/workflows/lint.yml/badge.svg)](https://github.com/matanbaruch/netbird-api-exporter/actions/workflows/lint.yml)
+[![Release](https://github.com/matanbaruch/netbird-api-exporter/actions/workflows/release.yml/badge.svg)](https://github.com/matanbaruch/netbird-api-exporter/actions/workflows/release.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/matanbaruch/netbird-api-exporter)](https://goreportcard.com/report/github.com/matanbaruch/netbird-api-exporter)
+
+<!-- Language and Tech Stack -->
+
+![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
+
+<!-- Version and Distribution -->
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/matanbaruch/netbird-api-exporter)](https://github.com/matanbaruch/netbird-api-exporter/releases/latest)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/matanbaruch/netbird-api-exporter)](https://github.com/matanbaruch/netbird-api-exporter/blob/main/go.mod)
+[![License](https://img.shields.io/github/license/matanbaruch/netbird-api-exporter)](https://github.com/matanbaruch/netbird-api-exporter/blob/main/LICENSE)
+
+<!-- GitHub Stats -->
+
+[![GitHub stars](https://img.shields.io/github/stars/matanbaruch/netbird-api-exporter?style=social)](https://github.com/matanbaruch/netbird-api-exporter/stargazers)
+
+<!-- Distribution Platforms -->
+
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/netbird-api-exporter)](https://artifacthub.io/packages/search?repo=netbird-api-exporter)
+
 A Prometheus exporter for NetBird API that provides comprehensive metrics about your NetBird network peers, groups, users, networks, and DNS configuration. This exporter fetches data from the [NetBird REST API](https://docs.netbird.io/ipa/resources/peers), [Groups API](https://docs.netbird.io/ipa/resources/groups), [Users API](https://docs.netbird.io/ipa/resources/users), [Networks API](https://docs.netbird.io/ipa/resources/networks), and [DNS API](https://docs.netbird.io/ipa/resources/dns) and exposes it in Prometheus format.
 
 ## Metrics Overview
