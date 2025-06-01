@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Bugfix
+- Fix GitHub Actions workflow by installing ORAS before using it in release pipeline
 - Fix GitHub Actions release workflow Helm packaging error with 'latest' version
 
 ## [0.1.22] - 2025-06-01

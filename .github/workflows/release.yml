@@ -111,6 +111,9 @@ jobs:
       run: |
         echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.REGISTRY }} --username ${{ github.actor }} --password-stdin
 
+    - name: Set up ORAS
+      uses: oras-project/setup-oras@v1
+
     - name: Package Helm chart
       run: |
         # Package with specific version
@@ -124,9 +127,6 @@ jobs:
         # Tag the same chart as latest using ORAS (since Helm doesn't support latest as a semantic version)
         echo ${{ secrets.GITHUB_TOKEN }} | oras login ${{ env.REGISTRY }} --username ${{ github.actor }} --password-stdin
         oras cp ${{ env.REGISTRY }}/${{ github.repository }}/charts/netbird-api-exporter:${{ needs.prepare-version.outputs.new_version }} ${{ env.REGISTRY }}/${{ github.repository }}/charts/netbird-api-exporter:latest
-
-    - name: Set up ORAS
-      uses: oras-project/setup-oras@v1
 
     - name: Push Artifact Hub metadata to OCI registry
       run: |
