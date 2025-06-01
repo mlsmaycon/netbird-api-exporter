@@ -468,6 +468,21 @@ Set `LOG_LEVEL=debug` for more verbose output.
 - Implement proper firewall rules to restrict access to the metrics endpoint
 - Regularly rotate your API tokens
 
+### Artifact Verification
+
+All releases include signed build provenance attestations for enhanced supply chain security. You can verify the authenticity of our artifacts using the GitHub CLI:
+
+```bash
+# Verify Docker image attestation
+gh attestation verify oci://ghcr.io/matanbaruch/netbird-api-exporter:latest --owner matanbaruch
+
+# Download and verify binary attestations
+gh run download --repo matanbaruch/netbird-api-exporter --name netbird-api-exporter-binaries-[VERSION]
+gh attestation verify netbird-api-exporter-linux-amd64 --owner matanbaruch
+```
+
+For complete security documentation, see [SECURITY.md](SECURITY.md).
+
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes, new features, and bug fixes in each release.

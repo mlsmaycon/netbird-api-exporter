@@ -53,6 +53,10 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
+      attestations: write
+    outputs:
+      image-digest: ${{ steps.build.outputs.digest }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -80,6 +84,7 @@ jobs:
           type=raw,value=${{ needs.prepare-version.outputs.new_tag }}
 
     - name: Build and push Docker image
+      id: build
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -89,6 +94,55 @@ jobs:
         platforms: linux/amd64,linux/arm64
         cache-from: type=gha
         cache-to: type=gha,mode=max
+
+    - name: Attest Docker image
+      uses: actions/attest-build-provenance@v2
+      with:
+        subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        subject-digest: ${{ steps.build.outputs.digest }}
+        push-to-registry: true
+
+  build-binaries:
+    needs: prepare-version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.23'
+
+    - name: Build binaries for multiple platforms
+      run: |
+        mkdir -p bin
+        make build-all
+
+    - name: Generate checksums
+      run: |
+        cd bin
+        sha256sum * > checksums.txt
+        cat checksums.txt
+
+    - name: Attest binary artifacts
+      uses: actions/attest-build-provenance@v2
+      with:
+        subject-path: 'bin/*'
+
+    - name: Upload binaries as artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: netbird-api-exporter-binaries-${{ needs.prepare-version.outputs.new_version }}
+        path: |
+          bin/
+        retention-days: 30
 
   build-and-push-helm:
     needs: prepare-version
@@ -138,7 +192,7 @@ jobs:
           artifacthub-repo.yml:application/vnd.cncf.artifacthub.repository-metadata.layer.v1.yaml
 
   commit-version-bump:
-    needs: [prepare-version, build-and-push-docker, build-and-push-helm]
+    needs: [prepare-version, build-and-push-docker, build-binaries, build-and-push-helm]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -190,7 +244,7 @@ jobs:
         git push origin main
 
   push-tag:
-    needs: [prepare-version, build-and-push-docker, build-and-push-helm, commit-version-bump]
+    needs: [prepare-version, build-and-push-docker, build-binaries, build-and-push-helm, commit-version-bump]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -213,7 +267,7 @@ jobs:
         git push origin $NEW_TAG
 
   create-release:
-    needs: [prepare-version, build-and-push-docker, build-and-push-helm, commit-version-bump, push-tag]
+    needs: [prepare-version, build-and-push-docker, build-binaries, build-and-push-helm, commit-version-bump, push-tag]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -279,5 +333,19 @@ jobs:
           - Docker image: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-version.outputs.new_version }}`
           - Helm chart (versioned): `oci://${{ env.REGISTRY }}/${{ github.repository }}/charts/netbird-api-exporter:${{ needs.prepare-version.outputs.new_version }}`
           - Helm chart (latest): `oci://${{ env.REGISTRY }}/${{ github.repository }}/charts/netbird-api-exporter:latest`
+          - Go binaries: Available as workflow artifacts with build provenance attestations
+
+          ### Security & Attestations
+          All artifacts in this release include signed build provenance attestations using [Sigstore](https://sigstore.dev/). 
+          You can verify the authenticity and build provenance of artifacts using the [GitHub CLI](https://cli.github.com/manual/gh_attestation_verify):
+
+          ```bash
+          # Verify Docker image attestation
+          gh attestation verify oci://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.prepare-version.outputs.new_version }} --owner ${{ github.repository_owner }}
+
+          # Download and verify binary attestations
+          gh run download --repo ${{ github.repository }} --name netbird-api-exporter-binaries-${{ needs.prepare-version.outputs.new_version }}
+          gh attestation verify netbird-api-exporter-linux-amd64 --owner ${{ github.repository_owner }}
+          ```
         draft: false
         prerelease: false

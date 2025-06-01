@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+
+### Features
+- Enhanced update-changelog.sh script to also update Helm chart artifacthub.io/changes annotation and include uncommitted files summary
+Files modified in this change:
+- Modified: .github/workflows/release.yml
+- Modified: ARCHITECTURE.md
+- Modified: CHANGELOG.md
+- Modified: README.md
+- Modified: SECURITY.md
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- Modified: scripts/update-changelog.sh
+
+### Security
+- Add build provenance attestations for Docker images and Go binaries
+
 ## [0.1.24] - 2025-06-01
 
 ## [0.1.23] - 2025-06-01

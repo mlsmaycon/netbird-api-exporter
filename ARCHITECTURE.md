@@ -382,6 +382,28 @@ func TestPoliciesExporter_Collect(t *testing.T) {
 - Configurable timeouts
 - Certificate validation
 
+### Build Security & Supply Chain
+
+- **Artifact Attestations**: All releases include signed build provenance attestations
+- **Sigstore Integration**: Container images and binaries are signed using Sigstore
+- **GitHub Actions**: Builds occur in secure, auditable GitHub Actions environment
+- **Reproducible Builds**: Pinned dependencies and deterministic build process
+- **SLSA Compliance**: Following SLSA (Supply-chain Levels for Software Artifacts) guidelines
+
+#### Verification Process
+
+Users can verify the authenticity of artifacts:
+
+```bash
+# Verify Docker image attestation
+gh attestation verify oci://ghcr.io/matanbaruch/netbird-api-exporter:latest --owner matanbaruch
+
+# Verify binary attestations
+gh attestation verify netbird-api-exporter-linux-amd64 --owner matanbaruch
+```
+
+See [docs/security/artifact-attestations.md](docs/security/artifact-attestations.md) for complete verification instructions.
+
 ## Future Enhancements
 
 ### Planned Features

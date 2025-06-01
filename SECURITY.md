@@ -87,7 +87,8 @@ Please allow us reasonable time to investigate and fix vulnerabilities before pu
 
 - **Reproducible builds**: Use pinned dependencies and container base images
 - **Supply chain**: Verify integrity of dependencies
-- **Signing**: Consider signing releases and container images
+- **Artifact attestations**: All releases include signed build provenance attestations
+- **Signing**: Container images and binaries are signed using Sigstore
 
 ## Security Features
 
@@ -98,6 +99,7 @@ Please allow us reasonable time to investigate and fix vulnerabilities before pu
 3. **Minimal Privileges**: Container runs as non-root user
 4. **Input Validation**: API responses are validated before processing
 5. **Rate Limiting**: Built-in protection against API abuse
+6. **Build Provenance**: All artifacts include signed attestations for supply chain security
 
 ### Configuration Hardening
 
@@ -105,6 +107,37 @@ Please allow us reasonable time to investigate and fix vulnerabilities before pu
 2. **TLS Support**: HTTPS connections to NetBird API
 3. **Metrics Filtering**: Only necessary metrics are exposed
 4. **Health Checks**: Built-in health endpoints for monitoring
+
+### Artifact Verification
+
+#### Verifying Build Provenance
+
+All releases include signed build provenance attestations that can be verified using the GitHub CLI:
+
+```bash
+# Install GitHub CLI if not already installed
+# See: https://cli.github.com/
+
+# Verify Docker image attestation
+gh attestation verify oci://ghcr.io/netbird-io/netbird-api-exporter:latest --owner netbird-io
+
+# Download and verify binary attestations
+gh run download --repo netbird-io/netbird-api-exporter --name netbird-api-exporter-binaries-[VERSION]
+gh attestation verify netbird-api-exporter-linux-amd64 --owner netbird-io
+```
+
+#### What Attestations Provide
+
+- **Build environment**: Verification that artifacts were built in GitHub Actions
+- **Source integrity**: Confirmation of the exact source code used
+- **Supply chain security**: Protection against tampered or malicious artifacts
+- **Audit trail**: Complete provenance information for compliance
+
+#### Supported Artifacts
+
+- Docker images published to `ghcr.io`
+- Go binaries for multiple platforms (Linux, macOS, Windows)
+- Container image signatures and SBOMs (Software Bill of Materials)
 
 ## Security Updates
 
