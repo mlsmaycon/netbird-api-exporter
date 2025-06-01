@@ -19,3 +19,22 @@ keywords:
   - metrics
 annotations:
   category: Monitoring
+  # Artifact Hub annotations
+  artifacthub.io/license: MIT
+  artifacthub.io/links: |
+    - name: GitHub Repository
+      url: https://github.com/matanbaruch/netbird-api-exporter
+    - name: Documentation
+      url: https://github.com/matanbaruch/netbird-api-exporter/blob/main/README.md
+    - name: Changelog
+      url: https://github.com/matanbaruch/netbird-api-exporter/blob/main/CHANGELOG.md
+    - name: Issues
+      url: https://github.com/matanbaruch/netbird-api-exporter/issues
+  artifacthub.io/maintainers: |
+    - name: Matan Baruch
+      email: matan.baruch@example.com
+  artifacthub.io/recommendations: |
+    - url: https://artifacthub.io/packages/helm/prometheus-community/prometheus
+    - url: https://artifacthub.io/packages/helm/grafana/grafana
+  artifacthub.io/changes: |
+    - Add publishing to artifacthub.io for the OCI package of the helm chart

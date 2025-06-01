@@ -130,6 +130,19 @@ docker-compose up -d
 
 ### Option 2: Helm Chart
 
+#### From Artifact Hub (Recommended)
+
+Browse and install from [Artifact Hub](https://artifacthub.io/packages/helm/netbird-api-exporter/netbird-api-exporter). See our [Artifact Hub guide](docs/artifacthub.md) for more details:
+
+```bash
+# Install directly from OCI registry
+helm upgrade --install netbird-api-exporter \
+  oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
+  --set netbird.apiToken=your_token_here
+```
+
+#### From GitHub Packages
+
 Install using Helm with the chart from GitHub packages:
 
 ```bash
