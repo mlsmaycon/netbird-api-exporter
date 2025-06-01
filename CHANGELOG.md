@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.29] - 2025-06-01
 
 <<<<<<< HEAD
+
+### Bugfix
+- Fix ArtifactHub.io annotations by properly quoting strings and correcting alternative name
+Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
+
 ## [0.1.28] - 2025-06-01
 =======
 ### Features
