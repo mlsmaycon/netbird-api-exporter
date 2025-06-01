@@ -160,8 +160,6 @@ jobs:
 
     - name: Set up ORAS
       uses: oras-project/setup-oras@v1
-      with:
-        version: v1.2.3
 
     - name: Push Artifact Hub metadata to OCI registry
       run: |
