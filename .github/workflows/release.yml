@@ -84,7 +84,7 @@ jobs:
         git commit -m "chore: bump version to $NEW_VERSION [skip ci]"
         git tag $NEW_TAG
         git push origin main
-        git push origin $NEW_TAG
+        # Note: Tag will be pushed after successful Docker and Helm builds
 
   build-and-push-docker:
     needs: version-bump
@@ -152,15 +152,19 @@ jobs:
 
     - name: Package Helm chart
       run: |
+        # Package with specific version
         helm package charts/netbird-api-exporter --version ${{ needs.version-bump.outputs.new_version }}
+        
+        # Package with latest version
+        helm package charts/netbird-api-exporter --version latest
 
     - name: Push Helm chart to OCI registry
       run: |
         # Push with specific version
         helm push netbird-api-exporter-${{ needs.version-bump.outputs.new_version }}.tgz oci://${{ env.REGISTRY }}/${{ github.repository }}/charts
         
-        # Also push as latest
-        helm push netbird-api-exporter-${{ needs.version-bump.outputs.new_version }}.tgz oci://${{ env.REGISTRY }}/${{ github.repository }}/charts --version latest
+        # Push as latest
+        helm push netbird-api-exporter-latest.tgz oci://${{ env.REGISTRY }}/${{ github.repository }}/charts
 
     - name: Set up ORAS
       uses: oras-project/setup-oras@v1
@@ -179,8 +183,29 @@ jobs:
           --config /dev/null:application/vnd.cncf.artifacthub.config.v1+yaml \
           artifacthub-repo.yml:application/vnd.cncf.artifacthub.repository-metadata.layer.v1.yaml
 
-  create-release:
+  push-tag:
     needs: [version-bump, build-and-push-docker, build-and-push-helm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Push tag
+      run: |
+        git push origin ${{ needs.version-bump.outputs.new_tag }}
+
+  create-release:
+    needs: [version-bump, build-and-push-docker, build-and-push-helm, push-tag]
     runs-on: ubuntu-latest
     permissions:
       contents: write
