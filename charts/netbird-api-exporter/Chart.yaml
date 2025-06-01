@@ -8,6 +8,8 @@ version: 0.1.25
 
 appVersion: "0.1.25"
 
+icon: https://avatars.githubusercontent.com/u/100464677
+
 home: https://github.com/matanbaruch/netbird-api-exporter
 sources:
   - https://github.com/matanbaruch/netbird-api-exporter
@@ -56,7 +58,7 @@ annotations:
     - title: NetBird API Exporter Dashboard
       url: https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892
   artifacthub.io/changes: |
-    - kind: fixed
+    - Add icon to helm chart for better visual identification in Artifact Hub
       description: Fix Helm chart name to resolve packaging filename mismatch
     - kind: added
       description: Enhanced update-changelog.sh script to also update Helm chart artifacthub.io/changes annotation and include uncommitted files summary

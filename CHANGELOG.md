@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+
+### Features
+- Add icon to helm chart for better visual identification in Artifact Hub
+Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
+
 ### Bugfix
 - Fix Helm chart name to resolve packaging filename mismatch
 Files modified in this change:
