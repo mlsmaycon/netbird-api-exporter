@@ -7,39 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ## [0.1.28] - 2025-06-01
+=======
+### Features
+
+- Refactor GitHub issue templates with improved structure and NetBird-specific context
+  Files modified in this change:
+- Deleted: .github/ISSUE_TEMPLATE.md
+- Modified: .github/ISSUE_TEMPLATE/bug_report.md
+- Deleted: .github/ISSUE_TEMPLATE/custom.md
+- Modified: .github/ISSUE_TEMPLATE/feature_request.md
+- New: .github/ISSUE_TEMPLATE/config.yml
+- New: .github/ISSUE_TEMPLATE/documentation.md
+>>>>>>> 3d4287c (Refactor GitHub issue templates and update CHANGELOG)
 
 ## [0.1.27] - 2025-06-01
 
-<<<<<<< HEAD
-## [0.1.26] - 2025-06-01
-=======
-
 ### Features
-- Add comprehensive GitHub badges including build status, Go version, Prometheus, Docker, Kubernetes, license, and distribution metrics
-Files modified in this change:
-- Modified: README.md
->>>>>>> 9a5e5b7 (feat: add comprehensive GitHub badges to README and update changelog)
 
-## [0.1.25] - 2025-06-01
-
-
-
-
-
-### Features
-- Add icon to helm chart for better visual identification in Artifact Hub
-Files modified in this change:
-- Modified: charts/netbird-api-exporter/Chart.yaml
-
-### Bugfix
-- Fix Helm chart name to resolve packaging filename mismatch
-Files modified in this change:
-- Modified: charts/netbird-api-exporter/Chart.yaml
-
-### Features
 - Enhanced update-changelog.sh script to also update Helm chart artifacthub.io/changes annotation and include uncommitted files summary
-Files modified in this change:
+  Files modified in this change:
 - Modified: .github/workflows/release.yml
 - Modified: ARCHITECTURE.md
 - Modified: CHANGELOG.md
@@ -48,57 +36,100 @@ Files modified in this change:
 - Modified: charts/netbird-api-exporter/Chart.yaml
 - Modified: scripts/update-changelog.sh
 
-
 ### Bugfix
+
 - Fix Helm chart name to resolve packaging filename mismatch
-Files modified in this change:
+  Files modified in this change:
 - Modified: charts/netbird-api-exporter/Chart.yaml
 
 ### Security
+
 - Add build provenance attestations for Docker images and Go binaries
+
+## [0.1.26] - 2025-06-01
+
+### Features
+
+- Add comprehensive GitHub badges including build status, Go version, Prometheus, Docker, Kubernetes, license, and distribution metrics
+  Files modified in this change:
+- Modified: README.md
+
+## [0.1.25] - 2025-06-01
+
+### Features
+
+- Add icon to helm chart for better visual identification in Artifact Hub
+  Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
+
+### Bugfix
+
+- Fix Helm chart name to resolve packaging filename mismatch
+  Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
 
 ## [0.1.24] - 2025-06-01
 
+### Security
+
+- Add build provenance attestations for Docker images and Go binaries
+
 ## [0.1.23] - 2025-06-01
 
-
 ### Bugfix
+
 - Fix GitHub Actions workflow by installing ORAS before using it in release pipeline
 - Fix GitHub Actions release workflow Helm packaging error with 'latest' version
 
 ## [0.1.22] - 2025-06-01
 
-
 ### Features
+
 - Only commit version bump after successful Docker and Helm builds
 - Only push git tags after successful Docker and Helm builds
 
 ## [0.1.21] - 2025-06-01
 
+### Features
+
+- Enhanced release automation and build process improvements
+
 ## [0.1.20] - 2025-06-01
+
+### Features
+
+- Build process and CI/CD improvements
 
 ## [0.1.19] - 2025-06-01
 
+### Features
+
+- Release pipeline enhancements
+
 ## [0.1.18] - 2025-06-01
 
-
 ### Features
+
 - Add publishing to artifacthub.io for the OCI package of the helm chart
 
 ## [0.1.17] - 2025-05-31
 
-
 ### Features
+
 - Add comprehensive Grafana dashboard with documentation
 - Add comprehensive SECURITY.md with vulnerability reporting procedures and security guidelines
 
 ## [0.1.16] - 2025-05-31
 
-
 ### Bugfix
+
 - Fix bundler version compatibility for Dependabot (update from v1.17.2 to v2.5.0)
 
 ## [0.1.15] - 2025-05-31
+
+### Features
+
+- Enhanced development environment and tooling improvements
 
 ## [0.1.14] - 2025-05-31
 
@@ -112,6 +143,10 @@ Files modified in this change:
 - Fix changelog update script breaking the changelog structure and creating duplicate sections
 
 ## [0.1.13] - 2025-05-31
+
+### Features
+
+- Development workflow improvements
 
 ## [0.1.12] - 2025-05-31
 
@@ -244,6 +279,7 @@ When adding entries to the changelog, use the following guidelines:
 - Enhanced GitHub Actions workflow by adding permissions for write access
 - Adjusted checkout settings for better version control
 
+<<<<<<< HEAD
 [0.1.10]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.9...v0.1.10
 [0.1.11]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.10...v0.1.11
 [0.1.12]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.11...v0.1.12
@@ -264,6 +300,27 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.27]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.26...v0.1.27
 [0.1.28]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.27...v0.1.28
 [Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.28...HEAD
+=======
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.27...HEAD
+[0.1.27]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.26...v0.1.27
+[0.1.26]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.25...v0.1.26
+[0.1.25]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.24...v0.1.25
+[0.1.24]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.23...v0.1.24
+[0.1.23]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.22...v0.1.23
+[0.1.22]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.21...v0.1.22
+[0.1.21]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.20...v0.1.21
+[0.1.20]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.19...v0.1.20
+[0.1.19]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.18...v0.1.19
+[0.1.18]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.17...v0.1.18
+[0.1.17]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.16...v0.1.17
+[0.1.16]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.15...v0.1.16
+[0.1.15]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.14...v0.1.15
+[0.1.14]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.13...v0.1.14
+[0.1.13]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.12...v0.1.13
+[0.1.12]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.11...v0.1.12
+[0.1.11]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.10...v0.1.11
+[0.1.10]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.9...v0.1.10
+>>>>>>> 3d4287c (Refactor GitHub issue templates and update CHANGELOG)
 [0.1.9]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.6...v0.1.7

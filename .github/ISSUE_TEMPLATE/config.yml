@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/netbirdio/netbird-api-exporter/blob/main/README.md
+    about: Check the documentation for setup instructions and troubleshooting
+  - name: 💬 Discussions
+    url: https://github.com/netbirdio/netbird-api-exporter/discussions
+    about: Ask questions, share ideas, and discuss with the community
+  - name: 🔒 Security Issues
+    url: https://github.com/netbirdio/netbird-api-exporter/security/advisories/new
+    about: Report security vulnerabilities privately
+  - name: 🐦 NetBird Community
+    url: https://netbird.io/community
+    about: Join the broader NetBird community for general discussions 
