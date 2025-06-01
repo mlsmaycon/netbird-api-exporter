@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.23] - 2025-06-01
+
 
 ### Bugfix
 - Fix GitHub Actions workflow by installing ORAS before using it in release pipeline
@@ -203,7 +205,8 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.20]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.19...v0.1.20
 [0.1.21]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.20...v0.1.21
 [0.1.22]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.21...v0.1.22
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.22...HEAD
+[0.1.23]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.22...v0.1.23
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.23...HEAD
 [0.1.9]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.6...v0.1.7
