@@ -1,5 +1,5 @@
 apiVersion: v2
-name: Netbird API Exporter
+name: netbird-api-exporter
 description: A Helm chart for NetBird API Exporter - Prometheus exporter for NetBird API metrics
 
 type: application
@@ -20,7 +20,16 @@ keywords:
 annotations:
   category: Monitoring
   # Artifact Hub annotations
+  artifacthub.io/category: monitoring-logging
+  artifacthub.io/alternativeName: Netbird API Exporter
   artifacthub.io/license: MIT
+  artifacthub.io/containsSecurityUpdates: "true"
+  artifacthub.io/images: |
+    - name: netbird-api-exporter
+      image: ghcr.io/matanbaruch/netbird-api-exporter:latest
+      platforms:
+        - linux/amd64
+        - linux/arm64
   artifacthub.io/links: |
     - name: GitHub Repository
       url: https://github.com/matanbaruch/netbird-api-exporter
@@ -30,11 +39,32 @@ annotations:
       url: https://github.com/matanbaruch/netbird-api-exporter/blob/main/CHANGELOG.md
     - name: Issues
       url: https://github.com/matanbaruch/netbird-api-exporter/issues
+    - name: support
+      url: https://github.com/matanbaruch/netbird-api-exporter/issues/new
+    - name: Architecture Documentation
+      url: https://github.com/matanbaruch/netbird-api-exporter/blob/main/ARCHITECTURE.md
+    - name: Security Policy
+      url: https://github.com/matanbaruch/netbird-api-exporter/blob/main/SECURITY.md
   artifacthub.io/maintainers: |
     - name: Matan Baruch
       email: matan.baruch@example.com
   artifacthub.io/recommendations: |
     - url: https://artifacthub.io/packages/helm/prometheus-community/prometheus
     - url: https://artifacthub.io/packages/helm/grafana/grafana
+    - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+  artifacthub.io/screenshots: |
+    - title: NetBird API Exporter Dashboard
+      url: https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892
   artifacthub.io/changes: |
-    - Enhanced update-changelog.sh script to also update Helm chart artifacthub.io/changes annotation and include uncommitted files summary
+    - kind: fixed
+      description: Fix Helm chart name to resolve packaging filename mismatch
+    - kind: added
+      description: Enhanced update-changelog.sh script to also update Helm chart artifacthub.io/changes annotation and include uncommitted files summary
+    - kind: security
+      description: Add build provenance attestations for Docker images and Go binaries
+    - kind: added
+      description: Add publishing to artifacthub.io for the OCI package of the helm chart
+    - kind: added
+      description: Add comprehensive Grafana dashboard with documentation
+    - kind: added
+      description: Add comprehensive SECURITY.md with vulnerability reporting procedures and security guidelines

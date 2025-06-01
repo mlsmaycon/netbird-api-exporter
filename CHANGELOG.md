@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+
+### Bugfix
+- Fix Helm chart name to resolve packaging filename mismatch
+Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
+
 ### Features
 - Enhanced update-changelog.sh script to also update Helm chart artifacthub.io/changes annotation and include uncommitted files summary
 Files modified in this change:
@@ -19,6 +25,12 @@ Files modified in this change:
 - Modified: SECURITY.md
 - Modified: charts/netbird-api-exporter/Chart.yaml
 - Modified: scripts/update-changelog.sh
+
+
+### Bugfix
+- Fix Helm chart name to resolve packaging filename mismatch
+Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
 
 ### Security
 - Add build provenance attestations for Docker images and Go binaries
