@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Features
+- Only commit version bump after successful Docker and Helm builds
 - Only push git tags after successful Docker and Helm builds
 
 ## [0.1.21] - 2025-06-01
