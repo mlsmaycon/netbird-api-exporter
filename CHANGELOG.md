@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.32] - 2025-06-01
+
 ## [0.1.31] - 2025-06-01
 
 ## [0.1.30] - 2025-06-01
@@ -314,12 +316,14 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.29]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.28...v0.1.29
 [0.1.30]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.29...v0.1.30
 [0.1.31]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.30...v0.1.31
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.31...HEAD
+[0.1.32]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.31...v0.1.32
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.32...HEAD
 =======
 [0.1.29]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.28...v0.1.29
 [0.1.30]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.29...v0.1.30
 [0.1.31]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.30...v0.1.31
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.31...HEAD
+[0.1.32]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.31...v0.1.32
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.32...HEAD
 [0.1.27]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.26...v0.1.27
 [0.1.26]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.25...v0.1.26
 [0.1.25]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.24...v0.1.25
