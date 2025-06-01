@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.18] - 2025-06-01
+
 
 ### Features
 - Add publishing to artifacthub.io for the OCI package of the helm chart
@@ -178,7 +180,8 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.15]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.14...v0.1.15
 [0.1.16]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.15...v0.1.16
 [0.1.17]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.16...v0.1.17
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.17...HEAD
+[0.1.18]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.17...v0.1.18
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.18...HEAD
 [0.1.9]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.6...v0.1.7
