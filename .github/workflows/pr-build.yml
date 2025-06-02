@@ -255,10 +255,18 @@ jobs:
       run: |
         docker load -i /tmp/image.tar
 
+    - name: Get first image tag for Trivy scan
+      id: get-image-tag
+      run: |
+        # Get the first tag from the metadata output (Trivy expects single image reference)
+        IMAGE_TAG=$(echo '${{ needs.build-docker-image.outputs.image-tag }}' | head -n1)
+        echo "image-tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+        echo "Scanning image: $IMAGE_TAG"
+
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: '${{ needs.build-docker-image.outputs.image-tag }}'
+        image-ref: '${{ steps.get-image-tag.outputs.image-tag }}'
         format: 'sarif'
         output: 'trivy-results.sarif'
 
@@ -285,7 +293,7 @@ jobs:
       run: |
         docker load -i /tmp/image.tar
 
-    - name: Test image with docker-compose
+    - name: Test image with docker compose
       env:
         NETBIRD_API_TOKEN: ${{ secrets.NETBIRD_API_TOKEN }}
       run: |
@@ -303,7 +311,7 @@ jobs:
           echo "⚠️ No API token available, using dummy values (limited testing)"
         fi
         
-        # Create a test docker-compose file
+        # Create a test docker compose file
         cat > docker-compose.test.yml << EOF
         version: '3.8'
         services:
@@ -324,7 +332,7 @@ jobs:
         EOF
         
         # Start the service and test basic functionality
-        docker-compose -f docker-compose.test.yml up -d
+        docker compose -f docker-compose.test.yml up -d
         
         # Wait a bit for startup
         sleep 10
@@ -394,7 +402,7 @@ jobs:
           fi
           
           # Test that the exporter handles API responses properly
-          EXPORTER_LOGS=$(docker-compose -f docker-compose.test.yml logs netbird-exporter 2>&1)
+          EXPORTER_LOGS=$(docker compose -f docker-compose.test.yml logs netbird-exporter 2>&1)
           if echo "$EXPORTER_LOGS" | grep -qi "error\|fail" && ! echo "$EXPORTER_LOGS" | grep -qi "context deadline exceeded\|connection refused"; then
             echo "⚠️ Found errors in exporter logs (might indicate issues):"
             echo "$EXPORTER_LOGS" | grep -i "error\|fail" | head -5
@@ -406,7 +414,7 @@ jobs:
         fi
         
         # Cleanup
-        docker-compose -f docker-compose.test.yml down
+        docker compose -f docker-compose.test.yml down
 
   pr-summary:
     name: PR Build Summary
