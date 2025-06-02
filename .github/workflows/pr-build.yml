@@ -108,18 +108,6 @@ jobs:
       with:
         version: '3.12.0'
 
-    - name: Add helm repos for dependencies
-      run: |
-        # Add any required Helm repositories here if your chart has dependencies
-        # For now, no external repositories are needed for this chart
-        
-        # Only update repos if any exist
-        if helm repo list > /dev/null 2>&1; then
-          helm repo update
-        else
-          echo "No Helm repositories configured, skipping update"
-        fi
-
     - name: Validate values.yaml structure
       run: |
         echo "📋 Basic YAML validation for values.yaml"
@@ -132,7 +120,6 @@ jobs:
         if [ -f "charts/netbird-api-exporter/values.schema.json" ]; then
           python3 -c "import json; json.load(open('charts/netbird-api-exporter/values.schema.json', 'r'))"
           echo "✅ values.schema.json is valid JSON"
-          echo "ℹ️ Note: Detailed schema validation skipped due to tooling complexity"
         else
           echo "⚠️ No values.schema.json found"
         fi
