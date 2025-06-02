@@ -58,6 +58,8 @@ annotations:
       url: https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892
   artifacthub.io/changes: |
     - kind: fixed
+      description: "Fix unit tests job running integration tests in GitHub workflow"
+    - kind: fixed
       description: "Fix linting issues in performance tests including errcheck, gosec, and ineffassign violations"
     - kind: added
       description: "Add comprehensive GitHub Actions test workflow with matrix testing"

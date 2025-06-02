@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Bugfix
+- Fix unit tests job running integration tests in GitHub workflow
+Files modified in this change:
+- Modified: scripts/run-tests.sh
 - Fix linting issues in performance tests including errcheck, gosec, and ineffassign violations
 
 ### Features

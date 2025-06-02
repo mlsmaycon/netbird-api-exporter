@@ -37,7 +37,7 @@ print_error() {
 run_unit_tests() {
     print_status "Running unit tests..."
     
-    if go test -v -timeout "$UNIT_TIMEOUT" -race -coverprofile="$COVER_PROFILE" "$PACKAGE_PATH"; then
+    if go test -v -timeout "$UNIT_TIMEOUT" -race -coverprofile="$COVER_PROFILE" -skip="Integration_" "$PACKAGE_PATH"; then
         print_success "Unit tests passed!"
         
         # Generate coverage report
@@ -67,7 +67,7 @@ run_integration_tests() {
     
     print_status "NETBIRD_API_TOKEN is set - running integration tests"
     
-    if go test -v -timeout "$INTEGRATION_TIMEOUT" -tags=integration "$INTEGRATION_PACKAGE"; then
+    if go test -v -timeout "$INTEGRATION_TIMEOUT" -run="Integration_" "$INTEGRATION_PACKAGE"; then
         print_success "Integration tests passed!"
     else
         print_error "Integration tests failed!"
