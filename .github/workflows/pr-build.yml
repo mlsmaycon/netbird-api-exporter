@@ -120,24 +120,20 @@ jobs:
           echo "No Helm repositories configured, skipping update"
         fi
 
-    - name: Validate values.yaml against schema
+    - name: Validate values.yaml structure
       run: |
-        # Check if values.schema.json exists before validation
+        echo "📋 Basic YAML validation for values.yaml"
+        
+        # Check if values.yaml is valid YAML
+        python3 -c "import yaml; yaml.safe_load(open('charts/netbird-api-exporter/values.yaml', 'r'))"
+        echo "✅ values.yaml is valid YAML"
+        
+        # Check if values.schema.json is valid JSON (if it exists)
         if [ -f "charts/netbird-api-exporter/values.schema.json" ]; then
-          echo "📋 JSON Schema validation for values.yaml"
-          
-          # Install ajv-cli for JSON schema validation
-          npm install -g ajv-cli ajv-formats
-          
-          # Convert values.yaml to JSON for validation
-          python3 -c "import yaml, json; data = yaml.safe_load(open('charts/netbird-api-exporter/values.yaml', 'r')); json.dump(data, open('/tmp/values.json', 'w'), indent=2)"
-          
-          # Validate against schema (with draft-07 support)
-          ajv validate -s charts/netbird-api-exporter/values.schema.json -d /tmp/values.json --strict=false --spec=draft7
-          
-          echo "✅ Values schema validation passed"
+          python3 -c "import json; json.load(open('charts/netbird-api-exporter/values.schema.json', 'r'))"
+          echo "✅ values.schema.json is valid JSON"
         else
-          echo "⚠️ No values.schema.json found, skipping schema validation"
+          echo "⚠️ No values.schema.json found"
         fi
 
     - name: Lint Helm chart
@@ -241,6 +237,13 @@ jobs:
         }
         
         echo "✅ Helm chart follows best practices"
+
+    - name: Validate Helm chart with Kubeconform
+      uses: shivjm/helm-kubeconform-action@v0.3.0
+      with:
+        chartsDirectory: "charts"
+        strict: "true"
+        helmUpdateDependencies: "false"
 
     - name: Package Helm chart
       run: |
