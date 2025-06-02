@@ -168,15 +168,15 @@ jobs:
 
         # Test with minimal values
         helm template netbird-api-exporter charts/netbird-api-exporter \
-          --set netbirdApiToken="$TEST_TOKEN" \
-          --set netbirdApiUrl="$TEST_API_URL" \
+          --set netbird.apiToken="$TEST_TOKEN" \
+          --set netbird.apiUrl="$TEST_API_URL" \
           --dry-run > /dev/null
 
         # Test with custom image
         helm template netbird-api-exporter charts/netbird-api-exporter \
           --set image.repository="custom/repo" \
           --set image.tag="custom-tag" \
-          --set netbirdApiToken="$TEST_TOKEN" \
+          --set netbird.apiToken="$TEST_TOKEN" \
           --dry-run > /dev/null
 
         # Test with ingress enabled
@@ -185,13 +185,13 @@ jobs:
           --set ingress.hosts[0].host="example.com" \
           --set ingress.hosts[0].paths[0].path="/" \
           --set ingress.hosts[0].paths[0].pathType="Prefix" \
-          --set netbirdApiToken="$TEST_TOKEN" \
+          --set netbird.apiToken="$TEST_TOKEN" \
           --dry-run > /dev/null
 
         # Test with service monitor enabled
         helm template netbird-api-exporter charts/netbird-api-exporter \
           --set serviceMonitor.enabled=true \
-          --set netbirdApiToken="$TEST_TOKEN" \
+          --set netbird.apiToken="$TEST_TOKEN" \
           --dry-run > /dev/null
         
         # Test with external secret enabled (if real token available)
