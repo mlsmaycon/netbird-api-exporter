@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+### Features
+- Add comprehensive GitHub Actions test workflow with matrix testing
+Files modified in this change:
+- Modified: .github/workflows/lint.yml
+- Modified: CHANGELOG.md
+- Modified: Makefile
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: .github/workflows/test.yml
+- New: coverage.html
+- New: pkg/exporters/performance_test.go
+- New: pkg/integration_test.go
+- New: pkg/netbird/client_integration_test.go
+- New: pkg/utils/config_test.go
+- New: scripts/run-tests.sh
+- Add comprehensive test suite including integration and performance tests
+Files modified in this change:
+- Modified: CHANGELOG.md
+- Modified: Makefile
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: coverage.html
+- New: pkg/exporters/performance_test.go
+- New: pkg/integration_test.go
+- New: pkg/netbird/client_integration_test.go
+- New: pkg/utils/config_test.go
+- New: scripts/run-tests.sh
+- Add comprehensive test suite including integration tests and performance tests
+Files modified in this change:
+- Modified: Makefile
+- New: pkg/exporters/performance_test.go
+- New: pkg/integration_test.go
+- New: pkg/netbird/client_integration_test.go
+- New: pkg/utils/config_test.go
+- New: scripts/run-tests.sh
+
 ## [0.1.35] - 2025-06-02
 
 ## [0.1.34] - 2025-06-02
