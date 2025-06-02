@@ -58,8 +58,8 @@ annotations:
     - title: NetBird API Exporter Dashboard
       url: https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892
   artifacthub.io/changes: |
-    - Fix ArtifactHub.io annotations by properly quoting strings and correcting alternative name
-      description: "Fix Helm chart name to resolve packaging filename mismatch"
+    - kind: fixed
+      description: "Fix update-changelog.sh to properly update Helm chart artifacthub.io/changes with correct format and handle empty descriptions"
     - kind: added
       description: "Enhanced update-changelog.sh script to also update Helm chart artifacthub.io/changes annotation and include uncommitted files summary"
     - kind: security

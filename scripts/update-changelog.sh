@@ -86,12 +86,45 @@ get_uncommitted_summary() {
 
 # Function to update Helm chart artifacthub.io/changes
 update_chart_changes() {
-    local description="$1"
+    local change_type="$1"
+    local description="$2"
     
     if [ ! -f "$CHART_PATH" ]; then
         echo -e "${YELLOW}Warning: Chart.yaml not found at $CHART_PATH, skipping Helm chart update${NC}"
         return 0
     fi
+    
+    # Skip update if description is empty
+    if [ -z "$description" ]; then
+        echo -e "${YELLOW}Warning: Empty description provided, skipping Helm chart update${NC}"
+        return 0
+    fi
+    
+    # Map change types to Artifact Hub format
+    local kind
+    case "$change_type" in
+        breaking)
+            kind="changed"
+            ;;
+        feature)
+            kind="added"
+            ;;
+        bugfix)
+            kind="fixed"
+            ;;
+        security)
+            kind="security"
+            ;;
+        deprecated)
+            kind="deprecated"
+            ;;
+        removed)
+            kind="removed"
+            ;;
+        *)
+            kind="changed"
+            ;;
+    esac
     
     # Create a temporary file for processing Chart.yaml
     local temp_chart=$(mktemp)
@@ -100,23 +133,29 @@ update_chart_changes() {
     {
         local in_changes=false
         local changes_updated=false
+        local indent="    "  # 4 spaces for YAML list items
         
         while IFS= read -r line; do
             if [[ "$line" =~ ^[[:space:]]*artifacthub\.io/changes:[[:space:]]*\|[[:space:]]*$ ]]; then
                 echo "$line"
-                echo "    - $description"
+                # Add the new change entry at the top (most recent first)
+                echo "${indent}- kind: $kind"
+                echo "${indent}  description: \"$description\""
                 in_changes=true
                 changes_updated=true
-                # Skip existing changes lines
-                while IFS= read -r next_line; do
-                    if [[ "$next_line" =~ ^[[:space:]]*-[[:space:]] ]] && [ "$in_changes" = true ]; then
-                        continue  # Skip existing change entries
-                    else
-                        echo "$next_line"
-                        in_changes=false
-                        break
-                    fi
-                done
+                continue
+            fi
+            
+            # If we're in the changes section, copy existing entries
+            if [ "$in_changes" = true ]; then
+                # Check if we've reached the end of the changes section (next annotation or main content)
+                if [[ "$line" =~ ^[[:space:]]*artifacthub\.io/ ]] || [[ "$line" =~ ^[a-zA-Z] ]] || [[ "$line" =~ ^maintainers: ]] || [[ "$line" =~ ^dependencies: ]]; then
+                    in_changes=false
+                    echo "$line"
+                    continue
+                fi
+                # Copy existing change entries
+                echo "$line"
             else
                 echo "$line"
             fi
@@ -295,10 +334,11 @@ TEMP_FILE=$(mktemp)
 mv "$TEMP_FILE" "$CHANGELOG_PATH"
 
 # Update Helm chart changes
-update_chart_changes "$DESCRIPTION"
+update_chart_changes "$TYPE" "$DESCRIPTION"
 
-echo -e "${GREEN}Successfully added entry to CHANGELOG.md:${NC}"
+echo -e "${GREEN}Successfully added entry to CHANGELOG.md and updated Helm chart:${NC}"
 echo -e "${YELLOW}Section:${NC} $SECTION"
+echo -e "${YELLOW}Type:${NC} $TYPE"
 echo -e "${YELLOW}Description:${NC} $DESCRIPTION"
 if [ -n "$UNCOMMITTED_SUMMARY" ]; then
     echo -e "${YELLOW}Uncommitted files summary added to changelog entry${NC}"

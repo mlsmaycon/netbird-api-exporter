@@ -7,15 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ## [0.1.32] - 2025-06-01
 
 ## [0.1.31] - 2025-06-01
+=======
+
+### Bugfix
+- Fix update-changelog.sh to properly update Helm chart artifacthub.io/changes with correct format and handle empty descriptions
+Files modified in this change:
+- Added: .github/dependabot.yml
+- Modified: scripts/update-changelog.sh
+>>>>>>> 3607b71 (Fix update-changelog.sh to correctly update Helm chart artifacthub.io/changes format and handle empty descriptions; add dependabot configuration for Go modules, Docker images, and GitHub Actions.)
 
 ## [0.1.30] - 2025-06-01
 
 ## [0.1.29] - 2025-06-01
 
-<<<<<<< HEAD
 
 ### Bugfix
 - Fix ArtifactHub.io annotations by properly quoting strings and correcting alternative name
@@ -23,7 +31,6 @@ Files modified in this change:
 - Modified: charts/netbird-api-exporter/Chart.yaml
 
 ## [0.1.28] - 2025-06-01
-=======
 ### Features
 
 - Refactor GitHub issue templates with improved structure and NetBird-specific context
@@ -34,7 +41,6 @@ Files modified in this change:
 - Modified: .github/ISSUE_TEMPLATE/feature_request.md
 - New: .github/ISSUE_TEMPLATE/config.yml
 - New: .github/ISSUE_TEMPLATE/documentation.md
->>>>>>> 3d4287c (Refactor GitHub issue templates and update CHANGELOG)
 
 ## [0.1.27] - 2025-06-01
 
