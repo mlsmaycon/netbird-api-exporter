@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+
+### Features
+- Add values.schema.json to Helm chart for configuration validation and documentation
+Files modified in this change:
+- New: charts/netbird-api-exporter/values.schema.json
+
 ### Bugfix
 - Fix linting errors for unchecked error return values in resp.Body.Close() calls
 Files modified in this change:
