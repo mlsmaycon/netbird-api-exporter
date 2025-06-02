@@ -7,18 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-<<<<<<< HEAD
 ## [0.1.32] - 2025-06-01
 
 ## [0.1.31] - 2025-06-01
-=======
 
 ### Bugfix
 - Fix update-changelog.sh to properly update Helm chart artifacthub.io/changes with correct format and handle empty descriptions
 Files modified in this change:
 - Added: .github/dependabot.yml
 - Modified: scripts/update-changelog.sh
->>>>>>> 3607b71 (Fix update-changelog.sh to correctly update Helm chart artifacthub.io/changes format and handle empty descriptions; add dependabot configuration for Go modules, Docker images, and GitHub Actions.)
 
 ## [0.1.30] - 2025-06-01
 
