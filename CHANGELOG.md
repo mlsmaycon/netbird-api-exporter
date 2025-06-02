@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.37] - 2025-06-02
+
 ### Features
+- Enhance PR build workflow to use real NETBIRD_API_TOKEN secret for comprehensive integration testing
+Files modified in this change:
+- Modified: CHANGELOG.md
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: .github/workflows/pr-build.yml
+- Add PR build workflow for Docker images and Helm chart validation
+Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: .github/workflows/pr-build.yml
 
 - Add values.schema.json to Helm chart for configuration validation and documentation
 Files modified in this change:
@@ -386,7 +397,8 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.34]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.33...v0.1.34
 [0.1.35]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.34...v0.1.35
 [0.1.36]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.35...v0.1.36
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.36...HEAD
+[0.1.37]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.36...v0.1.37
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.37...HEAD
 =======
 [0.1.29]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.28...v0.1.29
 [0.1.30]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.29...v0.1.30
@@ -396,7 +408,8 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.34]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.33...v0.1.34
 [0.1.35]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.34...v0.1.35
 [0.1.36]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.35...v0.1.36
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.36...HEAD
+[0.1.37]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.36...v0.1.37
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.37...HEAD
 [0.1.27]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.26...v0.1.27
 [0.1.26]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.25...v0.1.26
 [0.1.25]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.24...v0.1.25
