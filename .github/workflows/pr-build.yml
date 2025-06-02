@@ -38,8 +38,8 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=ref,event=pr
-          type=sha,prefix={{branch}}-
+          type=ref,event=pr,prefix=pr-
+          type=sha,prefix=sha-
 
     - name: Build Docker image (no push)
       id: build
@@ -92,7 +92,14 @@ jobs:
     - name: Add helm repos for dependencies
       run: |
         # Add any required Helm repositories here if your chart has dependencies
-        helm repo update
+        # For now, no external repositories are needed for this chart
+        
+        # Only update repos if any exist
+        if helm repo list > /dev/null 2>&1; then
+          helm repo update
+        else
+          echo "No Helm repositories configured, skipping update"
+        fi
 
     - name: Validate values.yaml against schema
       run: |
