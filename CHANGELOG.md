@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Bugfix
+- Fix linting errors for unchecked error return values in resp.Body.Close() calls
+Files modified in this change:
+- Modified: pkg/integration_test.go
 - Fix linting errors (errcheck) in test files for unchecked error return values
 Files modified in this change:
 - Modified: pkg/netbird/client_integration_test.go

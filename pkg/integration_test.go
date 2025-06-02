@@ -67,7 +67,11 @@ func TestIntegration_NetBirdClient_HTTPStatus(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to make API request: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Errorf("Failed to close response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		t.Errorf("Expected status 200, got %d", resp.StatusCode)
@@ -355,7 +359,9 @@ func TestIntegration_APIRateLimiting(t *testing.T) {
 			t.Errorf("Request %d: Failed to make API request: %v", i, err)
 			continue
 		}
-		resp.Body.Close()
+		if err := resp.Body.Close(); err != nil {
+			t.Errorf("Request %d: Failed to close response body: %v", i, err)
+		}
 
 		// Accept both 200 and 429 (rate limited) as valid responses
 		if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusTooManyRequests {
@@ -392,7 +398,11 @@ func TestIntegration_APIErrorHandling(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to make API request: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Errorf("Failed to close response body: %v", err)
+		}
+	}()
 
 	// Should get 401 Unauthorized
 	if resp.StatusCode != http.StatusUnauthorized {
@@ -480,7 +490,11 @@ func TestIntegration_LoggingConfiguration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to make API request: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Errorf("Failed to close response body: %v", err)
+		}
+	}()
 
 	// Just verify the request completed successfully
 	if resp.StatusCode != http.StatusOK {
