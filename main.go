@@ -63,6 +63,15 @@ func main() {
 	metricsPath := utils.GetEnvWithDefault("METRICS_PATH", "/metrics")
 	logLevel := utils.GetEnvWithDefault("LOG_LEVEL", "info")
 
+	// Check for help flag before validating token
+	helpFlag := false
+	for _, arg := range os.Args {
+		if arg == "--help" || arg == "-h" {
+			helpFlag = true
+			break
+		}
+	}
+
 	// Set log level
 	level, err := logrus.ParseLevel(logLevel)
 	if err != nil {
@@ -70,6 +79,24 @@ func main() {
 		level = logrus.InfoLevel
 	}
 	logrus.SetLevel(level)
+
+	// If help flag is present, print default help message and exit
+	// This is a simple way to handle help without fully parsing flags if token is missing
+	if helpFlag {
+		// This will print default help, but since we don't use `flag` package for all vars,
+		// it might not be comprehensive. A more robust solution would involve `flag.Usage`.
+		// For now, let's assume the user knows about env vars from README.
+		fmt.Fprintf(os.Stderr, "Usage of %s:\\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "  This application is configured primarily via environment variables.\\n")
+		fmt.Fprintf(os.Stderr, "  Key environment variables:\\n")
+		fmt.Fprintf(os.Stderr, "    NETBIRD_API_URL: NetBird API endpoint (default: https://api.netbird.io)\\n")
+		fmt.Fprintf(os.Stderr, "    NETBIRD_API_TOKEN: NetBird API token (required)\\n")
+		fmt.Fprintf(os.Stderr, "    LISTEN_ADDRESS: HTTP server listen address (default: :8080)\\n")
+		fmt.Fprintf(os.Stderr, "    METRICS_PATH: Metrics endpoint path (default: /metrics)\\n")
+		fmt.Fprintf(os.Stderr, "    LOG_LEVEL: Logging level (default: info)\\n")
+		fmt.Fprintf(os.Stderr, "  Use --help or -h to display this message.\\n")
+		os.Exit(0)
+	}
 
 	// Validate required configuration
 	if netbirdToken == "" {
