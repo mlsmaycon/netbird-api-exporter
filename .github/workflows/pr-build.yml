@@ -12,6 +12,10 @@ on:
       - '*.md'
       - '.github/workflows/docs.yml'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -126,13 +130,7 @@ jobs:
           npm install -g ajv-cli ajv-formats
           
           # Convert values.yaml to JSON for validation
-          python3 -c "
-          import yaml, json
-          with open('charts/netbird-api-exporter/values.yaml', 'r') as f:
-              data = yaml.safe_load(f)
-          with open('/tmp/values.json', 'w') as f:
-              json.dump(data, f, indent=2)
-          "
+          python3 -c "import yaml, json; data = yaml.safe_load(open('charts/netbird-api-exporter/values.yaml', 'r')); json.dump(data, open('/tmp/values.json', 'w'), indent=2)"
           
           # Validate against schema (with draft-07 support)
           ajv validate -s charts/netbird-api-exporter/values.schema.json -d /tmp/values.json --strict=false --spec=draft7
