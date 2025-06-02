@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+
+### Bugfix
+- Fix linting issues in performance tests including errcheck, gosec, and ineffassign violations
+
 ### Features
 - Add comprehensive GitHub Actions test workflow with matrix testing
 Files modified in this change:

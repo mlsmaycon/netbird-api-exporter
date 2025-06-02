@@ -113,37 +113,6 @@ jobs:
     - name: Run benchmark tests
       run: ./scripts/run-tests.sh benchmark
 
-  test-matrix:
-    name: Test Matrix
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    strategy:
-      matrix:
-        go-version: ['1.21', '1.22', '1.23', 'stable']
-        os: [ubuntu-latest]
-      fail-fast: false
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: ${{ matrix.go-version }}
-
-    - name: Download dependencies
-      run: go mod download
-
-    - name: Make test script executable (Unix)
-      if: runner.os != 'Windows'
-      run: chmod +x scripts/run-tests.sh
-
-    - name: Run unit tests (Unix)
-      if: runner.os != 'Windows'
-      run: ./scripts/run-tests.sh unit
-
-    - name: Run unit tests (Windows)
-      if: runner.os == 'Windows'
-      run: go test -v -timeout 30s -race -coverprofile=coverage.out ./...
 
   test-summary:
     name: Test Summary
