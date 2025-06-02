@@ -70,9 +70,13 @@ func TestGetEnvWithDefault(t *testing.T) {
 			originalValue := os.Getenv(tt.key)
 			defer func() {
 				if originalValue != "" {
-					os.Setenv(tt.key, originalValue)
+					if err := os.Setenv(tt.key, originalValue); err != nil {
+						t.Logf("Failed to restore environment variable: %v", err)
+					}
 				} else {
-					os.Unsetenv(tt.key)
+					if err := os.Unsetenv(tt.key); err != nil {
+						t.Logf("Failed to unset environment variable: %v", err)
+					}
 				}
 			}()
 
@@ -82,7 +86,9 @@ func TestGetEnvWithDefault(t *testing.T) {
 					t.Fatalf("Failed to set environment variable: %v", err)
 				}
 			} else {
-				os.Unsetenv(tt.key)
+				if err := os.Unsetenv(tt.key); err != nil {
+					t.Logf("Failed to unset environment variable: %v", err)
+				}
 			}
 
 			// Test the function
@@ -106,9 +112,13 @@ func TestGetEnvWithDefault_ConcurrentAccess(t *testing.T) {
 	originalValue := os.Getenv(envKey)
 	defer func() {
 		if originalValue != "" {
-			os.Setenv(envKey, originalValue)
+			if err := os.Setenv(envKey, originalValue); err != nil {
+				t.Logf("Failed to restore environment variable: %v", err)
+			}
 		} else {
-			os.Unsetenv(envKey)
+			if err := os.Unsetenv(envKey); err != nil {
+				t.Logf("Failed to unset environment variable: %v", err)
+			}
 		}
 	}()
 
@@ -175,9 +185,13 @@ func TestGetEnvWithDefault_EdgeCases(t *testing.T) {
 			originalValue := os.Getenv(tt.key)
 			defer func() {
 				if originalValue != "" {
-					os.Setenv(tt.key, originalValue)
+					if err := os.Setenv(tt.key, originalValue); err != nil {
+						t.Logf("Failed to restore environment variable: %v", err)
+					}
 				} else {
-					os.Unsetenv(tt.key)
+					if err := os.Unsetenv(tt.key); err != nil {
+						t.Logf("Failed to unset environment variable: %v", err)
+					}
 				}
 			}()
 

@@ -37,7 +37,11 @@ func TestClient_Integration_RealAPI(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to make API request: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Logf("Failed to close response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		t.Errorf("Expected status 200, got %d", resp.StatusCode)
@@ -87,7 +91,11 @@ func TestClient_Integration_AllEndpoints(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Failed to make API request to %s: %v", endpoint, err)
 			}
-			defer resp.Body.Close()
+			defer func() {
+				if err := resp.Body.Close(); err != nil {
+					t.Logf("Failed to close response body: %v", err)
+				}
+			}()
 
 			// Accept both 200 and 429 (rate limited) as valid responses for integration tests
 			if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusTooManyRequests {
@@ -142,7 +150,11 @@ func TestClient_Integration_ErrorHandling(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to make API request: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Logf("Failed to close response body: %v", err)
+		}
+	}()
 
 	// Should get 401 Unauthorized for invalid token
 	if resp.StatusCode != http.StatusUnauthorized {
@@ -182,7 +194,9 @@ func TestClient_Integration_RateLimiting(t *testing.T) {
 			t.Errorf("Request %d: Failed to make API request: %v", i, err)
 			continue
 		}
-		resp.Body.Close()
+		if err := resp.Body.Close(); err != nil {
+			t.Logf("Failed to close response body: %v", err)
+		}
 
 		results[i] = resp.StatusCode
 
@@ -230,7 +244,11 @@ func TestClient_Integration_CustomBaseURL(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to make API request: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Logf("Failed to close response body: %v", err)
+		}
+	}()
 
 	// Accept both 200 and 429 as valid responses
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusTooManyRequests {
