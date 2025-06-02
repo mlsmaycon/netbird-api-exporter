@@ -27,6 +27,30 @@ clean:
 test:
 	$(GOTEST) -v ./...
 
+# Run unit tests only
+test-unit:
+	./scripts/run-tests.sh unit
+
+# Run integration tests (requires NETBIRD_API_TOKEN)
+test-integration:
+	./scripts/run-tests.sh integration
+
+# Run performance tests
+test-performance:
+	./scripts/run-tests.sh performance
+
+# Run benchmark tests
+test-benchmark:
+	./scripts/run-tests.sh benchmark
+
+# Run all tests with coverage
+test-all:
+	./scripts/run-tests.sh all
+
+# Clean test artifacts
+test-clean:
+	./scripts/run-tests.sh clean
+
 # Download dependencies
 deps:
 	$(GOMOD) download
@@ -144,6 +168,12 @@ help:
 	@echo "  run             - Build and run the application"
 	@echo "  clean           - Clean build artifacts"
 	@echo "  test            - Run tests"
+	@echo "  test-unit       - Run unit tests only"
+	@echo "  test-integration - Run integration tests (requires NETBIRD_API_TOKEN)"
+	@echo "  test-performance - Run performance tests"
+	@echo "  test-benchmark  - Run benchmark tests"
+	@echo "  test-all        - Run all tests with coverage"
+	@echo "  test-clean      - Clean test artifacts"
 	@echo "  deps            - Download and tidy dependencies"
 	@echo "  docker-build    - Build Docker image"
 	@echo "  docker-run      - Run with Docker"
