@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.36] - 2025-06-02
+
+
+
+### Bugfix
+- Fix linting errors for unchecked error return values in resp.Body.Close() calls
+Files modified in this change:
+- Modified: pkg/integration_test.go
+- Fix linting errors (errcheck) in test files for unchecked error return values
+Files modified in this change:
+- Modified: pkg/netbird/client_integration_test.go
+- Modified: pkg/utils/config_test.go
+- Fix unit tests job running integration tests in GitHub workflow
+Files modified in this change:
+- Modified: scripts/run-tests.sh
+- Fix linting issues in performance tests including errcheck, gosec, and ineffassign violations
+
+### Features
+- Add comprehensive GitHub Actions test workflow with matrix testing
+Files modified in this change:
+- Modified: .github/workflows/lint.yml
+- Modified: CHANGELOG.md
+- Modified: Makefile
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: .github/workflows/test.yml
+- New: coverage.html
+- New: pkg/exporters/performance_test.go
+- New: pkg/integration_test.go
+- New: pkg/netbird/client_integration_test.go
+- New: pkg/utils/config_test.go
+- New: scripts/run-tests.sh
+- Add comprehensive test suite including integration and performance tests
+Files modified in this change:
+- Modified: CHANGELOG.md
+- Modified: Makefile
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: coverage.html
+- New: pkg/exporters/performance_test.go
+- New: pkg/integration_test.go
+- New: pkg/netbird/client_integration_test.go
+- New: pkg/utils/config_test.go
+- New: scripts/run-tests.sh
+- Add comprehensive test suite including integration tests and performance tests
+Files modified in this change:
+- Modified: Makefile
+- New: pkg/exporters/performance_test.go
+- New: pkg/integration_test.go
+- New: pkg/netbird/client_integration_test.go
+- New: pkg/utils/config_test.go
+- New: scripts/run-tests.sh
+
+## [0.1.35] - 2025-06-02
+
 ## [0.1.34] - 2025-06-02
 
 ## [0.1.33] - 2025-06-02
@@ -326,7 +379,9 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.32]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.31...v0.1.32
 [0.1.33]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.32...v0.1.33
 [0.1.34]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.33...v0.1.34
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.34...HEAD
+[0.1.35]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.34...v0.1.35
+[0.1.36]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.35...v0.1.36
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.36...HEAD
 =======
 [0.1.29]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.28...v0.1.29
 [0.1.30]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.29...v0.1.30
@@ -334,7 +389,9 @@ When adding entries to the changelog, use the following guidelines:
 [0.1.32]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.31...v0.1.32
 [0.1.33]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.32...v0.1.33
 [0.1.34]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.33...v0.1.34
-[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.34...HEAD
+[0.1.35]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.34...v0.1.35
+[0.1.36]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.35...v0.1.36
+[Unreleased]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.36...HEAD
 [0.1.27]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.26...v0.1.27
 [0.1.26]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.25...v0.1.26
 [0.1.25]: https://github.com/matanbaruch/netbird-api-exporter/compare/v0.1.24...v0.1.25
