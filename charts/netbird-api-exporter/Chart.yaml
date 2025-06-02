@@ -58,20 +58,8 @@ annotations:
       url: https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892
   artifacthub.io/changes: |
     - kind: added
+      description: "Enhance PR build workflow to use real NETBIRD_API_TOKEN secret for comprehensive integration testing"
+    - kind: added
+      description: "Add PR build workflow for Docker images and Helm chart validation"
+    - kind: added
       description: "Add values.schema.json to Helm chart for configuration validation and documentation"
-    - kind: fixed
-      description: "Fix linting errors for unchecked error return values in resp.Body.Close() calls"
-    - kind: fixed
-      description: "Fix linting errors (errcheck) in test files for unchecked error return values"
-    - kind: fixed
-      description: "Fix unit tests job running integration tests in GitHub workflow"
-    - kind: fixed
-      description: "Fix linting issues in performance tests including errcheck, gosec, and ineffassign violations"
-    - kind: added
-      description: "Add comprehensive GitHub Actions test workflow with matrix testing"
-    - kind: added
-      description: "Add comprehensive test suite including integration and performance tests"
-    - kind: added
-      description: "Add comprehensive test suite including integration tests and performance tests"
-    - kind: fixed
-      description: "Fix artifacthub changes and alternative name"

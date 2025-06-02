@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Features
+- Enhance PR build workflow to use real NETBIRD_API_TOKEN secret for comprehensive integration testing
+Files modified in this change:
+- Modified: CHANGELOG.md
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: .github/workflows/pr-build.yml
+- Add PR build workflow for Docker images and Helm chart validation
+Files modified in this change:
+- Modified: charts/netbird-api-exporter/Chart.yaml
+- New: .github/workflows/pr-build.yml
 
 - Add values.schema.json to Helm chart for configuration validation and documentation
 Files modified in this change:
