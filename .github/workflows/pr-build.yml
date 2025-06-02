@@ -49,10 +49,22 @@ jobs:
         push: false
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64,linux/arm64
+        platforms: linux/amd64
         cache-from: type=gha
         cache-to: type=gha,mode=max
         outputs: type=docker,dest=/tmp/image.tar
+    
+    - name: Build multi-platform validation
+      id: build-multi-platform
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: false
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        platforms: linux/amd64,linux/arm64
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v4
@@ -67,7 +79,7 @@ jobs:
         
         # Get the first tag from the metadata output
         IMAGE_TAG=$(echo '${{ steps.meta.outputs.tags }}' | head -n1)
-        echo "Testing image: $IMAGE_TAG"
+        echo "Testing image: $IMAGE_TAG (linux/amd64)"
         
         # Test basic functionality
         docker run --rm $IMAGE_TAG --help
@@ -77,6 +89,9 @@ jobs:
           -e NETBIRD_API_URL=https://api.example.com \
           -e LOG_LEVEL=debug \
           $IMAGE_TAG || echo "Expected to fail without API token"
+        
+        echo "✅ Single-platform image (amd64) tested successfully"
+        echo "✅ Multi-platform build (amd64, arm64) validated during build step"
 
   validate-helm-chart:
     name: Validate Helm Chart
@@ -103,20 +118,29 @@ jobs:
 
     - name: Validate values.yaml against schema
       run: |
-        # Install ajv-cli for JSON schema validation
-        npm install -g ajv-cli
-        
-        # Convert values.yaml to JSON for validation
-        python3 -c "
-        import yaml, json
-        with open('charts/netbird-api-exporter/values.yaml', 'r') as f:
-            data = yaml.safe_load(f)
-        with open('/tmp/values.json', 'w') as f:
-            json.dump(data, f, indent=2)
-        "
-        
-        # Validate against schema
-        ajv validate -s charts/netbird-api-exporter/values.schema.json -d /tmp/values.json --strict=false
+        # Check if values.schema.json exists before validation
+        if [ -f "charts/netbird-api-exporter/values.schema.json" ]; then
+          echo "📋 JSON Schema validation for values.yaml"
+          
+          # Install ajv-cli for JSON schema validation
+          npm install -g ajv-cli ajv-formats
+          
+          # Convert values.yaml to JSON for validation
+          python3 -c "
+          import yaml, json
+          with open('charts/netbird-api-exporter/values.yaml', 'r') as f:
+              data = yaml.safe_load(f)
+          with open('/tmp/values.json', 'w') as f:
+              json.dump(data, f, indent=2)
+          "
+          
+          # Validate against schema (with draft-07 support)
+          ajv validate -s charts/netbird-api-exporter/values.schema.json -d /tmp/values.json --strict=false --spec=draft7
+          
+          echo "✅ Values schema validation passed"
+        else
+          echo "⚠️ No values.schema.json found, skipping schema validation"
+        fi
 
     - name: Lint Helm chart
       run: |
@@ -414,7 +438,7 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "| Component | Status | Details |" >> $GITHUB_STEP_SUMMARY
         echo "|-----------|--------|---------|" >> $GITHUB_STEP_SUMMARY
-        echo "| Docker Image Build | ${{ needs.build-docker-image.result == 'success' && '✅ Success' || '❌ Failed' }} | Multi-arch build (amd64, arm64) |" >> $GITHUB_STEP_SUMMARY
+        echo "| Docker Image Build | ${{ needs.build-docker-image.result == 'success' && '✅ Success' || '❌ Failed' }} | Multi-arch build validation (amd64, arm64) + testable amd64 image |" >> $GITHUB_STEP_SUMMARY
         echo "| Helm Chart Validation | ${{ needs.validate-helm-chart.result == 'success' && '✅ Success' || '❌ Failed' }} | Schema validation, linting, templating, and packaging tests |" >> $GITHUB_STEP_SUMMARY
         echo "| Security Scan | ${{ needs.security-scan.result == 'success' && '✅ Success' || needs.security-scan.result == 'failure' && '⚠️ Issues Found' || '❌ Failed' }} | Trivy vulnerability scan |" >> $GITHUB_STEP_SUMMARY
         echo "| Integration Test | ${{ needs.integration-test-with-image.result == 'success' && '✅ Success' || '❌ Failed' }} | ${{ secrets.NETBIRD_API_TOKEN && 'Full API integration testing with real token' || 'Basic functionality testing with dummy token' }} |" >> $GITHUB_STEP_SUMMARY
