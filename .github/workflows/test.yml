@@ -151,8 +151,12 @@ jobs:
         echo "| Docker Compose Test | ${{ needs.docker-compose-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         
-        if [[ "${{ needs.unit-tests.result }}" != "success" ]]; then
-          echo "❌ Tests failed! Check the individual job logs for details." >> $GITHUB_STEP_SUMMARY
+        if [[ "${{ needs.unit-tests.result }}" != "success" ]] || \
+           [[ "${{ needs.integration-tests.result }}" != "success" && "${{ needs.integration-tests.result }}" != "skipped" ]] || \
+           [[ "${{ needs.performance-tests.result }}" != "success" ]] || \
+           [[ "${{ needs.benchmark-tests.result }}" != "success" ]] || \
+           [[ "${{ needs.docker-compose-test.result }}" != "success" ]]; then
+          echo "❌ Some tests failed! Check the individual job logs for details." >> $GITHUB_STEP_SUMMARY
           exit 1
         else
           echo "✅ All critical tests passed!" >> $GITHUB_STEP_SUMMARY
