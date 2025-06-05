@@ -185,6 +185,23 @@ jobs:
         run: |
           kubectl wait --for=condition=available --timeout=300s deployment/netbird-test-netbird-api-exporter
 
+      - name: Check pod status and logs
+        run: |
+          echo "=== Pod Status ==="
+          kubectl get pods -l app.kubernetes.io/name=netbird-api-exporter
+          echo ""
+          echo "=== All pods ==="
+          kubectl get pods
+          echo ""
+          echo "=== Main deployment logs ==="
+          kubectl logs deployment/netbird-test-netbird-api-exporter --tail=50
+          echo ""
+          echo "=== Test connection pod logs (if exists) ==="
+          kubectl logs netbird-test-netbird-api-exporter-test-connection --ignore-not-found=true || true
+          echo ""
+          echo "=== Events ==="
+          kubectl get events --sort-by='.lastTimestamp' | tail -10
+
       - name: Test metrics endpoint
         run: |
           kubectl port-forward deployment/netbird-test-netbird-api-exporter 8080:8080 &
