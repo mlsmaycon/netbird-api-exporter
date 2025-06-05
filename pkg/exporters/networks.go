@@ -33,7 +33,7 @@ func NewNetworksExporter(client *netbird.Client) *NetworksExporter {
 
 		networksTotal: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "netbird_networks_total",
+				Name: "netbird_networks",
 				Help: "Total number of NetBird networks",
 			},
 			[]string{},

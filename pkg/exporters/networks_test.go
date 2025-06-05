@@ -144,7 +144,7 @@ func TestNetworksExporter_Collect_Success(t *testing.T) {
 	// Check networks total
 	totalFound := false
 	for _, family := range families {
-		if family.GetName() == "netbird_networks_total" {
+		if family.GetName() == "netbird_networks" {
 			totalFound = true
 			if len(family.GetMetric()) > 0 {
 				value := family.GetMetric()[0].GetGauge().GetValue()
@@ -287,7 +287,7 @@ func TestNetworksExporter_UpdateMetrics(t *testing.T) {
 
 	// Verify some key metrics
 	expectedMetrics := map[string]float64{
-		"netbird_networks_total": 2,
+		"netbird_networks": 2,
 	}
 
 	for _, family := range families {
@@ -405,7 +405,7 @@ func TestNetworksExporter_MetricsReset(t *testing.T) {
 	}
 
 	for _, family := range families {
-		if family.GetName() == "netbird_networks_total" {
+		if family.GetName() == "netbird_networks" {
 			if len(family.GetMetric()) > 0 {
 				value := family.GetMetric()[0].GetGauge().GetValue()
 				if value != 0 {

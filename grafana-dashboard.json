@@ -96,7 +96,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "expr": "netbird_peers_total",
+          "expr": "netbird_peers",
           "refId": "A"
         }
       ],
@@ -151,7 +151,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "expr": "netbird_users_total",
+          "expr": "netbird_users",
           "refId": "A"
         }
       ],
@@ -206,7 +206,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "expr": "netbird_groups_total",
+          "expr": "netbird_groups",
           "refId": "A"
         }
       ],
@@ -261,7 +261,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "expr": "netbird_networks_total",
+          "expr": "netbird_networks",
           "refId": "A"
         }
       ],
@@ -876,7 +876,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "expr": "netbird_dns_nameserver_groups_total",
+          "expr": "netbird_dns_nameserver_groups",
           "refId": "A"
         }
       ],

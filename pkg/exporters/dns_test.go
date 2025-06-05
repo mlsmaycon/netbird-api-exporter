@@ -173,7 +173,7 @@ func TestDNSExporter_Collect_Success(t *testing.T) {
 	// Check nameserver groups total
 	totalFound := false
 	for _, family := range families {
-		if family.GetName() == "netbird_dns_nameserver_groups_total" {
+		if family.GetName() == "netbird_dns_nameserver_groups" {
 			totalFound = true
 			if len(family.GetMetric()) > 0 {
 				value := family.GetMetric()[0].GetGauge().GetValue()
@@ -430,7 +430,7 @@ func TestDNSExporter_UpdateNameserverMetrics(t *testing.T) {
 
 	// Verify some key metrics
 	expectedMetrics := map[string]float64{
-		"netbird_dns_nameserver_groups_total": 2,
+		"netbird_dns_nameserver_groups": 2,
 	}
 
 	for _, family := range families {
