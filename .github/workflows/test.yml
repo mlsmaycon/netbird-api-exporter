@@ -161,8 +161,8 @@ jobs:
           image.repository=netbird-api-exporter
           image.tag=test
           image.pullPolicy=Never
-          env.NETBIRD_API_TOKEN=test-token
-          env.NETBIRD_API_URL=https://api.netbird.io
+          netbird.apiToken=test-token
+          netbird.apiUrl=https://api.netbird.io
         helm-version: 'latest'
       id: bake
 
