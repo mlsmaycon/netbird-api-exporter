@@ -152,17 +152,24 @@ jobs:
         docker build -t netbird-api-exporter:test .
         kind load docker-image netbird-api-exporter:test --name netbird-test
 
+    - name: Create values override file
+      run: |
+        cat > test-values.yaml << EOF
+        image:
+          repository: netbird-api-exporter
+          tag: test
+          pullPolicy: Never
+        netbird:
+          apiToken: test-token
+          apiUrl: "https://api.netbird.io"
+        EOF
+
     - name: Bake helm chart
       uses: azure/k8s-bake@v3
       with:
         renderEngine: 'helm'
         helmChart: './charts/netbird-api-exporter/'
-        overrides: |
-          image.repository=netbird-api-exporter
-          image.tag=test
-          image.pullPolicy=Never
-          netbird.apiToken=test-token
-          netbird.apiUrl=https://api.netbird.io
+        overrideFiles: 'test-values.yaml'
         helm-version: 'latest'
       id: bake
 
