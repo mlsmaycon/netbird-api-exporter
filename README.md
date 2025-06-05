@@ -611,3 +611,6 @@ The project includes GitHub Actions workflows that automatically:
 ```bash
 go test ./...
 ```
+
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/matanbaruch/netbird-api-exporter.svg?variant=adaptive)](https://starchart.cc/matanbaruch/netbird-api-exporter)
