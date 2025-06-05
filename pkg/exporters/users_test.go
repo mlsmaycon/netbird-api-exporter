@@ -192,7 +192,7 @@ func TestUsersExporter_Collect_Success(t *testing.T) {
 	// Check users total
 	totalFound := false
 	for _, family := range families {
-		if family.GetName() == "netbird_users_total" {
+		if family.GetName() == "netbird_users" {
 			totalFound = true
 			if len(family.GetMetric()) > 0 {
 				value := family.GetMetric()[0].GetGauge().GetValue()
@@ -326,7 +326,7 @@ func TestUsersExporter_UpdateMetrics(t *testing.T) {
 
 	// Verify some key metrics
 	expectedMetrics := map[string]float64{
-		"netbird_users_total": 2,
+		"netbird_users": 2,
 	}
 
 	for _, family := range families {
@@ -443,7 +443,7 @@ func TestUsersExporter_MetricsReset(t *testing.T) {
 	}
 
 	for _, family := range families {
-		if family.GetName() == "netbird_users_total" {
+		if family.GetName() == "netbird_users" {
 			if len(family.GetMetric()) > 0 {
 				value := family.GetMetric()[0].GetGauge().GetValue()
 				if value != 0 {

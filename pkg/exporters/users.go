@@ -37,7 +37,7 @@ func NewUsersExporter(client *netbird.Client) *UsersExporter {
 
 		usersTotal: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "netbird_users_total",
+				Name: "netbird_users",
 				Help: "Total number of NetBird users",
 			},
 			[]string{},

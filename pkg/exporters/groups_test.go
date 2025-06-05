@@ -162,7 +162,7 @@ func TestGroupsExporter_Collect_Success(t *testing.T) {
 	// Check groups total
 	totalFound := false
 	for _, family := range families {
-		if family.GetName() == "netbird_groups_total" {
+		if family.GetName() == "netbird_groups" {
 			totalFound = true
 			if len(family.GetMetric()) > 0 {
 				value := family.GetMetric()[0].GetGauge().GetValue()
@@ -301,7 +301,7 @@ func TestGroupsExporter_UpdateMetrics(t *testing.T) {
 
 	// Verify some key metrics
 	expectedMetrics := map[string]float64{
-		"netbird_groups_total": 2,
+		"netbird_groups": 2,
 	}
 
 	for _, family := range families {
@@ -418,7 +418,7 @@ func TestGroupsExporter_MetricsReset(t *testing.T) {
 	}
 
 	for _, family := range families {
-		if family.GetName() == "netbird_groups_total" {
+		if family.GetName() == "netbird_groups" {
 			if len(family.GetMetric()) > 0 {
 				value := family.GetMetric()[0].GetGauge().GetValue()
 				if value != 0 {

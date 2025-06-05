@@ -32,7 +32,7 @@ func NewGroupsExporter(client *netbird.Client) *GroupsExporter {
 
 		groupsTotal: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "netbird_groups_total",
+				Name: "netbird_groups",
 				Help: "Total number of NetBird groups",
 			},
 			[]string{},

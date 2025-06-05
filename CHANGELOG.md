@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+### Bugfix
+- Fix Prometheus metric naming to follow official guidelines - remove _total suffix from gauge metrics
+Files modified in this change:
+- Modified: pkg/exporters/dns.go
+- Modified: pkg/exporters/dns_test.go
+- Modified: pkg/exporters/groups.go
+- Modified: pkg/exporters/groups_test.go
+- Modified: pkg/exporters/networks.go
+- Modified: pkg/exporters/networks_test.go
+- Modified: pkg/exporters/peers.go
+- Modified: pkg/exporters/peers_test.go
+- Modified: pkg/exporters/users.go
+- Modified: pkg/exporters/users_test.go
+
 ## [0.1.38] - 2025-06-02
 
 ## [0.1.37] - 2025-06-02

@@ -39,7 +39,7 @@ The exporter provides the following metrics:
 
 | Metric Name                           | Type  | Description                                      | Labels                             |
 | ------------------------------------- | ----- | ------------------------------------------------ | ---------------------------------- |
-| `netbird_peers_total`                 | Gauge | Total number of NetBird peers                    | -                                  |
+| `netbird_peers`                       | Gauge | Total number of NetBird peers                    | -                                  |
 | `netbird_peers_connected`             | Gauge | Number of connected/disconnected peers           | `connected`                        |
 | `netbird_peer_last_seen_timestamp`    | Gauge | Last seen timestamp for each peer                | `peer_id`, `peer_name`, `hostname` |
 | `netbird_peers_by_os`                 | Gauge | Number of peers by operating system              | `os`                               |
@@ -54,7 +54,7 @@ The exporter provides the following metrics:
 
 | Metric Name                              | Type      | Description                                              | Labels                                    |
 | ---------------------------------------- | --------- | -------------------------------------------------------- | ----------------------------------------- |
-| `netbird_groups_total`                   | Gauge     | Total number of NetBird groups                           | -                                         |
+| `netbird_groups`                         | Gauge     | Total number of NetBird groups                           | -                                         |
 | `netbird_group_peers_count`              | Gauge     | Number of peers in each NetBird group                    | `group_id`, `group_name`, `issued`        |
 | `netbird_group_resources_count`          | Gauge     | Number of resources in each NetBird group                | `group_id`, `group_name`, `issued`        |
 | `netbird_group_info`                     | Gauge     | Information about NetBird groups (always 1)              | `group_id`, `group_name`, `issued`        |
@@ -66,7 +66,7 @@ The exporter provides the following metrics:
 
 | Metric Name                             | Type      | Description                                             | Labels                                                   |
 | --------------------------------------- | --------- | ------------------------------------------------------- | -------------------------------------------------------- |
-| `netbird_users_total`                   | Gauge     | Total number of NetBird users                           | -                                                        |
+| `netbird_users`                         | Gauge     | Total number of NetBird users                           | -                                                        |
 | `netbird_users_by_role`                 | Gauge     | Number of users by role                                 | `role`                                                   |
 | `netbird_users_by_status`               | Gauge     | Number of users by status                               | `status`                                                 |
 | `netbird_users_service_users`           | Gauge     | Number of service users vs regular users                | `is_service_user`                                        |
@@ -83,11 +83,11 @@ The exporter provides the following metrics:
 
 | Metric Name                                    | Type  | Description                                           | Labels                   |
 | ---------------------------------------------- | ----- | ----------------------------------------------------- | ------------------------ |
-| `netbird_dns_nameserver_groups_total`          | Gauge | Total number of NetBird nameserver groups             | -                        |
+| `netbird_dns_nameserver_groups`                | Gauge | Total number of NetBird nameserver groups             | -                        |
 | `netbird_dns_nameserver_groups_enabled`        | Gauge | Number of enabled/disabled nameserver groups          | `enabled`                |
 | `netbird_dns_nameserver_groups_primary`        | Gauge | Number of primary/secondary nameserver groups         | `primary`                |
 | `netbird_dns_nameserver_group_domains_count`   | Gauge | Number of domains configured in each nameserver group | `group_id`, `group_name` |
-| `netbird_dns_nameservers_total`                | Gauge | Total number of nameservers in each group             | `group_id`, `group_name` |
+| `netbird_dns_nameservers`                      | Gauge | Total number of nameservers in each group             | `group_id`, `group_name` |
 | `netbird_dns_nameservers_by_type`              | Gauge | Number of nameservers by type (UDP/TCP)               | `ns_type`                |
 | `netbird_dns_nameservers_by_port`              | Gauge | Number of nameservers by port                         | `port`                   |
 | `netbird_dns_management_disabled_groups_count` | Gauge | Number of groups with DNS management disabled         | -                        |
@@ -96,7 +96,7 @@ The exporter provides the following metrics:
 
 | Metric Name                                | Type      | Description                                                | Labels                                      |
 | ------------------------------------------ | --------- | ---------------------------------------------------------- | ------------------------------------------- |
-| `netbird_networks_total`                   | Gauge     | Total number of networks in your NetBird deployment        | -                                           |
+| `netbird_networks`                         | Gauge     | Total number of networks in your NetBird deployment        | -                                           |
 | `netbird_network_routers_count`            | Gauge     | Number of routers configured in each network               | `network_id`, `network_name`                |
 | `netbird_network_resources_count`          | Gauge     | Number of resources associated with each network           | `network_id`, `network_name`                |
 | `netbird_network_policies_count`           | Gauge     | Number of policies applied to each network                 | `network_id`, `network_name`                |
@@ -268,10 +268,10 @@ Here are some useful Prometheus queries:
 
 ```promql
 # Total number of peers
-netbird_peers_total
+netbird_peers
 
 # Percentage of connected peers
-(netbird_peers_connected{connected="true"} / netbird_peers_total) * 100
+(netbird_peers_connected{connected="true"} / netbird_peers) * 100
 
 # Peers by operating system
 sum by (os) (netbird_peers_by_os)
@@ -290,7 +290,7 @@ avg(netbird_peer_accessible_peers_count)
 
 ```promql
 # Total number of groups
-netbird_groups_total
+netbird_groups
 
 # Groups with the most peers
 topk(5, netbird_group_peers_count)
@@ -321,7 +321,7 @@ rate(netbird_groups_scrape_errors_total[5m])
 
 ```promql
 # Total number of users
-netbird_users_total
+netbird_users
 
 # Users by role
 sum by (role) (netbird_users_by_role)
@@ -355,7 +355,7 @@ sum by (module, permission) (netbird_user_permissions)
 
 ```promql
 # Total number of nameserver groups
-netbird_dns_nameserver_groups_total
+netbird_dns_nameserver_groups
 
 # Enabled vs disabled nameserver groups
 netbird_dns_nameserver_groups_enabled
@@ -367,7 +367,7 @@ netbird_dns_nameserver_groups_primary
 topk(5, netbird_dns_nameserver_group_domains_count)
 
 # Nameserver groups with the most nameservers
-topk(5, netbird_dns_nameservers_total)
+topk(5, netbird_dns_nameservers)
 
 # Nameserver distribution by type
 sum by (ns_type) (netbird_dns_nameservers_by_type)
@@ -385,14 +385,14 @@ avg(netbird_dns_nameserver_group_domains_count)
 netbird_dns_nameserver_group_domains_count == 0
 
 # Total nameservers across all groups
-sum(netbird_dns_nameservers_total)
+sum(netbird_dns_nameservers)
 ```
 
 ### Network Queries
 
 ```promql
 # Total number of networks
-netbird_networks_total
+netbird_networks
 
 # Networks with the most routers
 topk(5, netbird_network_routers_count)
@@ -613,4 +613,5 @@ go test ./...
 ```
 
 ## Stargazers over time
+
 [![Stargazers over time](https://starchart.cc/matanbaruch/netbird-api-exporter.svg?variant=adaptive)](https://starchart.cc/matanbaruch/netbird-api-exporter)
