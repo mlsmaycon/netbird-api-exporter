@@ -4,9 +4,9 @@ description: A Helm chart for NetBird API Exporter - Prometheus exporter for Net
 
 type: application
 
-version: 0.1.38
+version: 0.1.40
 
-appVersion: "0.1.38"
+appVersion: "0.1.40"
 
 icon: https://avatars.githubusercontent.com/u/100464677
 
@@ -58,8 +58,10 @@ annotations:
       url: https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892
   artifacthub.io/changes: |
     - kind: added
-      description: "Enhance PR build workflow to use real NETBIRD_API_TOKEN secret for comprehensive integration testing"
-    - kind: added
-      description: "Add PR build workflow for Docker images and Helm chart validation"
-    - kind: added
-      description: "Add values.schema.json to Helm chart for configuration validation and documentation"
+      description: "Add comprehensive debugging logs to Helm chart test for troubleshooting deployment issues"
+    - kind: fixed
+      description: "Fix Helm chart test deployment name and use GitHub secrets for API token"
+    - kind: fixed
+      description: "Fix Azure k8s-bake action configuration by using values file instead of inline overrides"
+    - kind: fixed
+      description: "Fix Helm chart test configuration to use correct values structure"

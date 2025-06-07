@@ -15,7 +15,7 @@ Calculate a composite health score based on multiple factors:
   (netbird_peers_ssh_enabled{ssh_enabled="true"} * 20) +
   ((netbird_peers_login_expired{login_expired="false"} * 20)) +
   ((netbird_peers_approval_required{approval_required="false"} * 20))
-) / netbird_peers_total * 100
+) / netbird_peers * 100
 ```
 
 ### Peer Activity Timeline
@@ -59,7 +59,7 @@ histogram_quantile(0.5,
 )
 
 # Service user ratio
-netbird_users_service_users{is_service_user="true"} / netbird_users_total
+netbird_users_service_users{is_service_user="true"} / netbird_users
 ```
 
 ### Permission Analysis
@@ -72,7 +72,7 @@ count by (module) (netbird_user_permissions{permission="admin", value="1"})
 sum by (permission) (netbird_user_permissions{value="1"})
 
 # Restricted users percentage
-netbird_users_restricted{is_restricted="true"} / netbird_users_total * 100
+netbird_users_restricted{is_restricted="true"} / netbird_users * 100
 ```
 
 ## Group Efficiency Metrics
@@ -109,15 +109,15 @@ count by (group_id) (netbird_group_resources_by_type > 0)
 
 ```promql
 # DNS group coverage
-(netbird_dns_nameserver_groups_total -
+(netbird_dns_nameserver_groups -
  netbird_dns_management_disabled_groups_count) /
- netbird_dns_nameserver_groups_total * 100
+ netbird_dns_nameserver_groups * 100
 
 # Average domains per active group
 avg(netbird_dns_nameserver_group_domains_count > 0)
 
 # Nameserver redundancy ratio
-avg(netbird_dns_nameservers_total)
+avg(netbird_dns_nameservers)
 ```
 
 ### DNS Load Distribution
@@ -186,7 +186,7 @@ rate(netbird_networks_scrape_errors_total[5m]) * 100
   (1 - rate(netbird_users_scrape_errors_total[5m])) * 25 +
   (1 - rate(netbird_groups_scrape_errors_total[5m])) * 25 +
   (1 - rate(netbird_networks_scrape_errors_total[5m])) * 25 +
-  (netbird_peers_connected{connected="true"} / netbird_peers_total) * 25
+  (netbird_peers_connected{connected="true"} / netbird_peers) * 25
 ) * 100
 ```
 
@@ -231,7 +231,7 @@ Create gauges for:
 ```yaml
 # High disconnected peer rate
 alert: HighPeerDisconnectionRate
-expr: (netbird_peers_connected{connected="false"} / netbird_peers_total) > 0.2
+expr: (netbird_peers_connected{connected="false"} / netbird_peers) > 0.2
 for: 5m
 labels:
   severity: critical

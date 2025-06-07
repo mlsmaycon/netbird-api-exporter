@@ -36,7 +36,7 @@ func NewPeersExporter(client *netbird.Client) *PeersExporter {
 
 		peersTotal: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "netbird_peers_total",
+				Name: "netbird_peers",
 				Help: "Total number of NetBird peers",
 			},
 			[]string{},

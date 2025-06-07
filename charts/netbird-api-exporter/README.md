@@ -110,40 +110,40 @@ The following table lists the configurable parameters and their default values.
 
 ### Basic Configuration
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `replicaCount` | Number of replicas | `1` |
-| `image.repository` | Image repository | `netbird-api-exporter` |
-| `image.pullPolicy` | Image pull policy | `IfNotPresent` |
-| `image.tag` | Image tag | `"latest"` |
+| Parameter          | Description        | Default                |
+| ------------------ | ------------------ | ---------------------- |
+| `replicaCount`     | Number of replicas | `1`                    |
+| `image.repository` | Image repository   | `netbird-api-exporter` |
+| `image.pullPolicy` | Image pull policy  | `IfNotPresent`         |
+| `image.tag`        | Image tag          | `"latest"`             |
 
 ### NetBird Configuration
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `netbird.apiUrl` | NetBird API URL | `"https://api.netbird.io"` |
-| `netbird.apiToken` | NetBird API token (stored in secret) | `""` |
+| Parameter          | Description                          | Default                    |
+| ------------------ | ------------------------------------ | -------------------------- |
+| `netbird.apiUrl`   | NetBird API URL                      | `"https://api.netbird.io"` |
+| `netbird.apiToken` | NetBird API token (stored in secret) | `""`                       |
 
 ### External Secret Configuration
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `externalSecret.enabled` | Enable External Secret Operator integration | `false` |
-| `externalSecret.secretStoreRef.name` | Secret Store reference name | `""` |
-| `externalSecret.secretStoreRef.kind` | Secret Store kind (SecretStore or ClusterSecretStore) | `SecretStore` |
-| `externalSecret.secretName` | Target secret name (optional) | Auto-generated |
-| `externalSecret.data` | Remote references for the external secret | `[]` |
-| `externalSecret.refreshInterval` | Refresh interval for the external secret | `"1h"` |
-| `externalSecret.annotations` | Additional annotations for ExternalSecret resource | `{}` |
-| `externalSecret.labels` | Additional labels for ExternalSecret resource | `{}` |
+| Parameter                            | Description                                           | Default        |
+| ------------------------------------ | ----------------------------------------------------- | -------------- |
+| `externalSecret.enabled`             | Enable External Secret Operator integration           | `false`        |
+| `externalSecret.secretStoreRef.name` | Secret Store reference name                           | `""`           |
+| `externalSecret.secretStoreRef.kind` | Secret Store kind (SecretStore or ClusterSecretStore) | `SecretStore`  |
+| `externalSecret.secretName`          | Target secret name (optional)                         | Auto-generated |
+| `externalSecret.data`                | Remote references for the external secret             | `[]`           |
+| `externalSecret.refreshInterval`     | Refresh interval for the external secret              | `"1h"`         |
+| `externalSecret.annotations`         | Additional annotations for ExternalSecret resource    | `{}`           |
+| `externalSecret.labels`              | Additional labels for ExternalSecret resource         | `{}`           |
 
 ### Application Configuration
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `config.listenAddress` | Listen address and port | `":8080"` |
-| `config.metricsPath` | Metrics endpoint path | `"/metrics"` |
-| `config.logLevel` | Log level | `"info"` |
+| Parameter              | Description             | Default      |
+| ---------------------- | ----------------------- | ------------ |
+| `config.listenAddress` | Listen address and port | `":8080"`    |
+| `config.metricsPath`   | Metrics endpoint path   | `"/metrics"` |
+| `config.logLevel`      | Log level               | `"info"`     |
 
 ## Usage Examples
 
@@ -182,7 +182,7 @@ helm install netbird-api-exporter ./charts/netbird-api-exporter \
 ### Production Configuration
 
 ```bash
-# From OCI registry (recommended) 
+# From OCI registry (recommended)
 helm install netbird-api-exporter \
   oci://ghcr.io/matanbaruch/netbird-api-exporter/charts/netbird-api-exporter \
   --version 0.1.6 \
@@ -196,7 +196,7 @@ helm install netbird-api-exporter ./charts/netbird-api-exporter \
 ## Getting Your NetBird API Token
 
 1. Log into your NetBird dashboard
-2. Go to **Settings** → **API Keys**  
+2. Go to **Settings** → **API Keys**
 3. Create a new API key with appropriate permissions
 4. Copy the token and use it as `netbird.apiToken`
 
@@ -204,12 +204,12 @@ helm install netbird-api-exporter ./charts/netbird-api-exporter \
 
 Once deployed, the exporter provides metrics at the `/metrics` endpoint. Key metrics include:
 
-- `netbird_peers_total` - Total number of peers
+- `netbird_peers` - Total number of peers
 - `netbird_peers_connected` - Connected/disconnected peers
-- `netbird_groups_total` - Total number of groups
-- `netbird_users_total` - Total number of users
-- `netbird_networks_total` - Total number of networks
-- `netbird_dns_nameserver_groups_total` - Total DNS nameserver groups
+- `netbird_groups` - Total number of groups
+- `netbird_users` - Total number of users
+- `netbird_networks` - Total number of networks
+- `netbird_dns_nameserver_groups` - Total DNS nameserver groups
 
 ## Testing
 

@@ -291,7 +291,7 @@ func NewPoliciesExporter(client *netbird.Client) *PoliciesExporter {
         client: client,
         policiesTotal: prometheus.NewGaugeVec(
             prometheus.GaugeOpts{
-                Name: "netbird_policies_total",
+                Name: "netbird_policies",
                 Help: "Total number of NetBird policies",
             },
             []string{},

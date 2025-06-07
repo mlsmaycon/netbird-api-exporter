@@ -34,7 +34,7 @@ func NewDNSExporter(client *netbird.Client) *DNSExporter {
 
 		nameserverGroupsTotal: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "netbird_dns_nameserver_groups_total",
+				Name: "netbird_dns_nameserver_groups",
 				Help: "Total number of NetBird nameserver groups",
 			},
 			[]string{},
@@ -66,7 +66,7 @@ func NewDNSExporter(client *netbird.Client) *DNSExporter {
 
 		nameserversTotal: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Name: "netbird_dns_nameservers_total",
+				Name: "netbird_dns_nameservers",
 				Help: "Total number of nameservers across all groups",
 			},
 			[]string{"group_id", "group_name"},
