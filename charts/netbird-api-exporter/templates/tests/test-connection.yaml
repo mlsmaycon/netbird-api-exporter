@@ -35,21 +35,35 @@ spec:
           
           # Check DNS resolution first
           echo "=== DNS Resolution Test ==="
-          if nslookup "$SERVICE_NAME"; then
-            echo "✓ DNS resolution successful"
+          echo "Resolving service name: $SERVICE_NAME"
+          
+          # Use nslookup but capture the output and check for successful resolution
+          nslookup_result=$(nslookup "$SERVICE_NAME" 2>&1)
+          echo "$nslookup_result"
+          
+          # Check if we got an IP address (indicates successful resolution)
+          if echo "$nslookup_result" | grep -q "Address: [0-9]"; then
+            SERVICE_IP=$(echo "$nslookup_result" | grep "Address: [0-9]" | head -1 | awk '{print $2}')
+            echo "✓ DNS resolution successful - Service IP: $SERVICE_IP"
           else
-            echo "✗ DNS resolution failed"
+            echo "✗ DNS resolution failed - no IP address found"
             exit 1
           fi
           echo ""
           
           # Check port connectivity using telnet
           echo "=== Port Connectivity Test ==="
-          echo "Testing port connectivity with timeout..."
-          if echo "" | timeout 5 telnet "$SERVICE_NAME" "$SERVICE_PORT" 2>&1 | grep -q "Connected"; then
-            echo "✓ Port $SERVICE_PORT is accessible"
+          echo "Testing port connectivity to $SERVICE_IP:$SERVICE_PORT with timeout..."
+          if echo "" | timeout 5 telnet "$SERVICE_IP" "$SERVICE_PORT" 2>&1 | grep -q "Connected"; then
+            echo "✓ Port $SERVICE_PORT is accessible on $SERVICE_IP"
           else
-            echo "⚠ Port connectivity test inconclusive (this is normal for HTTP services)"
+            # Also try with service name
+            echo "Direct IP test inconclusive, trying service name..."
+            if echo "" | timeout 5 telnet "$SERVICE_NAME" "$SERVICE_PORT" 2>&1 | grep -q "Connected"; then
+              echo "✓ Port $SERVICE_PORT is accessible via service name"
+            else
+              echo "⚠ Port connectivity test inconclusive (this is normal for HTTP services)"
+            fi
           fi
           echo ""
           
