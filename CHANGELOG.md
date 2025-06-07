@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.41] - 2025-06-07
+
 ### Features
 - Add Helm chart testing with kubectl using Azure k8s-deploy action
 Files modified in this change:
