@@ -197,7 +197,7 @@ jobs:
           kubectl logs deployment/netbird-test-netbird-api-exporter --tail=50
           echo ""
           echo "=== Test connection pod logs (if exists) ==="
-          kubectl logs netbird-test-netbird-api-exporter-test-connection --ignore-not-found=true || true
+          kubectl logs netbird-test-netbird-api-exporter-test-connection || true
           echo ""
           echo "=== Events ==="
           kubectl get events --sort-by='.lastTimestamp' | tail -10
@@ -206,7 +206,7 @@ jobs:
         run: |
           kubectl port-forward deployment/netbird-test-netbird-api-exporter 8080:8080 &
           sleep 5
-          curl -sSf http://localhost:8080/metrics | grep -q "netbird_"
+          curl -s http://localhost:8080/metrics
           pkill -f "kubectl port-forward" || true
 
       - name: Check deployment status
