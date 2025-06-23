@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  actions: read
+
 env:
   GO_VERSION: '1.23'
   COVERAGE_THRESHOLD: 80  # Minimum coverage percentage required
@@ -14,6 +20,8 @@ jobs:
   test-coverage:
     name: Test Coverage Analysis
     runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.outputs.percentage }}
     
     steps:
     - name: Checkout code
@@ -113,6 +121,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v7
       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const fs = require('fs');
           const coverage = '${{ steps.coverage.outputs.percentage }}';
@@ -263,6 +272,7 @@ jobs:
     - name: Compare coverage
       uses: actions/github-script@v7
       with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const mainCoverage = parseFloat(process.env.main_coverage);
           const prCoverage = parseFloat('${{ needs.test-coverage.outputs.coverage }}');
