@@ -1,0 +1,59 @@
+# Coverage Configuration for netbird-api-exporter
+# This file defines coverage thresholds and rules
+
+coverage:
+  # Global coverage threshold (minimum percentage required)
+  global_threshold: 80.0
+  
+  # Per-package coverage thresholds
+  packages:
+    "netbird-api-exporter/pkg/exporters": 90.0
+    "netbird-api-exporter/pkg/netbird": 95.0
+    "netbird-api-exporter/pkg/utils": 95.0
+  
+  # Files to exclude from coverage analysis
+  exclude:
+    - "**/*_test.go"
+    - "**/testdata/**"
+    - "**/vendor/**"
+    - "**/examples/**"
+    - "**/*.pb.go"
+    - "main.go"  # Main function typically has integration-level testing
+  
+  # Coverage reporting settings
+  report:
+    format: ["html", "text", "json"]
+    output_dir: "coverage"
+    show_missing: true
+    precision: 2
+  
+  # Quality gates
+  gates:
+    # Fail if coverage drops below threshold
+    fail_under: 80.0
+    
+    # Warn if coverage drops more than this percentage
+    warn_threshold: 2.0
+    
+    # Skip coverage check for specific patterns
+    skip_patterns:
+      - "Integration_*"  # Integration tests often have different coverage patterns
+      - "Example*"       # Example functions don't need coverage
+  
+  # Notification settings
+  notifications:
+    slack:
+      enabled: false
+      webhook_url: ""
+    
+    email:
+      enabled: false
+      recipients: []
+  
+  # Historical tracking
+  history:
+    # Number of previous runs to compare against
+    compare_runs: 10
+    
+    # Minimum coverage improvement required
+    min_improvement: 0.1

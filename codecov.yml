@@ -1,0 +1,40 @@
+codecov:
+  require_ci_to_pass: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...90"
+  
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 1%
+        base: auto
+    patch:
+      default:
+        target: 80%
+        threshold: 1%
+
+ignore:
+  - "**/*_test.go"
+  - "**/testdata/**"
+  - "**/vendor/**"
+  - "**/examples/**"
+  - "**/*.pb.go"
+
+comment:
+  layout: "diff, flags, files"
+  behavior: default
+  require_changes: true
+  require_base: true
+  require_head: true
+
+flag_management:
+  default_rules:
+    statuses:
+      - type: project
+        target: 80%
+      - type: patch
+        target: 80%
