@@ -1,0 +1,107 @@
+# Coverage Gate Configuration
+# This file configures the behavior of the coverage gate in CI/CD
+
+# Coverage thresholds
+thresholds:
+  # Minimum acceptable coverage percentage for new code
+  minimum_coverage: 60.0
+  
+  # Maximum allowed decrease in coverage percentage
+  max_decrease: 0.5
+  
+  # Target coverage percentage for the project
+  target_coverage: 80.0
+  
+  # Warn when coverage drops below this threshold
+  warning_threshold: 70.0
+
+# File patterns to include/exclude from coverage
+coverage_scope:
+  # Files to include in coverage calculation (Go patterns)
+  include:
+    - "pkg/**/*.go"
+    - "cmd/**/*.go"
+    - "internal/**/*.go"
+  
+  # Files to exclude from coverage requirements
+  exclude:
+    - "**/*_test.go"
+    - "**/mock_*.go"
+    - "**/mocks/*.go"
+    - "**/*.pb.go"
+    - "cmd/main.go"  # Often just wiring, hard to test meaningfully
+
+# Coverage gate behavior
+gate_settings:
+  # Fail PR if coverage decreases beyond max_decrease
+  fail_on_decrease: true
+  
+  # Fail PR if overall coverage is below minimum_coverage
+  fail_on_low_coverage: false
+  
+  # Allow coverage decrease for certain file types
+  exemptions:
+    - pattern: "cmd/**/*.go"
+      reason: "Command-line entry points often hard to test"
+    - pattern: "**/*_integration_test.go"
+      reason: "Integration tests themselves"
+
+# Reporting settings
+reporting:
+  # Add detailed coverage comment to PR
+  add_pr_comment: true
+  
+  # Update existing comment instead of creating new ones
+  update_existing_comment: true
+  
+  # Include package-level breakdown in reports
+  include_package_details: true
+  
+  # Show coverage diff for changed files only
+  show_diff_only: false
+  
+  # Generate coverage badge information
+  generate_badge: true
+
+# Status check configuration
+status_checks:
+  # Context name for the coverage status check
+  context: "coverage/gate"
+  
+  # Set required status check for branch protection
+  required: true
+  
+  # Description templates
+  success_template: "Coverage maintained/improved ({base}% → {current}%)"
+  failure_template: "Coverage decreased by {diff}% ({base}% → {current}%)"
+
+# Integration settings
+integrations:
+  # GitHub settings
+  github:
+    # Create status checks
+    create_status_check: true
+    
+    # Add labels to PRs based on coverage
+    add_labels: true
+    
+    # Label names
+    labels:
+      coverage_improved: "coverage-improved"
+      coverage_maintained: "coverage-maintained"
+      coverage_decreased: "coverage-decreased"
+      needs_tests: "needs-tests"
+
+# Advanced settings
+advanced:
+  # Number of decimal places to show in coverage percentages
+  precision: 1
+  
+  # Timeout for coverage calculations (in seconds)
+  timeout: 300
+  
+  # Enable debug logging
+  debug: false
+  
+  # Cache coverage results for faster subsequent runs
+  enable_cache: true

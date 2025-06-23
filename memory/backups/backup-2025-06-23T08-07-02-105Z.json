@@ -1,0 +1,94 @@
+{
+  "timestamp": "2025-06-23T08:07:02.105Z",
+  "version": "1.0",
+  "entries": [
+    {
+      "id": "entry_mc8tcjx4_8gdhtth2h",
+      "key": "swarm-auto-centralized-1750665691771/coverage-setup/config",
+      "value": "{\"step\":\"Coverage Setup\",\"timestamp\":\"2025-06-23T08:07:01Z\",\"configuration\":{\"coverageTool\":\"Go built-in coverage with enhanced reporting\",\"scripts\":{\"coverage\":\"./scripts/coverage.sh generate\",\"coverage-unit\":\"./scripts/coverage.sh --unit-only\",\"coverage-integration\":\"./scripts/coverage.sh --integration-only\",\"coverage-check\":\"./scripts/coverage.sh check\",\"coverage-clean\":\"./scripts/coverage.sh clean\",\"coverage-ci\":\"./scripts/coverage.sh generate --threshold 80\"},\"thresholds\":{\"overall\":80,\"packages\":{\"./pkg/exporters\":85,\"./pkg/netbird\":80,\"./pkg/utils\":90}},\"reportFormats\":[\"html\",\"text\",\"lcov\",\"json\",\"xml\"],\"includedFiles\":[\"./pkg/...\",\"./cmd/...\"],\"excludedFiles\":[\"*_test.go\",\"*/testdata/*\",\"*/vendor/*\",\"main.go\"],\"coverageDir\":\"coverage\",\"profiles\":{\"unit\":\"coverage/unit.out\",\"integration\":\"coverage/integration.out\",\"merged\":\"coverage/coverage.out\"}},\"filesModified\":[\"/private/tmp/netbird-api-exporter/scripts/coverage.sh\",\"/private/tmp/netbird-api-exporter/Makefile\",\"/private/tmp/netbird-api-exporter/.coveragerc\"],\"nextSteps\":[\"Install optional coverage tools: gocovmerge, gcov2lcov, gocover-cobertura\",\"Configure GitHub Actions to use coverage-ci target\",\"Set up coverage reporting in CI/CD pipeline\",\"Configure coverage badges and PR comments\",\"Set NETBIRD_API_TOKEN for integration test coverage\"],\"makefile_targets\":[\"coverage\",\"coverage-unit\",\"coverage-integration\",\"coverage-check\",\"coverage-clean\",\"coverage-ci\"],\"ci_integration\":{\"command\":\"make coverage-ci\",\"threshold\":80,\"reports_dir\":\"coverage\",\"artifacts\":[\"coverage.html\",\"coverage.lcov\",\"coverage.json\",\"coverage.xml\"]}}",
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-06-23T08:07:02.104Z",
+      "updatedAt": "2025-06-23T08:07:02.104Z",
+      "lastAccessedAt": "2025-06-23T08:07:02.104Z",
+      "version": 1,
+      "size": 1791,
+      "compressed": true,
+      "checksum": "991441e3b1b4a05840b4b0ca24fd4ab85b8c213b01186803f43a6fe8c6df2f8a",
+      "references": [],
+      "dependencies": []
+    }
+  ],
+  "statistics": {
+    "overview": {
+      "totalEntries": 1,
+      "totalSize": 1791,
+      "compressedEntries": 1,
+      "compressionRatio": 0,
+      "indexSize": 50,
+      "memoryUsage": 9366096,
+      "diskUsage": 0
+    },
+    "distribution": {
+      "byNamespace": {
+        "default": {
+          "count": 1,
+          "size": 1791
+        }
+      },
+      "byType": {
+        "object": {
+          "count": 1,
+          "size": 1791
+        }
+      },
+      "byOwner": {
+        "system": {
+          "count": 1,
+          "size": 1791
+        }
+      },
+      "byAccessLevel": {
+        "shared": {
+          "count": 1,
+          "size": 1791
+        }
+      }
+    },
+    "temporal": {
+      "entriesCreatedLast24h": 1,
+      "entriesUpdatedLast24h": 1,
+      "entriesAccessedLast24h": 1,
+      "oldestEntry": "2025-06-23T08:07:02.104Z",
+      "newestEntry": "2025-06-23T08:07:02.104Z"
+    },
+    "performance": {
+      "averageQueryTime": 0,
+      "averageWriteTime": 0,
+      "cacheHitRatio": 0,
+      "indexEfficiency": 0.95
+    },
+    "health": {
+      "expiredEntries": 0,
+      "orphanedReferences": 0,
+      "duplicateKeys": 0,
+      "corruptedEntries": 0,
+      "recommendedCleanup": false
+    },
+    "optimization": {
+      "suggestions": [],
+      "potentialSavings": {
+        "compression": 0,
+        "cleanup": 0,
+        "deduplication": 0
+      },
+      "indexOptimization": [
+        "Consider periodic index rebuilding for optimal performance"
+      ]
+    }
+  }
+}

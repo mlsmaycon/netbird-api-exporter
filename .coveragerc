@@ -1,0 +1,49 @@
+# Coverage Configuration for NetBird API Exporter
+# This file defines coverage settings and thresholds
+
+[coverage]
+# Minimum overall coverage percentage required
+minimum_coverage = 80.0
+
+# Package-specific coverage thresholds
+[coverage.packages]
+./pkg/exporters = 85.0
+./pkg/netbird = 80.0  
+./pkg/utils = 90.0
+
+# Files and patterns to exclude from coverage
+[coverage.exclude]
+patterns = [
+    "*_test.go",
+    "*/testdata/*", 
+    "*/vendor/*",
+    "main.go"
+]
+
+# Coverage report formats to generate
+[coverage.reports]
+html = true
+text = true
+lcov = true
+json = true
+xml = true
+
+# Coverage output directory
+[coverage.output]
+directory = "coverage"
+unit_profile = "coverage/unit.out"
+integration_profile = "coverage/integration.out"
+merged_profile = "coverage/coverage.out"
+
+# CI/CD specific settings
+[coverage.ci]
+fail_under = 80.0
+skip_covered = false
+show_missing = true
+precision = 2
+
+# GitHub Actions integration
+[coverage.github]
+comment_on_pr = true
+upload_to_codecov = true
+upload_to_coveralls = false

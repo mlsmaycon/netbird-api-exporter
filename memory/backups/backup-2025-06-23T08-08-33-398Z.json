@@ -1,0 +1,159 @@
+{
+  "timestamp": "2025-06-23T08:08:33.398Z",
+  "version": "1.0",
+  "entries": [
+    {
+      "id": "entry_mc8tcjx4_8gdhtth2h",
+      "key": "swarm-auto-centralized-1750665691771/coverage-setup/config",
+      "value": "{\"step\":\"Coverage Setup\",\"timestamp\":\"2025-06-23T08:07:01Z\",\"configuration\":{\"coverageTool\":\"Go built-in coverage with enhanced reporting\",\"scripts\":{\"coverage\":\"./scripts/coverage.sh generate\",\"coverage-unit\":\"./scripts/coverage.sh --unit-only\",\"coverage-integration\":\"./scripts/coverage.sh --integration-only\",\"coverage-check\":\"./scripts/coverage.sh check\",\"coverage-clean\":\"./scripts/coverage.sh clean\",\"coverage-ci\":\"./scripts/coverage.sh generate --threshold 80\"},\"thresholds\":{\"overall\":80,\"packages\":{\"./pkg/exporters\":85,\"./pkg/netbird\":80,\"./pkg/utils\":90}},\"reportFormats\":[\"html\",\"text\",\"lcov\",\"json\",\"xml\"],\"includedFiles\":[\"./pkg/...\",\"./cmd/...\"],\"excludedFiles\":[\"*_test.go\",\"*/testdata/*\",\"*/vendor/*\",\"main.go\"],\"coverageDir\":\"coverage\",\"profiles\":{\"unit\":\"coverage/unit.out\",\"integration\":\"coverage/integration.out\",\"merged\":\"coverage/coverage.out\"}},\"filesModified\":[\"/private/tmp/netbird-api-exporter/scripts/coverage.sh\",\"/private/tmp/netbird-api-exporter/Makefile\",\"/private/tmp/netbird-api-exporter/.coveragerc\"],\"nextSteps\":[\"Install optional coverage tools: gocovmerge, gcov2lcov, gocover-cobertura\",\"Configure GitHub Actions to use coverage-ci target\",\"Set up coverage reporting in CI/CD pipeline\",\"Configure coverage badges and PR comments\",\"Set NETBIRD_API_TOKEN for integration test coverage\"],\"makefile_targets\":[\"coverage\",\"coverage-unit\",\"coverage-integration\",\"coverage-check\",\"coverage-clean\",\"coverage-ci\"],\"ci_integration\":{\"command\":\"make coverage-ci\",\"threshold\":80,\"reports_dir\":\"coverage\",\"artifacts\":[\"coverage.html\",\"coverage.lcov\",\"coverage.json\",\"coverage.xml\"]}}",
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-06-23T08:07:02.104Z",
+      "updatedAt": "2025-06-23T08:07:02.104Z",
+      "lastAccessedAt": "2025-06-23T08:07:02.104Z",
+      "version": 1,
+      "size": 1791,
+      "compressed": true,
+      "checksum": "991441e3b1b4a05840b4b0ca24fd4ab85b8c213b01186803f43a6fe8c6df2f8a",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mc8tcshi_7vhapnopq",
+      "key": "swarm-auto-centralized-1750665691771/coverage-gate/implementation",
+      "value": "{\"step\":\"Coverage Gate Implementation\",\"timestamp\":\"2025-06-23T08:07:13.3NZ\",\"implementation\":{\"comparisonLogic\":\"Compare PR branch coverage against base branch using git checkout and go tool cover. Calculate percentage difference using bc arithmetic.\",\"failureConditions\":[\"Coverage decreases by more than 0.5% threshold\",\"Base branch tests fail to run\",\"PR branch tests fail to run\",\"Coverage calculation fails\"],\"allowedDecrease\":\"0.5% maximum allowed decrease (configurable in coverage-gate.yml)\",\"statusChecks\":[\"GitHub status check with context coverage/gate\",\"PR comment with detailed coverage report\",\"Job failure when threshold exceeded\",\"Integration with test-summary job\"]},\"features\":{\"coverageDiff\":\"Detailed diff reporting with package-level breakdown, before/after comparison, and actionable recommendations\",\"blockMerging\":\"PR fails when coverage decreases beyond threshold, preventing merge until tests added\",\"exemptions\":\"Configurable file patterns in coverage-gate.yml for cmd/ files and integration tests\"},\"components\":{\"workflow\":\".github/workflows/test.yml - Enhanced with coverage-gate job\",\"config\":\".github/coverage-gate.yml - Comprehensive configuration file\",\"localScript\":\"scripts/coverage-gate.sh - Local testing capability\",\"integration\":\"Full integration with existing test infrastructure\"},\"technicalDetails\":{\"coverageExtraction\":\"go tool cover -func=coverage.out | grep total | awk print $3 | sed s/%//\",\"branchComparison\":\"git checkout base-sha && run tests && git checkout pr-sha && run tests\",\"thresholdCheck\":\"bc -l arithmetic for precise decimal comparison\",\"reporting\":\"Markdown generation with GitHub Script API for PR comments\"},\"nextSteps\":[\"Test with actual PR to validate workflow\",\"Configure branch protection rules to require coverage/gate status check\",\"Add coverage badge to README if desired\",\"Monitor and adjust threshold based on team preferences\"]}",
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-06-23T08:07:13.206Z",
+      "updatedAt": "2025-06-23T08:07:13.206Z",
+      "lastAccessedAt": "2025-06-23T08:07:13.206Z",
+      "version": 1,
+      "size": 2031,
+      "compressed": true,
+      "checksum": "9363f43b9c65b1952f6c5557f2c9d8660d10f08c3a7c2e9f2ff5b76d9f77a030",
+      "references": [],
+      "dependencies": []
+    },
+    {
+      "id": "entry_mc8teid2_6okyas1lm",
+      "key": "swarm-auto-centralized-1750665691771/coverage-setup/results",
+      "value": {
+        "step": "Coverage Setup - Test Results",
+        "timestamp": "2025-06-23T08:08:33Z",
+        "test_results": {
+          "overall_coverage": "84.2%",
+          "minimum_threshold": "80.0%",
+          "threshold_status": "PASSED",
+          "package_coverage": {
+            "pkg/exporters": "97.08%",
+            "pkg/netbird": "100%",
+            "pkg/utils": "100%"
+          },
+          "package_thresholds_status": "ALL_PASSED"
+        },
+        "reports_generated": {
+          "html": "coverage/coverage.html",
+          "text": "coverage/coverage.txt",
+          "json": "coverage/coverage.json"
+        },
+        "optional_tools_needed": [
+          "gcov2lcov (for LCOV format)",
+          "gocover-cobertura (for XML/Cobertura format)"
+        ],
+        "status": "SUCCESS",
+        "ready_for_ci": true
+      },
+      "type": "object",
+      "namespace": "default",
+      "tags": [],
+      "metadata": {},
+      "owner": "system",
+      "accessLevel": "shared",
+      "createdAt": "2025-06-23T08:08:33.398Z",
+      "updatedAt": "2025-06-23T08:08:33.398Z",
+      "lastAccessedAt": "2025-06-23T08:08:33.398Z",
+      "version": 1,
+      "size": 590,
+      "compressed": false,
+      "checksum": "ad5ca5fde4106f35e0ca821de5942b160e3e7801ae5709a9e41664f33f79e099",
+      "references": [],
+      "dependencies": []
+    }
+  ],
+  "statistics": {
+    "overview": {
+      "totalEntries": 3,
+      "totalSize": 4412,
+      "compressedEntries": 2,
+      "compressionRatio": -5.477966101694915,
+      "indexSize": 150,
+      "memoryUsage": 9468472,
+      "diskUsage": 0
+    },
+    "distribution": {
+      "byNamespace": {
+        "default": {
+          "count": 3,
+          "size": 4412
+        }
+      },
+      "byType": {
+        "object": {
+          "count": 3,
+          "size": 4412
+        }
+      },
+      "byOwner": {
+        "system": {
+          "count": 3,
+          "size": 4412
+        }
+      },
+      "byAccessLevel": {
+        "shared": {
+          "count": 3,
+          "size": 4412
+        }
+      }
+    },
+    "temporal": {
+      "entriesCreatedLast24h": 3,
+      "entriesUpdatedLast24h": 3,
+      "entriesAccessedLast24h": 3,
+      "oldestEntry": "2025-06-23T08:07:02.104Z",
+      "newestEntry": "2025-06-23T08:08:33.398Z"
+    },
+    "performance": {
+      "averageQueryTime": 0,
+      "averageWriteTime": 1,
+      "cacheHitRatio": 0,
+      "indexEfficiency": 0.95
+    },
+    "health": {
+      "expiredEntries": 0,
+      "orphanedReferences": 0,
+      "duplicateKeys": 0,
+      "corruptedEntries": 0,
+      "recommendedCleanup": false
+    },
+    "optimization": {
+      "suggestions": [],
+      "potentialSavings": {
+        "compression": 0,
+        "cleanup": 0,
+        "deduplication": 0
+      },
+      "indexOptimization": [
+        "Consider periodic index rebuilding for optimal performance"
+      ]
+    }
+  }
+}

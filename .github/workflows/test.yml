@@ -21,8 +21,13 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
+    outputs:
+      coverage-percentage: ${{ steps.coverage.outputs.percentage }}
+      coverage-badge-color: ${{ steps.coverage.outputs.badge-color }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for coverage comparison
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -38,6 +43,27 @@ jobs:
       - name: Run unit tests
         run: ./scripts/run-tests.sh unit
 
+      - name: Extract coverage percentage
+        id: coverage
+        run: |
+          if [ -f coverage.out ]; then
+            COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+            echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
+            echo "Current coverage: $COVERAGE%"
+            
+            # Determine badge color based on coverage
+            if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
+              echo "badge-color=brightgreen" >> $GITHUB_OUTPUT
+            elif (( $(echo "$COVERAGE >= 60" | bc -l) )); then
+              echo "badge-color=yellow" >> $GITHUB_OUTPUT
+            else
+              echo "badge-color=red" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "percentage=0" >> $GITHUB_OUTPUT
+            echo "badge-color=red" >> $GITHUB_OUTPUT
+          fi
+
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         if: always()
@@ -47,6 +73,213 @@ jobs:
             coverage.out
             coverage.html
           retention-days: 7
+
+  coverage-gate:
+    name: Coverage Gate
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+      statuses: write
+      checks: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Make test script executable
+        run: chmod +x scripts/run-tests.sh
+
+      - name: Get current PR coverage
+        id: pr-coverage
+        run: |
+          ./scripts/run-tests.sh unit
+          if [ -f coverage.out ]; then
+            PR_COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+            echo "pr-coverage=$PR_COVERAGE" >> $GITHUB_OUTPUT
+            echo "PR Coverage: $PR_COVERAGE%"
+          else
+            echo "pr-coverage=0" >> $GITHUB_OUTPUT
+            echo "PR Coverage: 0%"
+          fi
+
+      - name: Get base branch coverage
+        id: base-coverage
+        run: |
+          # Switch to base branch and get coverage
+          git checkout ${{ github.event.pull_request.base.sha }}
+          ./scripts/run-tests.sh unit
+          if [ -f coverage.out ]; then
+            BASE_COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+            echo "base-coverage=$BASE_COVERAGE" >> $GITHUB_OUTPUT
+            echo "Base Coverage: $BASE_COVERAGE%"
+          else
+            echo "base-coverage=0" >> $GITHUB_OUTPUT
+            echo "Base Coverage: 0%"
+          fi
+
+      - name: Calculate coverage difference
+        id: coverage-diff
+        run: |
+          PR_COV="${{ steps.pr-coverage.outputs.pr-coverage }}"
+          BASE_COV="${{ steps.base-coverage.outputs.base-coverage }}"
+          
+          # Calculate difference
+          DIFF=$(echo "$PR_COV - $BASE_COV" | bc -l)
+          echo "coverage-diff=$DIFF" >> $GITHUB_OUTPUT
+          
+          # Determine if coverage decreased significantly
+          THRESHOLD=-0.5  # Allow up to 0.5% decrease
+          DECREASED=$(echo "$DIFF < $THRESHOLD" | bc -l)
+          echo "coverage-decreased=$DECREASED" >> $GITHUB_OUTPUT
+          
+          echo "Coverage Difference: $DIFF%"
+          echo "Coverage Decreased: $DECREASED"
+          
+          # Generate detailed coverage report
+          git checkout ${{ github.event.pull_request.head.sha }}
+          ./scripts/run-tests.sh unit
+          
+          # Create coverage comparison report
+          cat > coverage-report.md << EOF
+          ## 📊 Coverage Report
+          
+          | Metric | Value |
+          |--------|-------|
+          | **Base Branch Coverage** | ${BASE_COV}% |
+          | **PR Coverage** | ${PR_COV}% |
+          | **Difference** | ${DIFF}% |
+          | **Status** | $(if [ "$DECREASED" = "1" ]; then echo "❌ Coverage Decreased"; else echo "✅ Coverage Maintained/Improved"; fi) |
+          
+          ### Coverage Threshold
+          - **Allowed decrease**: 0.5%
+          - **Current change**: ${DIFF}%
+          
+          $(if [ "$DECREASED" = "1" ]; then cat << 'EOL'
+          ### ⚠️ Coverage Gate Failed
+          
+          This PR decreases code coverage by more than the allowed threshold (0.5%).
+          Please add tests to maintain or improve coverage before merging.
+          
+          **What to do:**
+          1. Add unit tests for new/modified code
+          2. Remove dead code if applicable
+          3. Ensure all code paths are tested
+          EOL
+          else cat << 'EOL'
+          ### ✅ Coverage Gate Passed
+          
+          Code coverage is maintained or improved. Great job!
+          EOL
+          fi)
+          EOF
+
+      - name: Generate detailed coverage diff
+        id: coverage-details
+        run: |
+          # Switch back to PR branch for detailed analysis
+          git checkout ${{ github.event.pull_request.head.sha }}
+          ./scripts/run-tests.sh unit
+          
+          # Generate function-level coverage details
+          echo "## Detailed Coverage by Package" >> coverage-report.md
+          echo "" >> coverage-report.md
+          echo "| Package | Coverage |" >> coverage-report.md
+          echo "|---------|----------|" >> coverage-report.md
+          
+          go tool cover -func=coverage.out | grep -v "total:" | while read line; do
+            if [[ $line == *"/"* ]]; then
+              # Package line
+              pkg=$(echo "$line" | awk '{print $1}' | sed 's|^.*/||')
+              cov=$(echo "$line" | awk '{print $3}')
+              echo "| $pkg | $cov |" >> coverage-report.md
+            fi
+          done || true
+          
+          echo "" >> coverage-report.md
+          echo "---" >> coverage-report.md
+          echo "*Coverage report generated by Coverage Gate*" >> coverage-report.md
+
+      - name: Update PR with coverage report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const coverageReport = fs.readFileSync('coverage-report.md', 'utf8');
+            
+            // Find existing coverage comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const coverageComment = comments.data.find(comment => 
+              comment.body.includes('📊 Coverage Report') && comment.user.type === 'Bot'
+            );
+            
+            if (coverageComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: coverageComment.id,
+                body: coverageReport
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: coverageReport
+              });
+            }
+
+      - name: Set GitHub Status Check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const coverageDecreased = '${{ steps.coverage-diff.outputs.coverage-decreased }}' === '1';
+            const prCoverage = '${{ steps.pr-coverage.outputs.pr-coverage }}';
+            const baseCoverage = '${{ steps.base-coverage.outputs.base-coverage }}';
+            const diff = '${{ steps.coverage-diff.outputs.coverage-diff }}';
+            
+            const state = coverageDecreased ? 'failure' : 'success';
+            const description = coverageDecreased 
+              ? `Coverage decreased by ${Math.abs(diff)}% (${baseCoverage}% → ${prCoverage}%)`
+              : `Coverage maintained/improved (${baseCoverage}% → ${prCoverage}%)`;
+            
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.pull_request.head.sha,
+              state: state,
+              target_url: `${context.payload.pull_request.html_url}/checks`,
+              description: description,
+              context: 'coverage/gate'
+            });
+
+      - name: Fail if coverage decreased
+        if: steps.coverage-diff.outputs.coverage-decreased == '1'
+        run: |
+          echo "❌ Coverage Gate Failed"
+          echo "Coverage decreased by ${{ steps.coverage-diff.outputs.coverage-diff }}%"
+          echo "Base: ${{ steps.base-coverage.outputs.base-coverage }}%"
+          echo "PR: ${{ steps.pr-coverage.outputs.pr-coverage }}%"
+          echo ""
+          echo "Please add tests to maintain or improve coverage."
+          exit 1
 
   integration-tests:
     name: Integration Tests
@@ -220,6 +453,7 @@ jobs:
     needs:
       [
         unit-tests,
+        coverage-gate,
         integration-tests,
         performance-tests,
         benchmark-tests,
@@ -235,19 +469,40 @@ jobs:
           echo "| Test Type | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| Unit Tests | ${{ needs.unit-tests.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Coverage Gate | ${{ needs.coverage-gate.result == 'success' && '✅ Passed' || needs.coverage-gate.result == 'skipped' && '⏭️ Skipped (Push to main)' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Integration Tests | ${{ needs.integration-tests.result == 'success' && '✅ Passed' || needs.integration-tests.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Performance Tests | ${{ needs.performance-tests.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Benchmark Tests | ${{ needs.benchmark-tests.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Docker Compose Test | ${{ needs.docker-compose-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Helm Chart Test | ${{ needs.helm-chart-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Add coverage information for PRs
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "## Coverage Information" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Current Coverage | ${{ needs.unit-tests.outputs.coverage-percentage }}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Coverage Badge | ![Coverage](${{ needs.unit-tests.outputs.coverage-badge-color }}) |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Check if coverage gate failed specifically
+          COVERAGE_FAILED=false
+          if [[ "${{ needs.coverage-gate.result }}" == "failure" ]]; then
+            COVERAGE_FAILED=true
+            echo "❌ **Coverage Gate Failed!** Code coverage decreased beyond acceptable threshold." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
 
           if [[ "${{ needs.unit-tests.result }}" != "success" ]] || \
              [[ "${{ needs.integration-tests.result }}" != "success" && "${{ needs.integration-tests.result }}" != "skipped" ]] || \
              [[ "${{ needs.performance-tests.result }}" != "success" ]] || \
              [[ "${{ needs.benchmark-tests.result }}" != "success" ]] || \
              [[ "${{ needs.docker-compose-test.result }}" != "success" ]] || \
-             [[ "${{ needs.helm-chart-test.result }}" != "success" ]]; then
+             [[ "${{ needs.helm-chart-test.result }}" != "success" ]] || \
+             [[ "$COVERAGE_FAILED" == "true" ]]; then
             echo "❌ Some tests failed! Check the individual job logs for details." >> $GITHUB_STEP_SUMMARY
             exit 1
           else

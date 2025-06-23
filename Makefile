@@ -47,6 +47,30 @@ test-benchmark:
 test-all:
 	./scripts/run-tests.sh all
 
+# Generate comprehensive coverage report
+coverage:
+	./scripts/coverage.sh generate
+
+# Generate coverage report for unit tests only
+coverage-unit:
+	./scripts/coverage.sh --unit-only
+
+# Generate coverage report for integration tests only (requires NETBIRD_API_TOKEN)
+coverage-integration:
+	./scripts/coverage.sh --integration-only
+
+# Check coverage thresholds against existing coverage data
+coverage-check:
+	./scripts/coverage.sh check
+
+# Clean coverage reports and artifacts
+coverage-clean:
+	./scripts/coverage.sh clean
+
+# Generate coverage and enforce minimum thresholds (for CI/CD)
+coverage-ci:
+	./scripts/coverage.sh generate --threshold 80
+
 # Clean test artifacts
 test-clean:
 	./scripts/run-tests.sh clean
@@ -140,8 +164,8 @@ build-all:
 	GOOS=darwin GOARCH=arm64 $(GOBUILD) -o bin/$(BINARY_NAME)-darwin-arm64
 	GOOS=windows GOARCH=amd64 $(GOBUILD) -o bin/$(BINARY_NAME)-windows-amd64.exe
 
-# Run all checks (tests, linting, formatting)
-check: test lint
+# Run all checks (tests, linting, formatting, coverage)
+check: test lint coverage-check
 	@echo "All checks passed!"
 
 # Set up pre-commit hooks
@@ -174,6 +198,12 @@ help:
 	@echo "  test-benchmark  - Run benchmark tests"
 	@echo "  test-all        - Run all tests with coverage"
 	@echo "  test-clean      - Clean test artifacts"
+	@echo "  coverage        - Generate comprehensive coverage report"
+	@echo "  coverage-unit   - Generate coverage report for unit tests only"
+	@echo "  coverage-integration - Generate coverage for integration tests"
+	@echo "  coverage-check  - Check coverage thresholds"
+	@echo "  coverage-clean  - Clean coverage reports and artifacts"
+	@echo "  coverage-ci     - Generate coverage with CI/CD thresholds"
 	@echo "  deps            - Download and tidy dependencies"
 	@echo "  docker-build    - Build Docker image"
 	@echo "  docker-run      - Run with Docker"
