@@ -4,9 +4,9 @@ description: A Helm chart for NetBird API Exporter - Prometheus exporter for Net
 
 type: application
 
-version: 0.1.42
+version: 0.1.44
 
-appVersion: "0.1.42"
+appVersion: "0.1.44"
 
 icon: https://avatars.githubusercontent.com/u/100464677
 
@@ -57,6 +57,8 @@ annotations:
     - title: NetBird API Exporter Dashboard
       url: https://github.com/user-attachments/assets/df57ed5f-524a-4965-9b8a-a8cb97ee4892
   artifacthub.io/changes: |
+    - kind: added
+      description: "Add netbird_peer_connection_status_by_name metric to track individual peer connection status with peer name, ID, and connection state labels"
     - kind: added
       description: "Add comprehensive debugging logs to Helm chart test for troubleshooting deployment issues"
     - kind: fixed
