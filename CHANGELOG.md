@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.46] - 2025-06-24
+
 
 ### Bugfix
 - Fix import paths to match updated module name in go.mod
