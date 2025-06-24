@@ -430,7 +430,7 @@ func TestPeersExporter_ConnectionStatusByName(t *testing.T) {
 			Connected: true,
 		},
 		{
-			ID:        "peer2", 
+			ID:        "peer2",
 			Name:      "disconnected-peer",
 			Connected: false,
 		},
