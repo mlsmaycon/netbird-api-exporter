@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.44] - 2025-06-24
+
 
 ### Features
 - Add netbird_peer_connection_status_by_name metric to track individual peer connection status with peer name, ID, and connection state labels
