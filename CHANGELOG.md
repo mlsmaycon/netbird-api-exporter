@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+### Bugfix
+- Fix import paths to match updated module name in go.mod
+
+## [0.1.45] - 2025-06-24
+
 ## [0.1.44] - 2025-06-24
 
 
@@ -408,4 +414,3 @@ When adding entries to the changelog, use the following guidelines:
 
 - Updated README.md to remove contributing section
 - Enhanced GitHub Actions workflow by adding permissions for write access
-- Adjusted checkout settings for better version control

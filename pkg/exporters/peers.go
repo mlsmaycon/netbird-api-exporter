@@ -9,7 +9,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/sirupsen/logrus"
 
-	"netbird-api-exporter/pkg/netbird"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/netbird"
 )
 
 // PeersExporter handles peers-specific metrics collection

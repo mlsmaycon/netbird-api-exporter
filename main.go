@@ -13,8 +13,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 
-	"netbird-api-exporter/pkg/exporters"
-	"netbird-api-exporter/pkg/utils"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/exporters"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/utils"
 )
 
 // debugLoggingMiddleware logs HTTP requests when debug level is enabled
