@@ -56,6 +56,9 @@ func TestNewPeersExporter(t *testing.T) {
 	if exporter.accessiblePeersCount == nil {
 		t.Error("Expected accessiblePeersCount metric to be non-nil")
 	}
+	if exporter.peerConnectionStatusByName == nil {
+		t.Error("Expected peerConnectionStatusByName metric to be non-nil")
+	}
 }
 
 func TestPeersExporter_Describe(t *testing.T) {
@@ -412,5 +415,117 @@ func TestPeersExporter_MetricLabels(t *testing.T) {
 
 	if !labelFound {
 		t.Error("Expected to find metrics with labels")
+	}
+}
+
+func TestPeersExporter_ConnectionStatusByName(t *testing.T) {
+	client := netbird.NewClient("https://api.netbird.io", "test-token")
+	exporter := NewPeersExporter(client)
+
+	// Test data with both connected and disconnected peers
+	peers := []netbird.Peer{
+		{
+			ID:        "peer1",
+			Name:      "connected-peer",
+			Connected: true,
+		},
+		{
+			ID:        "peer2", 
+			Name:      "disconnected-peer",
+			Connected: false,
+		},
+	}
+
+	// Call updateMetrics directly
+	exporter.updateMetrics(peers)
+
+	// Collect just our specific metric to avoid API calls
+	ch := make(chan prometheus.Metric, 10)
+	go func() {
+		exporter.peerConnectionStatusByName.Collect(ch)
+		close(ch)
+	}()
+
+	metrics := make([]prometheus.Metric, 0)
+	for metric := range ch {
+		if metric != nil {
+			metrics = append(metrics, metric)
+		}
+	}
+
+	// Verify we have 2 metrics (one for each peer)
+	if len(metrics) != 2 {
+		t.Errorf("Expected 2 metrics, got %d", len(metrics))
+	}
+
+	// Since we can't easily extract labels from prometheus.Metric interface in tests,
+	// let's test by checking that we set the metrics correctly by using a test registry
+	testRegistry := prometheus.NewPedanticRegistry()
+	testRegistry.MustRegister(exporter.peerConnectionStatusByName)
+
+	families, err := testRegistry.Gather()
+	if err != nil {
+		t.Fatalf("Failed to gather metrics: %v", err)
+	}
+
+	if len(families) != 1 {
+		t.Fatalf("Expected 1 metric family, got %d", len(families))
+	}
+
+	family := families[0]
+	if family.GetName() != "netbird_peer_connection_status_by_name" {
+		t.Errorf("Expected metric name 'netbird_peer_connection_status_by_name', got '%s'", family.GetName())
+	}
+
+	// Verify we have 2 metrics (one for each peer)
+	if len(family.GetMetric()) != 2 {
+		t.Errorf("Expected 2 metrics, got %d", len(family.GetMetric()))
+	}
+
+	// Verify the metrics have correct values and labels
+	foundConnected := false
+	foundDisconnected := false
+
+	for _, metric := range family.GetMetric() {
+		value := metric.GetGauge().GetValue()
+		labels := metric.GetLabel()
+
+		// Find peer_name and connected labels
+		var peerName, connected string
+		for _, label := range labels {
+			if label.GetName() == "peer_name" {
+				peerName = label.GetValue()
+			}
+			if label.GetName() == "connected" {
+				connected = label.GetValue()
+			}
+		}
+
+		if peerName == "connected-peer" {
+			foundConnected = true
+			if connected != "true" {
+				t.Errorf("Expected connected label to be 'true' for connected peer, got '%s'", connected)
+			}
+			if value != 1.0 {
+				t.Errorf("Expected value 1.0 for connected peer, got %f", value)
+			}
+		}
+
+		if peerName == "disconnected-peer" {
+			foundDisconnected = true
+			if connected != "false" {
+				t.Errorf("Expected connected label to be 'false' for disconnected peer, got '%s'", connected)
+			}
+			if value != 0.0 {
+				t.Errorf("Expected value 0.0 for disconnected peer, got %f", value)
+			}
+		}
+	}
+
+	if !foundConnected {
+		t.Error("Expected to find connected peer metric")
+	}
+	if !foundDisconnected {
+		t.Error("Expected to find disconnected peer metric")
 	}
 }
