@@ -9,7 +9,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"netbird-api-exporter/pkg/netbird"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/netbird"
 )
 
 func TestNewNetworksExporter(t *testing.T) {

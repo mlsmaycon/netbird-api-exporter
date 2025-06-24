@@ -12,9 +12,9 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/sirupsen/logrus"
 
-	"netbird-api-exporter/pkg/exporters"
-	"netbird-api-exporter/pkg/netbird"
-	"netbird-api-exporter/pkg/utils"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/exporters"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/netbird"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/utils"
 )
 
 // Integration tests that require a real NetBird API token

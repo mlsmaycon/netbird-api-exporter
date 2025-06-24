@@ -8,7 +8,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/sirupsen/logrus"
 
-	"netbird-api-exporter/pkg/netbird"
+	"github.com/matanbaruch/netbird-api-exporter/pkg/netbird"
 )
 
 // GroupsExporter handles groups-specific metrics collection
