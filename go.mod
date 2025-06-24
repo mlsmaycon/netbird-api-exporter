@@ -1,4 +1,4 @@
-module netbird-api-exporter
+module github.com/matanbaruch/netbird-api-exporter
 
 go 1.23
 
