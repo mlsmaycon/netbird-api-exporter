@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+### Features
+- Use NetBird REST client
+Files modified in this change:
+- Modified: CONTRIBUTING.md
+- Modified: coverage/coverage.json
+- Modified: coverage/coverage.txt
+
 ## [0.1.46] - 2025-06-24
 
 
